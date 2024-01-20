@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.miniproject.mappers.boardMapper">
+  	<select id="currDate" resultType="string">
+  		select now()
+  	</select>
+  	
+  	<select id="selectAllBoardList" resultType="com.miniproject.domain.BoardVo">
+  		SELECT * FROM board ORDER BY ref DESC, ref_order
+  	</select>
+  	
+<!--   	<insert id="inputMemberWithoutImg"> -->
+<!--   		insert into member(user_id, user_pwd, user_email) values (#{userId}, sha1(md5(#{userPwd})), #{userEmail}) -->
+  	
+<!--   	</insert> -->
+  	
+<!--   	<select id="" resultType=""> -->
+<!--   		select * from member -->
+  	
+<!--   	</select> -->
+  	
+  </mapper>
+  
+  
+  
+<!-- SELECT_ALL_IMAGES = "SELECT u.*, m.user_id FROM uploadedfile u, member m WHERE u.file_id = m.user_img";	 -->
+<!-- INSERT_UPLOADEDFILE_BOARD = "INSERT INTO uploadedfile (original_filename, ext, new_filename, file_size, board_no, base64String) VALUES (?, ?, ?, ?, ?, ?)"; -->
+<!-- INSERT_UPLOADEDFILE = "INSERT INTO uploadedfile (original_filename, ext, new_filename, file_size) VALUES (?, ?, ?, ?)"; -->
+<!-- INSERT_POINTLOG = "INSERT INTO pointlog (point_type, change_point, user_id) values (?, ?, ?)"; -->
+<!-- UPDATE_POINT_WRITE = "UPDATE member SET user_point = user_point + ? WHERE user_id = ?"; -->
+<!-- SELECT_BOARD_REF = "SELECT MAX(board_no) + 1 as board_no FROM board"; -->
+	
+<!-- INSERT_BOARD_CONTENT = "INSERT INTO board (writer, title, content, ref) VALUES (?, ?, ?, (SELECT MAX(b.board_no) + 1 as board_no FROM board b))"; -->
+<!-- SELECT_ALL_BOARD_LIST = "SELECT * FROM board ORDER BY ref DESC, ref_order";  -->
+<!-- SELECT_BOARD_NO = "SHOW TABLE STATUS WHERE name = 'board';"; -->
+<!-- SELECT_BOARD_READCNT = "SELECT * FROM readcountprocess WHERE ip_addr = ? AND read_no =?"; -->
+<!-- SELECT_READ_HOUR_BY_NO = "SELECT TimestampDIFF(hour, read_time, now()) as diff_hour FROM readcountprocess WHERE ip_addr = ? AND read_no = ?"; -->
+<!-- INSERT_READTIME = "INSERT INTO readcountprocess (ip_addr, board_no) values (?, ?)"; -->
+<!-- UPDATE_READTIME = "update readcountprocess set read_time = now() WHERE ip_addr = ? AND board_no =?"; -->
+<!-- UPDATE_READCOUNT = "update board set read_count = read_count + 1 where board_no = ?"; -->
+<!-- SELECT_BY_BOARD_NO = "SELECT * FROM board WHERE board_no = ?"; -->
+<!-- DELET_BOARD = "UPDATE board SET is_delete = 'Y' WHERE board_no = ?"; -->
+<!-- UPDATE_BOARD = "UPDATE board SET title = ?, content = ? WHERE board_no = ?"; -->
+<!-- UPDATE_UPLOADEDFILE = "UPDATE uploadedfile SET original_filename = ?, ext = ?, new_filename = ?, file_size = ?, base64String = ? WHERE board_no = ?"; -->
+	
+<!-- INSERT_REPLY = "INSERT INTO board (writer, title, content, ref, step, ref_order) VALUES (?, ?, ?, ?, ?, ?)"; -->
+<!-- UPDATE_REF_ORDER = "UPDATE board SET ref_order = ref_order + 1 WHERE ref = ? AND ref_order > ?"; -->
+<!-- DELETE_UPLOADEDFILE = "DELETE FROM uploadedfile WHERE board_no =?"; -->
+<!-- SELECT_TOTALPOST = "SELECT count(*) AS total_post FROM board"; -->
+<!-- SELECT_ALL_BOARD_BY_PAGING = "SELECT * FROM board ORDER BY ref DESC, ref_order LIMIT ? , ?"; -->
+
+<!-- SELECT_TOTALPOST_SEARCH = "SELECT count(*) AS total_post FROM board WHERE "; -->
+<!-- SELECT_SEARCH_BOARD_BY_PAGING = "SELECT * FROM board WHERE "; -->
+<!-- UPDATE_LIKECOUNT = "update board set like_count = like_count + 1 where board_no = ?"; -->
+<!-- INSERT_LIKECOUNT_LOG_ID = "INSERT INTO likecount (board_no, user_id) values(?, ?)"; -->
+<!-- SELECT_LIKECOUNTLOG = "SELECT count(*) AS likecount FROM likecount WHERE board_no = ? AND user_id = ?"; -->
+<!-- SELECT_LIKECOUNT = "SELECT count(*) AS like_count FROM likecount WHERE board_no = ?"; -->
+<!-- SELECT_LIKECOUNTLOG_LIST = "SELECT * FROM likecount WHERE board_no = ? AND user_id = ?"; -->
+
+<!-- DELETE_LIKECOUNTLOG = "DELETE FROM likecount WHERE board_no = ? AND user_id = ?"; -->
+<!-- UPDATE_LIKECOUNT_MINUS = "update board set like_count = like_count - 1 where board_no = ?"; -->
