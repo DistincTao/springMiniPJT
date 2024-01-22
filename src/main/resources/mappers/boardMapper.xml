@@ -3,23 +3,34 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.miniproject.mappers.boardMapper">
-  	<select id="currDate" resultType="string">
-  		select now()
-  	</select>
   	
-  	<select id="selectAllBoardList" resultType="com.miniproject.domain.BoardVo">
+  	<select id="getAllBoard" resultType="com.miniproject.domain.BoardVo">
   		SELECT * FROM board ORDER BY ref DESC, ref_order
   	</select>
   	
-<!--   	<insert id="inputMemberWithoutImg"> -->
-<!--   		insert into member(user_id, user_pwd, user_email) values (#{userId}, sha1(md5(#{userPwd})), #{userEmail}) -->
+  	<insert id="inputBoardContent">
+  		INSERT INTO board (writer, title, content, ref) VALUES ({writer}, {title}, {content}, (SELECT MAX(b.board_no) + 1 as board_no FROM board b))
+  	</insert>
+
+	<select id="getBoardByNo" resultType="com.miniproject.domain.BoardVo">
+		SELECT_BY_BOARD_NO = "SELECT * FROM board WHERE board_no = {board_no}";
+	</select>
   	
-<!--   	</insert> -->
-  	
-<!--   	<select id="" resultType=""> -->
-<!--   		select * from member -->
-  	
-<!--   	</select> -->
+  	<select id="getBoardByPaging" resultType="com.miniproject.domain.BoardVo">
+  		SELECT_SEARCH_BOARD_BY_PAGING = "SELECT * FROM board WHERE 
+  		<choose>
+  		<when test="writer">
+	  		writer LIKE '%{writer}%'
+  		</when>
+  		<when test="title">
+  			title LIKE '%{title}%'
+  		</when>
+  		<when test="content">
+  			content Like '%{content}%'
+  		</when>
+  		</choose>		
+			ORDER BY ref DESC, ref_order LIMIT {?} , {?}
+  	</select>
   	
   </mapper>
   

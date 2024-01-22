@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+.deletedBoard {
+	background: gray;
+}
+.pagination {
+	justify-content: center;
+} 
+
+.searchArea {
+	display : flex;
+	justify-content: flex-end;
+}

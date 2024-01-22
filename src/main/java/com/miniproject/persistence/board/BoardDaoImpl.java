@@ -18,9 +18,9 @@ public class BoardDaoImpl implements BoardDao {
 	
 	@Override
 	public List<BoardVo> selectAllBoard() {
-		String qurey = ns + ".selectAllBoardList";
+		String query = ns + ".getAllBoard";
 		
-		return ses.selectList(qurey);
+		return ses.selectList(query);
 	}
 
 }

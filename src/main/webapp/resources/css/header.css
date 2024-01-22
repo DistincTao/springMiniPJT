@@ -1,0 +1,13 @@
+@charset "UTF-8";
+.header {
+	background-image: url("/resources/img/night.jpg");
+}
+#userImg {
+	width :30px;
+	height: 30px;
+}
+
+#goHome {
+  color : white;
+  text-decoration: none;
+}

@@ -1,0 +1,10 @@
+@charset "UTF-8";
+.counts {
+	display : flex;
+	justify-content: space-between;
+}
+
+#likeCnt {
+	color : red;
+}
+

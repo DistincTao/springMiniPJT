@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.modifyPwd, #modifyImg, #modifyEmail, #codeDiv {
+	display : none;
+}
+
+.pagination {
+	justify-content: center;
+} 
