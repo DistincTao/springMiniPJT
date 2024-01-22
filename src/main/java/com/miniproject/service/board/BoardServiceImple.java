@@ -22,6 +22,14 @@ public class BoardServiceImple implements BoardService {
 		return list;
 	}
 
+	@Override
+	public BoardVo getBoardByNo(int boardNo) {
+		System.out.println(boardNo);
+		BoardVo vo = bDao.selectBoardByNo(boardNo);
+		
+		return vo;
+	}
+
 	
 	
 }

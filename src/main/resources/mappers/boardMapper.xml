@@ -9,27 +9,31 @@
   	</select>
   	
   	<insert id="inputBoardContent">
-  		INSERT INTO board (writer, title, content, ref) VALUES ({writer}, {title}, {content}, (SELECT MAX(b.board_no) + 1 as board_no FROM board b))
+  		INSERT INTO board (writer, title, content, ref) VALUES (#{writer}, #{title}, #{content}, (SELECT MAX(b.board_no) + 1 as board_no FROM board b))
+  	</insert>
+
+  	<insert id="insertUploadFile">
+  		"INSERT INTO uploadedfile (original_filename, ext, new_filename, file_size, board_no, base64String) VALUES (#{originalFilename}, #{ext}, #{newFilename}, #{fileSize}, #{boardNo}, #{base64String})
   	</insert>
 
 	<select id="getBoardByNo" resultType="com.miniproject.domain.BoardVo">
-		SELECT_BY_BOARD_NO = "SELECT * FROM board WHERE board_no = {board_no}";
+		SELECT * FROM board WHERE board_no = #{boardNo}
 	</select>
   	
   	<select id="getBoardByPaging" resultType="com.miniproject.domain.BoardVo">
   		SELECT_SEARCH_BOARD_BY_PAGING = "SELECT * FROM board WHERE 
   		<choose>
-  		<when test="writer">
-	  		writer LIKE '%{writer}%'
+  		<when test="searchType == writer">
+	  		writer LIKE '%#{searchWord}%'
   		</when>
-  		<when test="title">
-  			title LIKE '%{title}%'
+  		<when test="searchType == title">
+  			title LIKE '%#{searchWord}%'
   		</when>
-  		<when test="content">
-  			content Like '%{content}%'
+  		<when test="searchType == content">
+  			content Like '%#{searchWord}%'
   		</when>
   		</choose>		
-			ORDER BY ref DESC, ref_order LIMIT {?} , {?}
+			ORDER BY ref DESC, ref_order LIMIT #{startRowIndex} , #{pagePostCnt}
   	</select>
   	
   </mapper>

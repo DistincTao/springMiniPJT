@@ -1,4 +1,4 @@
-package com.miniproject.controller.board;
+package com.miniproject.controller.member;
 
 import java.util.List;
 
@@ -26,20 +26,23 @@ import com.miniproject.util.UploadFileProcess;
  * @description : 
  */
 @Controller
-@RequestMapping ("/board/*")
-public class BoardController {
+@RequestMapping ("/member/*")
+public class MemberController {
 	
 	@Inject
 	BoardService bService; 
 
-	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	@RequestMapping("listAll")
-	public void listAll(Model model) {
-		logger.info("listAll이 호출됨");
+	@RequestMapping("register")
+	public void register() {
+		logger.info("register이 호출됨");
 		
-		List<BoardVo> list = bService.getEntireBoard();
-		model.addAttribute("boardList", list);
+	}
+	
+	@RequestMapping("login")
+	public void Login() {
+		logger.info("login이 호출됨");
 		
 	}
 	

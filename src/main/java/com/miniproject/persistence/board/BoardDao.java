@@ -6,4 +6,6 @@ import com.miniproject.domain.BoardVo;
 
 public interface BoardDao {
 	List<BoardVo> selectAllBoard();
+
+	BoardVo selectBoardByNo(int boardNo);
 }

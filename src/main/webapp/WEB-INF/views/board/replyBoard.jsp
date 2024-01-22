@@ -14,16 +14,15 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="../js/register.js"></script>
-<link rel="stylesheet" href="../css/header.css">
-<link rel="stylesheet" href="../css/register.css">
+<script type="text/javascript" src="/resources/js/register.js"></script>
+<link rel="stylesheet" href="/resources/css/header.css?after">
 <title>게시판 글쓰기</title>
 </head>
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
 <!-- 로그인 하지 않은 유저는 login.jsp로 돌려보내기 -->
 <c:if test="${sessionScope.login == null }">
-	<c:redirect url="../member/login.jsp"></c:redirect>
+	<c:redirect url="./member/login.jsp"></c:redirect>
 </c:if>	
 
 <div class="container">

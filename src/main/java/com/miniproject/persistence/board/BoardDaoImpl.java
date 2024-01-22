@@ -23,4 +23,11 @@ public class BoardDaoImpl implements BoardDao {
 		return ses.selectList(query);
 	}
 
+	@Override
+	public BoardVo selectBoardByNo(int boardNo) {
+		String query = ns + ".getBoardByNo";
+		
+		return ses.selectOne(query, boardNo);
+	}
+
 }

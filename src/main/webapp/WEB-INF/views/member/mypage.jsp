@@ -18,9 +18,9 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="../js/mypage.js"></script>
-<link rel="stylesheet" href="../css/header.css?after">
-<link rel="stylesheet" href="../css/mypage.css?after">
+<script type="text/javascript" src="/resources/js/mypage.js"></script>
+<link rel="stylesheet" href="/resources/css/header.css?after">
+<link rel="stylesheet" href="/resources/css/mypage.css?after">
 
 <title>My Page</title>
 </head>

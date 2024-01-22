@@ -18,7 +18,6 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/js/listAll.js"></script>
-<link rel="stylesheet" href="/resources/css/listAll.css?after">
 <style>
 .searchArea {
 	display : flex;

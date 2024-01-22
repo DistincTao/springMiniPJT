@@ -23,7 +23,7 @@
   <h1><a href="${contextPath }" id="goHome" style="color : white; text-decoration: none;">JSP MINI PROJECT</a></h1>
   <p>2024 Jan Version</p> 
 </div>
-${pageContext.request.requestURI }
+<%-- ${pageContext.request.requestURI } --%>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <div class="container-fluid">
     <ul class="navbar-nav">
@@ -53,20 +53,20 @@ ${pageContext.request.requestURI }
 		        <li class="nav-item">
 		        <c:choose>
                 <c:when test="${pageContext.request.requestURI == '/WEB-INF/views/register.jsp' }">
-		            <a class="nav-link active" href="${contextPath }/member/register.jsp">SIGN IN</a>
+		            <a class="nav-link active" href="${contextPath }/member/register">SIGN IN</a>
                 </c:when>
                 <c:otherwise>
-		            <a class="nav-link" href="${contextPath }/member/register.jsp">SIGN IN</a>
+		            <a class="nav-link" href="${contextPath }/member/register">SIGN IN</a>
                 </c:otherwise>
 			    </c:choose>
 		        </li>
 		        <li class="nav-item">
 		        <c:choose>
 				<c:when test="${pageContext.request.requestURI == '/WEB-INF/views/member/login.jsp' }">
-		            <a class="nav-link active" href="${contextPath }/member/login.jsp">LOGIN</a>
+		            <a class="nav-link active" href="${contextPath }/member/login">LOGIN</a>
 				</c:when>
 				<c:otherwise>
-		            <a class="nav-link" href="${contextPath }/member/login.jsp">LOGIN</a>
+		            <a class="nav-link" href="${contextPath }/member/login">LOGIN</a>
 				</c:otherwise>
 				</c:choose>
 		        
@@ -104,10 +104,10 @@ ${pageContext.request.requestURI }
 			<li class = "nav-item">
 				<c:choose>
 				<c:when test="${pageContext.request.requestURI == '/WEB-INF/views/admin/admin.jsp' }">
-       			<a class="nav-link active" href="${contextPath }/admin/admin.jsp">Admin Page</a>
+       			<a class="nav-link active" href="${contextPath }/admin/admin">Admin Page</a>
 				</c:when>
 				<c:otherwise>
-       			<a class="nav-link" href="${contextPath }/admin/admin.jsp">Admin Page</a>
+       			<a class="nav-link" href="${contextPath }/admin/admin">Admin Page</a>
 				</c:otherwise>
 				</c:choose>
        		</li>
