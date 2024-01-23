@@ -23,8 +23,8 @@
 	display : flex;
 	justify-content: flex-end;
 }
-
 </style>
+
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>

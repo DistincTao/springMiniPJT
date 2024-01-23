@@ -1,9 +1,12 @@
 package com.miniproject.controller.member;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miniproject.domain.BoardVo;
-import com.miniproject.service.board.BoardService;
+import com.miniproject.domain.MemberPointVo;
+import com.miniproject.domain.MemberVo;
+import com.miniproject.domain.PagingInfoVo;
+import com.miniproject.service.member.MemberService;
+import com.miniproject.util.PagingProcess;
 import com.miniproject.util.UploadFileProcess;
 
 /**
@@ -30,10 +36,12 @@ import com.miniproject.util.UploadFileProcess;
 public class MemberController {
 	
 	@Inject
-	BoardService bService; 
+	MemberService mService; 
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+	private HttpSession sess;
 
+	
 	@RequestMapping("register")
 	public void register() {
 		logger.info("register이 호출됨");
@@ -41,8 +49,65 @@ public class MemberController {
 	}
 	
 	@RequestMapping("login")
-	public void Login() {
+	public void logIn() {
 		logger.info("login이 호출됨");
+		
+	}
+
+	@RequestMapping("logout")
+	public void logOut(HttpServletResponse resp) {
+		logger.info("logouy이 호출됨");
+		try {
+			sess.removeAttribute("login");
+			sess.invalidate();
+			resp.sendRedirect("/");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	@RequestMapping("mypage")
+	public void myPage(
+//			@RequestParam("pageNo") String pageNo,
+					   @RequestParam("userId") String userId,
+					   Model model) {
+		logger.info("mypage이 호출됨");
+		
+		
+		List<MemberPointVo> pointList = mService.getMemberPoint(userId);
+		model.addAttribute("pointlog", pointList);
+		
+	}
+	
+	@RequestMapping(value = "loginMember", method=RequestMethod.POST)
+	public void loginMember(@RequestParam("userId") String userId, 
+							@RequestParam("userPwd") String userPwd,
+							HttpServletRequest req,
+							HttpServletResponse resp) {
+		logger.info("로그인 절차 시작");
+		
+		MemberVo vo = mService.getLoginUserInfo(userId, userPwd);
+
+
+		
+		sess = req.getSession();
+		try {
+			if (vo != null && !vo.getIsDelete().equals("Y")) {
+				sess.setAttribute("login", vo);
+				resp.sendRedirect("/");
+			} else {
+				resp.sendRedirect("register");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 	}
 	
@@ -79,16 +144,6 @@ public class MemberController {
 		
 	}
 	
-	@RequestMapping (value="viewBoard", method=RequestMethod.GET)
-	public void viewBoardByNo(@RequestParam(name = "boardNo") int boardNo,
-							  Model model) {
-		logger.info("게시판 불러오기 시작");
-		BoardVo vo = bService.getBoardByNo(boardNo);
-		model.addAttribute("board", vo);
 
-
-		
-	}
-		
 	
 }

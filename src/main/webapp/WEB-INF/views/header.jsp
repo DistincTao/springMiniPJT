@@ -13,14 +13,14 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="/resource/js/login.js"></script>
-<link rel="stylesheet" href="/resource/css/header.css">
-<link rel="stylesheet" href="/resource/css/register.css">
+<script type="text/javascript" src="/resources/js/login.js"></script>
+<link rel="stylesheet" href="/resources/css/header.css">
+<link rel="stylesheet" href="/resources/css/register.css">
 <title>Header</title>
 </head>
 <body>
 <div class="p-5 bg-primary text-white text-center header">
-  <h1><a href="${contextPath }" id="goHome" style="color : white; text-decoration: none;">JSP MINI PROJECT</a></h1>
+  <h1><a href="/" id="goHome" style="color : white; text-decoration: none;">JSP MINI PROJECT</a></h1>
   <p>2024 Jan Version</p> 
 </div>
 <%-- ${pageContext.request.requestURI } --%>
@@ -41,10 +41,10 @@
       <li class="nav-item">
 	  <c:choose>
       <c:when test="${pageContext.request.requestURI == '/WEB-INF/views/board/listAll.jsp' }">
-        <a class="nav-link active" href="${contextPath }/board/listAll">BOARD</a>
+        <a class="nav-link active" href="/board/listAll">BOARD</a>
       </c:when>
       <c:otherwise>
-        <a class="nav-link" href="${contextPath }/board/listAll">BOARD</a>
+        <a class="nav-link" href="/board/listAll">BOARD</a>
       </c:otherwise>
       </c:choose> 
       </li>
@@ -53,20 +53,20 @@
 		        <li class="nav-item">
 		        <c:choose>
                 <c:when test="${pageContext.request.requestURI == '/WEB-INF/views/register.jsp' }">
-		            <a class="nav-link active" href="${contextPath }/member/register">SIGN IN</a>
+		            <a class="nav-link active" href="/member/register">SIGN IN</a>
                 </c:when>
                 <c:otherwise>
-		            <a class="nav-link" href="${contextPath }/member/register">SIGN IN</a>
+		            <a class="nav-link" href="/member/register">SIGN IN</a>
                 </c:otherwise>
 			    </c:choose>
 		        </li>
 		        <li class="nav-item">
 		        <c:choose>
 				<c:when test="${pageContext.request.requestURI == '/WEB-INF/views/member/login.jsp' }">
-		            <a class="nav-link active" href="${contextPath }/member/login">LOGIN</a>
+		            <a class="nav-link active" href="/member/login">LOGIN</a>
 				</c:when>
 				<c:otherwise>
-		            <a class="nav-link" href="${contextPath }/member/login">LOGIN</a>
+		            <a class="nav-link" href="/member/login">LOGIN</a>
 				</c:otherwise>
 				</c:choose>
 		        
@@ -76,12 +76,12 @@
 	     	    <li class="nav-item">
 	     	    <c:choose>
 	     	    <c:when test="${pageContext.request.requestURI == '/WEB-INF/views/member/mypage.jsp' }">
-	     	    	 <a class="nav-link active" href="${contextPath }/member/myPage.mem?userId=${sessionScope.login.userId}"> ${sessionScope.login.userId}
+	     	    	 <a class="nav-link active" href="/member/mypage?userId=${sessionScope.login.userId}&pageNo=1"> ${sessionScope.login.userId}
 	     	    	 	<img src="${contextPath }/${sessionScope.login.memberImg }" id="userImg">
 	     	    	 </a>
 	     	    </c:when>
 	     	    <c:otherwise>
-	     	    	 <a class="nav-link" href="${contextPath }/member/myPage.mem?userId=${sessionScope.login.userId}"> ${sessionScope.login.userId}
+	     	    	 <a class="nav-link" href="/member/mypage?userId=${sessionScope.login.userId}&pageNo=1"> ${sessionScope.login.userId}
 	     	    	 	<img src="${contextPath }/${sessionScope.login.memberImg }" id="userImg">
 	     	    	 </a>
 	     	    </c:otherwise>
@@ -91,10 +91,10 @@
 		        <li class="nav-item">
 		            <c:choose>
 		            <c:when test="${pageContext.request.requestURI == '/WEB-INF/views/member/logout.jsp' }">
-		            <a class="nav-link active" href="${contextPath }/member/logout.mem">LOGOUT</a>
+		            <a class="nav-link active" href="${contextPath }/member/logout">LOGOUT</a>
 		            </c:when>
 		            <c:otherwise>
-		            <a class="nav-link" href="${contextPath }/member/logout.mem">LOGOUT</a>
+		            <a class="nav-link" href="${contextPath }/member/logout">LOGOUT</a>
 		            </c:otherwise>
 		            </c:choose>
 	     	    </li>  

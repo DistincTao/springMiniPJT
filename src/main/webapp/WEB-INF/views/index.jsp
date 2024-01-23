@@ -15,9 +15,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/login.js"></script>
 <link rel="stylesheet" href="/resources/css/header.css?after">
-<link rel="stylesheet" href="/resource/css/register.css?after">
+<link rel="stylesheet" href="/resources/css/register.css?after">
 <title>Spring Mini Project</title>
-<link rel="stylesheet" href="/resource/css/header.css?after">
+<link rel="stylesheet" href="/resources/css/header.css?after">
 <style>
 	.fakeimg {
 	  height: 200px;

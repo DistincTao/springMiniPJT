@@ -22,7 +22,7 @@
 
 <div class="container">
 	<h1>Login</h1>
-	<form action="login.mem" method="post">
+	<form action="loginMember" method="post">
  		<div class="mb-3 mt-3">
     		<label for="userId" class="form-label">USER ID:</label>
     		<input type="text" class="form-control" id="userId" placeholder="Enter ID" name="userId">
@@ -37,7 +37,7 @@
   		</div>
 	</form>
 	
-	<div><a href="${contextPath }/member/register.jsp" class="btn btn-link">회원가입</a></div>
+	<div><a href="${contextPath }/member/register" class="btn btn-link">회원가입</a></div>
 </div>
 
 <jsp:include page="../footer.jsp"></jsp:include>

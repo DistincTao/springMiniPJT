@@ -37,7 +37,7 @@
 
 		<div class="mb-3 mt-3">
 			<img alt="userImg"
-				src="${contextPath }/${requestScope.memberInfo.memberImg }">
+				src="${contextPath }/${sessionScope.login.memberImg }">
 		</div>
 
 
@@ -48,9 +48,9 @@
 			<form action="updateData.mem" method="post"
 				enctype="multipart/form-data">
 				<input type="hidden" name="memberImg"
-					value="${requestScope.memberInfo.memberImg }"> <input
+					value="${sessionScope.login.memberImg }"> <input
 					type="hidden" name="userImg"
-					value="${requestScope.memberInfo.userImg }"> <input
+					value="${sessionScope.login.userImg }"> <input
 					type="file" class="form-control" id="userImg" name="userImg">
 				<button type="submit" class="btn btn-primary"
 					data-bs-dismiss="modal">Submit</button>
@@ -63,7 +63,7 @@
 		<div class="mb-3 mt-3">
 			<div class="input-group mb-3">
 				<input type="text" class="form-control" id="userId" readonly
-					value="${requestScope.memberInfo.userId }">
+					value="${sessionScope.login.userId }">
 				<button class="btn btn-success" type="button" id="changePwdBtn">Change
 					PW</button>
 			</div>
@@ -72,7 +72,7 @@
 		<div class="mb-3 mt-3">
 			<div class="input-group mb-3">
 				<input type="text" class="form-control" readonly
-					value="${requestScope.memberInfo.userEmail }">
+					value="${sessionScope.login.userEmail }">
 				<button class="btn btn-success" type="submit" id="changeEmailBtn">Change</button>
 			</div>
 		</div>
@@ -81,7 +81,7 @@
 			<div class="pointInfo">
 				<h3>보유 적립금</h3>
 				<p>
-					총 적립금 : <span>${requestScope.memberInfo.userPoint } 점</span>
+					총 적립금 : <span>${sessionScope.login.userPoint } 점</span>
 				</p>
 										<table class="table table-striped">
 								<thead>
@@ -92,7 +92,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="point" items="${requestScope.pointlog }">
+									<c:forEach var="point" items="${pointlog }">
 										<tr>
 											<td>${point.actionDate }</td>
 											<td>${point.pointType }</td>
@@ -110,37 +110,37 @@
 									</c:when>
 									<c:otherwise>
 										<li class="page-item"><a class="page-link"
-											href="myPage.mem?userId=${requestScope.memberInfo.userId }&pageNo=${requestScope.pageInfo.pageNo - 1 }">Previous</a></li>
+											href="myPage.mem?userId=${sessionScope.login.userId }&pageNo=${pageInfo.pageNo - 1 }">Previous</a></li>
 									</c:otherwise>
 								</c:choose>
 
 								<c:forEach var="paging"
-									begin="${requestScope.pageInfo.startPageNum }"
-									end="${requestScope.pageInfo.endPageNum }">
+									begin="${pageInfo.startPageNum }"
+									end="${pageInfo.endPageNum }">
 									<c:choose>
 										<c:when test="${param.pageNo == paging}">
 											<li class="page-item active"><a class="page-link"
-												href="myPage.mem?userId=${requestScope.memberInfo.userId }&pageNo=${paging }">${paging }</a></li>
+												href="myPage.mem?userId=${sessionScope.login.userId }&pageNo=${paging }">${paging }</a></li>
 										</c:when>
 										<c:when test="${param.pageNo == null && paging == 1}">
 											<li class="page-item active"><a class="page-link"
-												href="myPage.mem?userId=${requestScope.memberInfo.userId }&pageNo=${paging }">${paging }</a></li>
+												href="myPage.mem?userId=${sessionScope.login.userId }&pageNo=${paging }">${paging }</a></li>
 										</c:when>
 										<c:otherwise>
 											<li class="page-item"><a class="page-link"
-												href="myPage.mem?userId=${requestScope.memberInfo.userId }&pageNo=${paging }">${paging }</a></li>
+												href="myPage.mem?userId=${sessionScope.login.userId }&pageNo=${paging }">${paging }</a></li>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
 								<c:choose>
 									<c:when
-										test="${param.pageNo < requestScope.pageInfo.totalPageCnt }">
+										test="${param.pageNo < pageInfo.totalPageCnt }">
 										<li class="page-item "><a class="page-link"
-											href="myPage.mem?userId=${requestScope.memberInfo.userId }&pageNo=${param.pageNo + 1}">Next</a></li>
+											href="myPage.mem?userId=${sessionScope.login.userId }&pageNo=${param.pageNo + 1}">Next</a></li>
 									</c:when>
 									<c:when test="${param.pageNo == null}">
 										<li class="page-item "><a class="page-link"
-											href="myPage.mem?userId=${requestScope.memberInfo.userId }&pageNo=2">Next</a></li>
+											href="myPage.mem?userId=${sessionScope.login.userId }&pageNo=2">Next</a></li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item disabled"><a class="page-link"
@@ -174,7 +174,7 @@
 									type="password" class="form-control" id="userPwd"
 									placeholder="Enter password" name="userPwd"> <input
 									type="hidden" class="form-control" name="userId"
-									value="${requestScope.memberInfo.userId }">
+									value="${sessionScope.login.userId }">
 							</div>
 							<div class="mb-3 mt-3">
 								<label for="uesrPwd2" class="form-label">PASSWORD
@@ -217,7 +217,7 @@
 									type="text" class="form-control" id="userEmail"
 									placeholder="example@distinctao.com" name="userEmail">
 								<input type="hidden" class="form-control" name="userId"
-									value="${requestScope.memberInfo.userId }">
+									value="${sessionScope.login.userId }">
 
 								<button type="button" class="btn btn-warning" id="sendEmailBtn">Email
 									Validate</button>
@@ -244,7 +244,7 @@
 			</div>
 		</div>
 		<form action="deleteMember.mem" method="post">
-			<input type="hidden" name="deleteMember" value="${requestScope.memberInfo.userId }">
+			<input type="hidden" name="deleteMember" value="${sessionScope.login.userId }">
 			<button type="submit" class="btn btn-danger">Delete Account</button>
 		</form>
 		

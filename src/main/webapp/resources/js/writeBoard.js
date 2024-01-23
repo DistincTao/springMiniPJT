@@ -27,6 +27,9 @@ $(function (){
 				contentType : false, // form 전송 시 기본타입(application/x-www-form-un을 사용하지 않음
 				success: function(data) {
 					console.log(data);
+					if (data != null) {
+						displayUploadedFile(data);
+					}
 				},
 				error : function() {},
 				complete : function() {},
@@ -35,3 +38,82 @@ $(function (){
 	});
 
 });
+
+
+function displayUploadedFile(json){
+	console.log("1");
+
+	let output = "";
+	$.each(json, function(i, elem) {
+		let name = elem.newFilename.replaceAll("\\", "/");
+		
+		console.log(elem.newFilename);
+		if (elem.thumbFilename != null) {
+			let thumb = elem.thumbFilename.replaceAll("\\", "/");
+			
+			output += `<img src='../resources/uploads${thumb }' id='${elem.newFilename }'/>`;
+			output += `<img src='../resources/img/remove.png' class='removeIcon' onclick='removeFile(this)'/>`;
+		} else {
+			output += `<a href='../resources/uploads${name}'>${elem.originalFilename}</a>`;
+			output += `<img src='../resources/img/remove.png' class='removeIcon'/>`;
+		}
+		
+	});
+	$(".upLoadFiles").html(output);
+	
+}
+
+
+function removeFile(fileId) {
+	console.log(fileId);
+	let removeFile = $(fileId).prev().attr('id');
+	console.log(removeFile);
+	
+				
+	$.ajax ({
+		url : "removeFile",
+		type : "GET",
+		data : {
+			"removeFile" : removeFile
+		},
+		dataType : "text",
+		success: function(data) {
+			console.log(data);
+			if (data == 'success') {
+				$(fileId).prev().remove();
+				$(fileId).remove();
+				
+				if ($(".upLoadFiles").html() == "") {
+					let output = "Drag and Drop Files";
+					$(".upLoadFiles").html(output);
+				}			
+			}
+		},
+		error : function() {},
+		complete : function() {},
+	});
+	
+}
+
+function btnCancel() {
+	// 취소 버튼 클릭 시 드래그 드랍한 모든 파일 삭제
+	
+	$.ajax ({
+		url : "removeAllFile",
+		type : "GET",
+		dataType : "text",
+		success: function(data) {
+			console.log(data);
+			if (data == 'success') {
+				$(".upLoadFiles").empty();
+				// let output = "Drag and Drop Files";
+				// $(".upLoadFiles").html(output);
+				location.href = "listAll";
+			}
+		},
+		error : function() {},
+		complete : function() {},
+	});
+
+}
+

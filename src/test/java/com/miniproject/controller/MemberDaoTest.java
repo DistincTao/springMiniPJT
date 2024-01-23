@@ -10,14 +10,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.miniproject.domain.MemberVo;
-import com.miniproject.persistence.member.MemeberDao;
+import com.miniproject.persistence.member.MemberDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class MemberDaoTest {
 
 	@Inject
-	private MemeberDao dao; // Dao 객체를 주입
+	private MemberDao dao; // Dao 객체를 주입
 	
 	@Test
 	public void getDateTimeTest() {

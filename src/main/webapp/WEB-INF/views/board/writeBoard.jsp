@@ -15,7 +15,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/js/writeBoard.js"></script>
-<link rel="stylesheet" href="/resources/css/header.cs?afters">
+<link rel="stylesheet" href="/resources/css/header.css?afters">
 
 <style type="text/css">
 	.upFileArea {
@@ -30,6 +30,9 @@
 		text-align: center;
 		line-height: 100px;
 		}
+	.removeIcon {
+		width : 16px;
+	}
 </style>
 <title>게시판 글쓰기</title>
 </head>
@@ -58,11 +61,11 @@
 
   		<div class="mb-3 mt-3">
     		<label for="upFile" class="form-label">FILE : </label>
-   			<div class="upFileArea">Drag and Drop Files</div>
+   			<div class="upFileArea upLoadFiles">Drag and Drop Files</div>
  		</div>
   		<div>  		
   			<button type="submit" class="btn btn-primary">Submit</button>
-  			<button type="reset" class="btn btn-danger">Cancel</button>
+  			<button type="reset" class="btn btn-danger" onclick="btnCancel()">Cancel</button>
   		</div>
 	</form>
 

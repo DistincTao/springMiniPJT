@@ -21,4 +21,46 @@
   	
   	</select>
   	
+  	<select id="getLoginMember" parameterType="map" resultType="com.miniproject.domain.MemberVo">
+  		SELECT m.*, u.new_filename FROM member m, uploadedfile u WHERE m.user_img = u.file_id and user_id = #{userId} AND user_pwd = sha1(md5(#{userPwd}))
+  	</select>
+
+  	<select id="getPagingInfo" resultType="com.miniproject.domain.PagingInfoVo">
+		SELECT * FROM pointlog WHERE user_id = #{userId } LIMIT #{startRowIndex} , #{pagePostCnt}
+  	</select>
+
+  	<select id="selectUserPointLog" resultType="com.miniproject.domain.MemberPointVo">
+		SELECT * FROM pointlog WHERE user_id = #{userId } 
+<!-- 		LIMIT #{startRowIndex} , #{pagePostCnt} -->
+  	</select>
+  		
+  	<select id="selectTotalPost" resultType="int">
+		SELECT count(*) AS total_post FROM pointlog WHERE user_id = #{userId}
+  	</select>
+  		
+  	
   </mapper>
+  
+  
+<!--    SELECT_BY_USERID = "SELECT * FROM member WHERE user_id = ?"; -->
+<!-- 	SELECT_ALL_IMAGES = "SELECT u.*, m.user_id FROM uploadedfile u, member m WHERE u.file_id = m.user_img";	 -->
+<!-- 	INSERT_UPLOADEDFILE = "INSERT INTO uploadedfile (original_filename, ext, new_filename, file_size) VALUES (?, ?, ?, ?)"; -->
+<!-- 	SELECT_FILE_ID = "SELECT file_id FROM uploadedfile WHERE new_filename = ?"; -->
+<!-- 	INSERT_MEMBER_IMG = "INSERT INTO member (user_id, user_pwd, user_email, user_img, user_point) values (?, sha1(md5(?)), ?, ?, ?)"; -->
+<!-- 	INSERT_MEMBER = "INSERT INTO member (user_id, user_pwd, user_email, user_point) values (?, sha1(md5(?)), ?, ?)"; -->
+<!-- 	INSERT_POINTLOG = "INSERT INTO pointlog (point_type, change_point, user_id) values (? , ?, ?)"; -->
+<!-- 	SELECT_ALL_MEMBERS = "SELECT user_id, user_email, regdate, user_img, user_point FROM member"; -->
+<!-- 	SELECT_POINTLOG = "SELECT * FROM pointlog"; -->
+<!-- 	SELECT_LOGIN_INFO = "SELECT m.*, u.new_filename FROM member m, uploadedfile u WHERE m.user_img = u.file_id and user_id = ? AND user_pwd = sha1(md5(?))"; -->
+<!-- 	UPDATE_POINT_LOGIN = "UPDATE member SET user_point = user_point + ? WHERE user_id = ?"; -->
+<!-- 	SELECT_USER_POINTLOG = "SELECT * FROM pointlog WHERE user_id = ? LIMIT ? , ?"; -->
+<!-- 	SELECT_LOGIN_USER_INFO = "SELECT m.*, u.new_filename FROM member m, uploadedfile u WHERE m.user_img = u.file_id AND m.user_id = ?"; -->
+	
+<!-- 	UPDATE_USER_IMAGE = "UPDATE uploadedfile SET original_filename = ?, ext = ?, new_filename = ?, file_size = ?, base64String = ? WHERE file_id = ?"; -->
+<!-- 	UPDATE_USER_PWD = "UPDATE member SET user_pwd = sha1(md5(?)) WHERE user_id = ?"; -->
+<!-- 	UPDATE_USER_EMAIL = "UPDATE member SET user_email = ? WHERE user_id = ?"; -->
+
+<!-- 	DELETE_UPLOADEDFILE = "DELETE FROM uploadedfile WHERE file_id =?"; -->
+<!-- 	SELECT_TOTALPOST = "SELECT count(*) AS total_post FROM pointlog WHERE user_id = ?"; -->
+<!-- 	SELECT_LAST_LOGIN = "SELECT action_date AS 'last_login' FROM pointlog WHERE point_type = 'login' AND user_id = ? ORDER BY pointlog_no DESC LIMIT 1"; -->
+<!-- 	UPDATE_USER_DELETE = "UPDATE member SET is_delete = 'Y' WHERE user_id = ?"; -->
