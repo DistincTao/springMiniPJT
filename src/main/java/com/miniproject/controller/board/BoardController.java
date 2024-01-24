@@ -2,9 +2,11 @@ package com.miniproject.controller.board;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.miniproject.domain.BoardDto;
 import com.miniproject.domain.BoardVo;
 import com.miniproject.domain.UploadedFileDto;
 import com.miniproject.service.board.BoardService;
@@ -41,18 +44,44 @@ public class BoardController {
 	private List<UploadedFileDto> fileList = new ArrayList<>();
 	
 	@RequestMapping("listAll")
-	public void listAll(Model model) {
+	public void listAll(Model model) throws Exception {
 		logger.info("listAll이 호출됨");
 		
 		List<BoardVo> list = bService.getEntireBoard();
 		model.addAttribute("boardList", list);
-		
+
 	}
 	
 	@RequestMapping("writeBoard")
-	public void showWriteBoard () {
+	public void showWriteBoard (HttpSession sess) {
 		logger.info("writeBoard가 호출됨");
 		
+		String uudi = UUID.randomUUID().toString();
+		sess.setAttribute("csrfToken", uudi); // Session에 바인딩
+			
+	}
+	
+	@RequestMapping(value="writeBoard", method=RequestMethod.POST)
+	public String writeBoard(BoardDto dto,
+						   @RequestParam("csrfToken") String inputcsrf,
+						   HttpSession sess) {
+		
+		logger.info("게시판 글작성 : " + dto.toString());
+		logger.info("csrf : " + inputcsrf);
+		
+		if (((String)sess.getAttribute("csrfToken")).equals(inputcsrf)) {
+			//csrfToken이 같은 경우에만 게시들을 저장
+			try {
+				
+				bService.saveNewBoard(dto, fileList);
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+			
+		}
+		return "redirect:/board/listAll";
 	}
 	
 	
@@ -90,13 +119,6 @@ public class BoardController {
 		return fileList;
 	}
 	
-	@RequestMapping (value="viewBoard", method=RequestMethod.GET)
-	public void viewBoardByNo(@RequestParam(name = "boardNo") int boardNo,
-							  Model model) {
-		logger.info("게시판 불러오기 시작");
-		BoardVo vo = bService.getBoardByNo(boardNo);
-		model.addAttribute("board", vo);
-	}
 	
 	@RequestMapping ("removeFile")
 	public ResponseEntity<String> removeFile(@RequestParam("removeFile") String removeFile,
@@ -155,11 +177,16 @@ public class BoardController {
 			result = new ResponseEntity<String>("success", HttpStatus.ACCEPTED);			
 		}
 
-		return result;
-		
-		
+		return result;	
 	}
 	
+	@RequestMapping (value="viewBoard", method=RequestMethod.GET)
+	public void viewBoardByNo(@RequestParam(name = "boardNo") int boardNo,
+							  Model model) throws Exception {
+		logger.info("게시판 불러오기 시작");
+		BoardVo vo = bService.getBoardByNo(boardNo);
+		model.addAttribute("board", vo);
+	}
 	
 	
 }

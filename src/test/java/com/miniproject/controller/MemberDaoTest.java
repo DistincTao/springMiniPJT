@@ -25,12 +25,12 @@ public class MemberDaoTest {
 	}
 	
 	@Test
-	public void selectMemberByUserIdTest() {
+	public void selectMemberByUserIdTest() throws Exception {
 		System.out.println("결과 : " + dao.selectMemberByUserId("wanda"));
 	}
 	
 	@Test
-	public void selectAllMembers() {
+	public void selectAllMembers() throws Exception {
 		List<MemberVo> list = dao.selectAllMember();
 		
 		for (MemberVo vo : list) {

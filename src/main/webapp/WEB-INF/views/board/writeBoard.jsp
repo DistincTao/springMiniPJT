@@ -45,7 +45,7 @@
 
 <div class="container">
 	<h1>게시판 글쓰기</h1>
-	<form action="writeBoard.bo" method="post">
+	<form action="writeBoard" method="post">
  		<div class="mb-3 mt-3">
     		<label for="writer" class="form-label">WRITER:</label>
     		<input type="text" class="form-control" id="writer" name="writer" value="${sessionScope.login.userId }" readonly>
@@ -67,6 +67,8 @@
   			<button type="submit" class="btn btn-primary">Submit</button>
   			<button type="reset" class="btn btn-danger" onclick="btnCancel()">Cancel</button>
   		</div>
+  		
+  		<input type="hidden" name="csrfToken" value="${sessionScope.csrfToken }" />
 	</form>
 
 </div>

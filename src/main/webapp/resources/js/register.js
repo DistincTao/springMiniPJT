@@ -27,7 +27,7 @@ $(function() {
 			let tmpUserEmail = $("#userEmail").val();
 
 			$.ajax({
-			url : 'sendEmail.mem',
+			url : 'sendEmail',
 			type : 'get',
 			data : {"tmpUserEmail" : tmpUserEmail},
 			dataType : 'json',
@@ -58,7 +58,7 @@ $(function() {
 			let tmpEmailCode = $("#emailCode").val();
 
 			$.ajax({
-			url : 'confirmCode.mem',
+			url : 'confirmCode',
 			type : 'get',
 			data : {"tmpEmailCode" : tmpEmailCode},
 			dataType : 'json',
@@ -79,6 +79,47 @@ $(function() {
 			}
 		});
 	});
+	
+	
+	$(".upFileArea").on("dragenter dragover", function (e) {
+		e.preventDefault();
+	});
+	
+	$(".upFileArea").on("drop", function (e) {
+		e.preventDefault();
+
+		console.log(e.originalEvent.dataTransfer.files);
+		
+		let files = e.originalEvent.dataTransfer.files;
+		
+		if (files.size() > 1) {
+			alert("파일은 1개만 업로드 가능합니다");
+		} else {
+			let form = new FormData();
+			form.append("uploadFile", file);
+		}
+			// 위 문장에서 "uploadFile" 파일의 이름은 컨트롤러 단의 multipartFile 매개변수 명과 일치시킨다.
+			
+			$.ajax ({
+				url : "uploadFile",
+				type : "POST",
+				data : form,
+				dataType : "json",
+				processData : false, // text 데이터에 대해서 쿼리 스트링 처리를 하지 않음
+				contentType : false, // form 전송 시 기본타입(application/x-www-form-un을 사용하지 않음
+				success: function(data) {
+					console.log(data);
+					if (data != null) {
+						displayUploadedFile(data);
+					}
+				},
+				error : function() {},
+				complete : function() {},
+			});
+	});
+	
+	
+	
 
 }); // End of Doc
 
@@ -117,7 +158,7 @@ function validUserId () {
 	if (tmpUserId.length > 2 && tmpUserId.length < 9){
 		// 아이디 중복 검사
 		$.ajax({
-			url : 'duplicateUserId.mem',
+			url : 'duplicateUserId',
 			type : 'get',
 			data : {
 					"tmpUserId" : tmpUserId
@@ -197,5 +238,78 @@ function printSuccessMsg (id, msg) {
 	$(".successMsg").hide(2000);
 }
 
+function displayUploadedFile(json){
+	console.log("1");
+
+	let output = "";
+	$.each(json, function(i, elem) {
+		let name = elem.newFilename.replaceAll("\\", "/");
+		
+		console.log(elem.newFilename);
+		if (elem.thumbFilename != null) {
+			let thumb = elem.thumbFilename.replaceAll("\\", "/");	
+			output += `<img src='../resources/uploads${thumb }' id='${elem.newFilename }'/>`;
+			output += `<img src='../resources/img/remove.png' class='removeIcon' onclick='removeFile(this)'/>`;
+		} else {
+			alert("사진 파일만 업로드 가능합니다");
+		}
+		
+	});
+	$(".upLoadFiles").html(output);
 	
+}
+
+
+function removeFile(fileId) {
+	console.log(fileId);
+	let removeFile = $(fileId).prev().attr('id');
+	console.log(removeFile);
+	
+				
+	$.ajax ({
+		url : "removeFile",
+		type : "GET",
+		data : {
+			"removeFile" : removeFile
+		},
+		dataType : "text",
+		success: function(data) {
+			console.log(data);
+			if (data == 'success') {
+				$(fileId).prev().remove();
+				$(fileId).remove();
+				
+				if ($(".upLoadFiles").html() == "") {
+					let output = "Drag and Drop Files";
+					$(".upLoadFiles").html(output);
+				}			
+			}
+		},
+		error : function() {},
+		complete : function() {},
+	});
+	
+}
+
+function btnCancel() {
+	// 취소 버튼 클릭 시 드래그 드랍한 모든 파일 삭제
+	
+	$.ajax ({
+		url : "removeAllFile",
+		type : "GET",
+		dataType : "text",
+		success: function(data) {
+			console.log(data);
+			if (data == 'success') {
+				$(".upLoadFiles").empty();
+				// let output = "Drag and Drop Files";
+				// $(".upLoadFiles").html(output);
+				location.href = "listAll";
+			}
+		},
+		error : function() {},
+		complete : function() {},
+	});
+
+}	
 	

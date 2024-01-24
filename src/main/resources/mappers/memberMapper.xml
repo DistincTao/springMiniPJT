@@ -29,7 +29,7 @@
 		SELECT * FROM pointlog WHERE user_id = #{userId } LIMIT #{startRowIndex} , #{pagePostCnt}
   	</select>
 
-  	<select id="selectUserPointLog" resultType="com.miniproject.domain.MemberPointVo">
+  	<select id="selectUserPointLog" resultType="com.miniproject.domain.PointlogVo">
 		SELECT * FROM pointlog WHERE user_id = #{userId } 
 <!-- 		LIMIT #{startRowIndex} , #{pagePostCnt} -->
   	</select>
@@ -38,8 +38,20 @@
 		SELECT count(*) AS total_post FROM pointlog WHERE user_id = #{userId}
   	</select>
   		
+  	<update id="updateUserPoint">
+  	  	<selectKey keyProperty="eachPoint" resultType="int" order="BEFORE">
+    		select each_point FROM pointpolicy WHERE point_type = #{pointType}
+	 	</selectKey>
+  	 	UPDATE member SET user_point = user_point + #{eachPoint} WHERE user_id = #{userId }
+  	</update>
   	
-  </mapper>
+  	<insert id="insertNewMember">
+  		INSERT INTO member (user_id, user_pwd, user_email, user_point) values (#{userId}, sha1(md5(#{userPwd})), #{userEmail}, #{user_Point})
+  	</insert>
+ 	
+  	
+    </mapper>
+
   
   
 <!--    SELECT_BY_USERID = "SELECT * FROM member WHERE user_id = ?"; -->
@@ -62,5 +74,4 @@
 
 <!-- 	DELETE_UPLOADEDFILE = "DELETE FROM uploadedfile WHERE file_id =?"; -->
 <!-- 	SELECT_TOTALPOST = "SELECT count(*) AS total_post FROM pointlog WHERE user_id = ?"; -->
-<!-- 	SELECT_LAST_LOGIN = "SELECT action_date AS 'last_login' FROM pointlog WHERE point_type = 'login' AND user_id = ? ORDER BY pointlog_no DESC LIMIT 1"; -->
 <!-- 	UPDATE_USER_DELETE = "UPDATE member SET is_delete = 'Y' WHERE user_id = ?"; -->

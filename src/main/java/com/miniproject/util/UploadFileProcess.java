@@ -205,6 +205,23 @@ public class UploadFileProcess {
 			}
 		}
 	}
+	public static void deleteFile(UploadedFileDto ufDto, String removeFile, String realPath) {
+		// (x)를 클릭 => 삭제
+			if (ufDto.getNewFilename().equals(removeFile)) {
+				File deleteFile = new File(realPath + ufDto.getNewFilename());
+				if (deleteFile.exists()) {
+					deleteFile.delete();					
+				}
+				
+				if (ufDto.getThumbFilename() != null) {
+					File thumbFile = new File(realPath + ufDto.getThumbFilename());
+					
+					if (thumbFile.exists()) {
+						thumbFile.delete();
+					}
+				}
+			}
+	}
 
 	/**
 	 * @MethodName : deleteAllFile
@@ -230,6 +247,31 @@ public class UploadFileProcess {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * @MethodName : deleteAllFile
+	 * @author : DistincTao
+	 * @date : 2024. 1. 23.
+	 * @description : 취소 버튼을 클릭하면 모든 removeFile과 Thumbnaile 파일 삭제
+	 * @param ufDto
+	 * @param realPath
+	 */
+	public static void deleteAllFile(UploadedFileDto ufDto, String realPath) {
+		// 취소 버튼을 클릭 => 모드 삭제
+		File deleteFile = new File(realPath + ufDto.getNewFilename());
+		if (deleteFile.exists()) {
+			deleteFile.delete();					
+		}
+		
+		if (ufDto.getThumbFilename() != null) {
+			File thumbFile = new File(realPath + ufDto.getThumbFilename());
+			
+			if (thumbFile.exists()) {
+				thumbFile.delete();
+			}
+		}
+		
 	}
 }
 

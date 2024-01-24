@@ -21,10 +21,15 @@ public class BoardDaoTest {
 	
 	@Test
 	public void selectAllBoarList() {
-		List<BoardVo> list = dao.selectAllBoard();
-		
-		for (BoardVo vo : list) {
-			System.out.println(vo.toString());
+		try {
+			List<BoardVo> list = dao.selectAllBoard();
+			
+			for (BoardVo vo : list) {
+				System.out.println(vo.toString());
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

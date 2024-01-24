@@ -22,7 +22,7 @@
 
 <div class="container">
 	<h1>Login</h1>
-	<form action="loginMember" method="post">
+	<form action="login" method="post">
  		<div class="mb-3 mt-3">
     		<label for="userId" class="form-label">USER ID:</label>
     		<input type="text" class="form-control" id="userId" placeholder="Enter ID" name="userId">

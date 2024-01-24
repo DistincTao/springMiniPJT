@@ -5,21 +5,33 @@
   <mapper namespace="com.miniproject.mappers.boardMapper">
   	
   	<select id="getAllBoard" resultType="com.miniproject.domain.BoardVo">
-  		SELECT * FROM board ORDER BY ref DESC, ref_order
+  		SELECT * 
+  		  FROM board 
+  		 ORDER BY ref DESC, 
+  		 		  ref_order
   	</select>
-  	
-  	<insert id="inputBoardContent">
-  		INSERT INTO board (writer, title, content, ref) VALUES (#{writer}, #{title}, #{content}, (SELECT MAX(b.board_no) + 1 as board_no FROM board b))
-  	</insert>
 
   	<insert id="insertUploadFile">
-  		"INSERT INTO uploadedfile (original_filename, ext, new_filename, file_size, board_no, base64String) VALUES (#{originalFilename}, #{ext}, #{newFilename}, #{fileSize}, #{boardNo}, #{base64String})
+  		INSERT INTO uploadedfile (original_filename, ext, new_filename, file_size, board_no, thumb_filename)
+  		VALUES (#{originalFilename}, #{ext}, #{newFilename}, #{fileSize}, #{boardNo}, #{thumbFilename})
   	</insert>
 
 	<select id="getBoardByNo" resultType="com.miniproject.domain.BoardVo">
-		SELECT * FROM board WHERE board_no = #{boardNo}
+		SELECT * 
+		  FROM board 
+		 WHERE board_no = #{boardNo}
 	</select>
   	
+  	<insert id="insertNewBoard">
+  		INSERT INTO board (writer, title, content, ref) 
+  		VALUES (#{writer}, #{title}, #{content}, (SELECT MAX(b.board_no) + 1 as board_no FROM board b))
+  	</insert>
+
+	<select id="getNo" resultType="int">
+		SELECT MAX(board_no) AS max_no
+		  FROM board
+	</select>
+
   	<select id="getBoardByPaging" resultType="com.miniproject.domain.BoardVo">
   		SELECT_SEARCH_BOARD_BY_PAGING = "SELECT * FROM board WHERE 
   		<choose>
@@ -35,6 +47,8 @@
   		</choose>		
 			ORDER BY ref DESC, ref_order LIMIT #{startRowIndex} , #{pagePostCnt}
   	</select>
+
+
   	
   </mapper>
   

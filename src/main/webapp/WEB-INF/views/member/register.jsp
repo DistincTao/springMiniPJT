@@ -17,7 +17,20 @@
 <script type="text/javascript" src="/resources/js/register.js"></script>
 <link rel="stylesheet" href="/resources/css/header.css?after">
 <link rel="stylesheet" href="/resources/css/register.css?after">
-
+<style type="text/css">
+	.upFileArea {
+		width : 100%;
+		height : 100px;
+		border : 1px dotted #333;
+		
+		font-weight : bold;
+		color : gray;
+		background-color: #eff9f7;
+		
+		text-align: center;
+		line-height: 100px;
+	}
+</style>
 <title>Register Page</title>
 </head>
 <body>
@@ -25,7 +38,8 @@
 
 <div class="container">
 	<h1>회원 가입</h1>
-	<form action="registerMember.mem" method="post" enctype="multipart/form-data">
+	<form action="registerMember" method="post">
+		<input type="hidden" name="csrfToken" value="${sessionScope.csrfToken }"/>
  		<div class="mb-3 mt-3">
     		<label for="userId" class="form-label">USER ID:</label>
     		<input type="text" class="form-control" id="userId" placeholder="Enter ID" name="userId">
@@ -48,8 +62,8 @@
   			</div>
  		</div>
   		<div class="mb-3 mt-3">
-    		<label for="userImg" class="form-label">IMAGE:</label>
-   			<input type="file" class="form-control" id="userImg" name="userImg">
+    		<label for="upFile" class="form-label">IMAGE : </label>
+   			<div class="upFileArea upLoadFiles">Drag and Drop Files</div>
  		</div>
  		
 <!--  		약관 추가  -->

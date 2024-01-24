@@ -1,6 +1,8 @@
 package com.miniproject.persistence.member;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -8,9 +10,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.miniproject.domain.MemberDto;
-import com.miniproject.domain.MemberPointVo;
+import com.miniproject.domain.PointlogVo;
+import com.miniproject.domain.UploadedFileDto;
 import com.miniproject.domain.MemberVo;
-import com.miniproject.domain.PagingInfoVo;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
@@ -26,20 +28,20 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public String selectMemberByUserId(String userId) {
+	public String selectMemberByUserId(String userId) throws Exception {
 		String q = ns + ".viewMemberByUserId";
 		return ses.selectOne(q, userId);
 	}
 
 	@Override
-	public List<MemberVo> selectAllMember() {
+	public List<MemberVo> selectAllMember() throws Exception {
 		String q = ns + ".getAllMembers";
 		
 		return ses.selectList(q);
 	}
 
 	@Override
-	public MemberVo selectLoginUser(String userId, String userPwd) {
+	public MemberVo selectLoginUser(String userId, String userPwd) throws Exception {
 		String q = ns + ".getLoginMember";
 		MemberDto dto = new MemberDto();
 		dto.setUserId(userId);
@@ -52,19 +54,50 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public List<MemberPointVo> selectPointList(String userId) {
+	public List<PointlogVo> selectPointList(String userId) throws Exception {
 		String q = ns + ".selectUserPointLog";
 		
-		List<MemberPointVo> list = ses.selectList(q, userId);
+		List<PointlogVo> list = ses.selectList(q, userId);
 		
 		return list;
 	}
 
 	@Override
-	public int getTotalPostCnt(String userId) {
+	public int getTotalPostCnt(String userId) throws Exception {
 		String q = ns + ".selectTotalPost";
 		System.out.println(ses.selectOne(q, userId).toString());
 		return ses.selectOne(q, userId);
 	}
 
+	@Override
+	public int updateUserPoint(String pointType, String writer) throws Exception {
+		String q = ns + ".updateUserPoint";
+		Map <String, Object> param = new HashMap<>();
+		
+		param.put("pointType", pointType);
+		param.put("userId", writer);
+		
+		return ses.update(q, param);
+		
+	}
+
+	@Override
+	public int insertNewMember(MemberDto dto) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertUploadFile(UploadedFileDto ufDto) throws Exception {
+		String query = ns + ".insertUploadFile";
+		
+		return ses.insert(query, ufDto);
+	}
+
+	@Override
+	public int selectImgNo() throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 }

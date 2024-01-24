@@ -10,7 +10,7 @@ public class PagingProcess {
 	@Inject
 	MemberDao mDao;
 	
-	public PagingInfoVo getPagingInfo(int pageNo, String userId)  {
+	public PagingInfoVo getPagingInfo(int pageNo, String userId) throws Exception  {
 		
 		PagingInfoVo vo = new PagingInfoVo();
 		

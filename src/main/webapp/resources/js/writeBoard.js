@@ -54,8 +54,8 @@ function displayUploadedFile(json){
 			output += `<img src='../resources/uploads${thumb }' id='${elem.newFilename }'/>`;
 			output += `<img src='../resources/img/remove.png' class='removeIcon' onclick='removeFile(this)'/>`;
 		} else {
-			output += `<a href='../resources/uploads${name}'>${elem.originalFilename}</a>`;
-			output += `<img src='../resources/img/remove.png' class='removeIcon'/>`;
+			output += `<spanid='${elem.newFilename }'><a href='../resources/uploads${name}'>${elem.originalFilename}</a></span>`;
+			output += `<img src='../resources/img/remove.png' class='removeIcon' onclick='removeFile(this)'/>`;
 		}
 		
 	});
