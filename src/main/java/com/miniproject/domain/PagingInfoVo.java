@@ -9,7 +9,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 @ToString
 public class PagingInfoVo {
 	private int totalPostCnt; // 전체 게시판 글의 갯수
@@ -42,13 +41,17 @@ public class PagingInfoVo {
 		
 	}
 	
-	public void setTotalPageCnt() {
-
-		Math.ceil(this.totalPostCnt / this.pagePostCnt);
-	}
+//	public void setTotalPageCnt() {
+//
+//		Math.ceil(this.totalPostCnt / this.pagePostCnt);
+//	}
 
 	public void setStartRowIndex() {
 		this.startRowIndex = (this.pageNo - 1) * this.pagePostCnt;
+	}
+	
+	public void setPageNo(int pageNo) {
+		this.pageNo = pageNo;
 	}
 
 	public void setPageBlockCnt(int pageBlockCnt) {

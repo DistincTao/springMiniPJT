@@ -7,4 +7,20 @@
   <settings>
 	<setting name="mapUnderscoreToCamelCase" value="true"/>
   </settings>
+  
+  <typeAliases>
+	  <typeAlias alias="BoardDto" type="com.miniproject.domain.BoardDto"/>
+	  <typeAlias alias="BoardVo" type="com.miniproject.domain.BoardVo"/>
+	  <typeAlias alias="LikeCountDto" type="com.miniproject.domain.LikeCountDto"/>
+	  <typeAlias alias="MemberDto" type="com.miniproject.domain.MemberDto"/>
+	  <typeAlias alias="MemberVo" type="com.miniproject.domain.MemberVo"/>
+	  <typeAlias alias="PagingInfoVo" type="com.miniproject.domain.PagingInfoVo"/>
+	  <typeAlias alias="PointlogDto" type="com.miniproject.domain.PointlogDto"/>
+	  <typeAlias alias="PointlogVo" type="com.miniproject.domain.PointlogVo"/>
+	  <typeAlias alias="ReadcountprocessDto" type="com.miniproject.domain.ReadcountprocessDto"/>
+	  <typeAlias alias="ReadcountprocessVo" type="com.miniproject.domain.ReadcountprocessVo"/>
+	  <typeAlias alias="SearchCriteriaDto" type="com.miniproject.domain.SearchCriteriaDto"/>
+	  <typeAlias alias="UploadedFileDto" type="com.miniproject.domain.UploadedFileDto"/>
+	  <typeAlias alias="UploadedFileVo" type="com.miniproject.domain.UploadedFileVo"/>
+  </typeAliases>
 </configuration>

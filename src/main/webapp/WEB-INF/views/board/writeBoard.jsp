@@ -65,7 +65,7 @@
  		</div>
   		<div>  		
   			<button type="submit" class="btn btn-primary">Submit</button>
-  			<button type="reset" class="btn btn-danger" onclick="btnCancel()">Cancel</button>
+  			<button type="reset" class="btn btn-danger" onclick="btnCancel('${sessionScope.login.userId}')">Cancel</button>
   		</div>
   		
   		<input type="hidden" name="csrfToken" value="${sessionScope.csrfToken }" />

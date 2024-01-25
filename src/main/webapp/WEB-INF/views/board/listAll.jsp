@@ -31,7 +31,7 @@
 	${contextPath }
 	<div class="container">	
 		<h1>게시판 전체 목록</h1>
-		<form action="listAll.bo" class="searchArea">
+		<form action="listAll" class="searchArea">
 			<div style="width : 150px;">
 				<select class="form-select" name="searchType">
 					<option value="writer">Writer</option>
@@ -111,8 +111,16 @@
 			</c:otherwise>
 			</c:choose>
 			<div class="btns">
+			<c:choose>
+			<c:when test="${sessionScope.login != null}">
 				<button type="button" class="btn btn-primary"
 					onclick="location.href='writeBoard'">글쓰기</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" class="btn btn-primary"
+					disabled>글쓰기</button>
+			</c:otherwise>
+			</c:choose>
 
 			</div>
 				
@@ -128,8 +136,8 @@
 				</c:choose>
 
 				<c:forEach var="paging"
-					begin="${requestScope.pageInfo.startPageNum }"
-					end="${requestScope.pageInfo.endPageNum }">
+					begin="${pageInfo.startPageNum }"
+					end="${pageInfo.endPageNum }">
 					<c:choose>
 						<c:when test="${param.pageNo == paging}">
 							<li class="page-item active"><a class="page-link"
@@ -147,11 +155,11 @@
 				</c:forEach>
 				<c:choose>
 					<c:when
-						test="${param.pageNo < requestScope.pageInfo.totalPageCnt }">
+						test="${param.pageNo < pageInfo.totalPageCnt }">
 						<li class="page-item "><a class="page-link"
 							href="listAll.bo?pageNo=${param.pageNo + 1}&searchType=${param.searchType }&searchWord=${param.searchWord }">Next</a></li>
 					</c:when>
-					<c:when test="${param.pageNo == null && param.pageNo < requestScope.pageInfo.totalPageCnt }">
+					<c:when test="${param.pageNo == null && param.pageNo < pageInfo.totalPageCnt }">
 						<li class="page-item "><a class="page-link"
 							href="listAll.bo?pageNo=2&searchType=${param.searchType }&searchWord=${param.searchWord }">Next</a></li>
 					</c:when>

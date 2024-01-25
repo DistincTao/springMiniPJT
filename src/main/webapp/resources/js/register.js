@@ -92,7 +92,7 @@ $(function() {
 		
 		let files = e.originalEvent.dataTransfer.files;
 		
-		if (files.size() > 1) {
+		if (files.length > 1) {
 			alert("파일은 1개만 업로드 가능합니다");
 		} else {
 			let form = new FormData();

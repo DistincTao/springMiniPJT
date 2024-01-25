@@ -4,11 +4,34 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.miniproject.mappers.boardMapper">
   	
-  	<select id="getAllBoard" resultType="com.miniproject.domain.BoardVo">
+  	<select id="getAllBoard" resultType="BoardVo">
   		SELECT * 
   		  FROM board 
   		 ORDER BY ref DESC, 
   		 		  ref_order
+  	</select>
+
+<!--   	<select id="getAllBoardByPaging" resultType="BoardVo"> -->
+<!--   		SELECT *  -->
+<!--   		  FROM board  -->
+<!--   		 ORDER BY ref DESC,  -->
+<!--   		 		  ref_order -->
+<!--   	</select> -->
+
+  	<select id="getAllBoardByPaging" resultType="BoardVo">
+  		SELECT_SEARCH_BOARD_BY_PAGING = "SELECT * FROM board 
+  		<choose>
+	  		<when test="searchType == writer">
+		  		WHERE writer LIKE '%#{searchWord}%'
+	  		</when>
+	  		<when test="searchType == title">
+	  			WHERE title LIKE '%#{searchWord}%'
+	  		</when>
+	  		<when test="searchType == content">
+	  			WHERE content LIKE '%#{searchWord}%'
+	  		</when>
+  		</choose>		
+		ORDER BY ref DESC, ref_order LIMIT #{startRowIndex}, #{pagePostCnt}
   	</select>
 
   	<insert id="insertUploadFile">
@@ -16,12 +39,12 @@
   		VALUES (#{originalFilename}, #{ext}, #{newFilename}, #{fileSize}, #{boardNo}, #{thumbFilename})
   	</insert>
 
-	<select id="getBoardByNo" resultType="com.miniproject.domain.BoardVo">
+	<select id="getBoardByNo" resultType="BoardVo">
 		SELECT * 
 		  FROM board 
 		 WHERE board_no = #{boardNo}
 	</select>
-  	
+	 	
   	<insert id="insertNewBoard">
   		INSERT INTO board (writer, title, content, ref) 
   		VALUES (#{writer}, #{title}, #{content}, (SELECT MAX(b.board_no) + 1 as board_no FROM board b))
@@ -32,22 +55,19 @@
 		  FROM board
 	</select>
 
-  	<select id="getBoardByPaging" resultType="com.miniproject.domain.BoardVo">
-  		SELECT_SEARCH_BOARD_BY_PAGING = "SELECT * FROM board WHERE 
-  		<choose>
-  		<when test="searchType == writer">
-	  		writer LIKE '%#{searchWord}%'
-  		</when>
-  		<when test="searchType == title">
-  			title LIKE '%#{searchWord}%'
-  		</when>
-  		<when test="searchType == content">
-  			content Like '%#{searchWord}%'
-  		</when>
-  		</choose>		
-			ORDER BY ref DESC, ref_order LIMIT #{startRowIndex} , #{pagePostCnt}
-  	</select>
 
+
+	<update id="updateReadcount">
+		UPDATE board set read_count = read_count + 1 where board_no = #{boardNo}	
+	</update>
+	
+	<select id="getUploadedFiles" resultType="UploadedFileVo">
+		SELECT * FROM uploadedfile WHERE board_no = #{boardNo}
+	</select>
+	
+  	<select id="selectTotalPost" resultType="int">
+		SELECT count(*) AS total_post FROM board
+  	</select>
 
   	
   </mapper>

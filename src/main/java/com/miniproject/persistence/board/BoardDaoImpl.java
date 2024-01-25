@@ -9,7 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.miniproject.domain.BoardDto;
 import com.miniproject.domain.BoardVo;
+import com.miniproject.domain.PagingInfoVo;
+import com.miniproject.domain.ReadcountprocessDto;
+import com.miniproject.domain.SearchCriteriaDto;
 import com.miniproject.domain.UploadedFileDto;
+import com.miniproject.domain.UploadedFileVo;
 
 @Repository
 public class BoardDaoImpl implements BoardDao {
@@ -19,17 +23,32 @@ public class BoardDaoImpl implements BoardDao {
 	private SqlSession ses; // sqlSessionTemplate 객체 주입
 	
 	@Override
+	public List<BoardVo> selectAllBoard(PagingInfoVo vo, SearchCriteriaDto dto) throws Exception {
+		String query = ns + ".getAllBoardByPaging";
+		
+		return ses.selectList(query);
+	}
+
+//	@Override
+//	public List<BoardVo> selectAllBoard(PagingInfoVo vo) throws Exception {
+//		String query = ns + ".getAllBoardByPaging";
+//		
+//		return ses.selectList(query);
+//	}
+	
+	@Override
 	public List<BoardVo> selectAllBoard() throws Exception {
 		String query = ns + ".getAllBoard";
 		
 		return ses.selectList(query);
 	}
+	
 
 	@Override
-	public BoardVo selectBoardByNo(int boardNo) throws Exception {
+	public BoardVo selectBoardByNo(ReadcountprocessDto dto) throws Exception {
 		String query = ns + ".getBoardByNo";
 		
-		return ses.selectOne(query, boardNo);
+		return ses.selectOne(query, dto);
 	}
 
 	@Override
@@ -52,6 +71,35 @@ public class BoardDaoImpl implements BoardDao {
 		
 		return ses.selectOne(query);
 	}
+
+	@Override
+	public int updateReadCount(ReadcountprocessDto dto) throws Exception {
+		String query = ns + ".updateReadcount";
+		
+		return ses.update(query, dto);
+	}
+
+	@Override
+	public List<UploadedFileVo> selectUploadedFile(ReadcountprocessDto dto) throws Exception {
+		String query = ns + ".getUploadedFiles";
+		
+		return ses.selectList(query, dto);
+	}
+
+	@Override
+	public int getTotalPostCnt(SearchCriteriaDto dto) throws Exception {
+		String query = ns + ".selectTotalPost";
+		return ses.selectOne(query, dto);
+	}
+
+	@Override
+	public int getTotalPostCnt() throws Exception {
+		String query = ns + ".selectTotalPost";
+
+		return ses.selectOne(query);
+	}
+
+
 	
 	
 

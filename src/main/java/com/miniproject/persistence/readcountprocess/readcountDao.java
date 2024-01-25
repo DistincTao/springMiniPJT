@@ -1,12 +1,15 @@
-package com.miniproject.persistence.pointlog;
+package com.miniproject.persistence.readcountprocess;
 
-import java.sql.Date;
+import com.miniproject.domain.ReadcountprocessDto;
+import com.miniproject.domain.ReadcountprocessVo;
 
-import com.miniproject.domain.PointlogDto;
+public interface readcountDao {
 
-public interface PointlogDao {
+	ReadcountprocessVo selectReadcountprocess (ReadcountprocessDto dto) throws Exception;
 
-	int insertPointlog(PointlogDto pointDto) throws Exception;
+	int getHourDiffReadTime (ReadcountprocessDto dto) throws Exception;
 
-	Date selectLastLogin(String userId) throws Exception;
+	int updateReadCountProcess(ReadcountprocessDto dto) throws Exception;
+
+	int insertReadCountProcess(ReadcountprocessDto dto) throws Exception;	
 }

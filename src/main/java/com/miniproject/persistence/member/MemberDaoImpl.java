@@ -63,10 +63,10 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public int getTotalPostCnt(String userId) throws Exception {
+	public int getTotalPostCnt() throws Exception {
 		String q = ns + ".selectTotalPost";
-		System.out.println(ses.selectOne(q, userId).toString());
-		return ses.selectOne(q, userId);
+
+		return ses.selectOne(q);
 	}
 
 	@Override

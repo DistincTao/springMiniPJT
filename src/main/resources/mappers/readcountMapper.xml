@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.miniproject.mappers.readcountMapper">
+  
+	  <select id="selectBoardReadCount" resultType="com.miniproject.domain.ReadcountprocessVo">
+		SELECT * FROM readcountprocess WHERE ip_addr = #{ipAddr} AND board_no = #{boardNo}
+	  </select>
+	  
+	  <select id="getHourDiffReadTime" resultType="int">
+	  	SELECT timestampdiff(hour,
+	  	 (SELECT read_time FROM readcountprocess WHERE ip_addr = #{ipAddr} AND board_no = #{boardNo}), now()) as hour_diff
+	  </select>
+	
+	  <update id="updateReadCount">
+		UPDATE_READTIME = "update readcountprocess set read_time = now() WHERE ip_addr = #{ipAddr} AND board_no = #{boardNo}
+	  </update>
+
+	  <insert id="insertReadCountProcess">
+	  	INSERT INTO readcountprocess (ip_addr, board_no) values (#{ipAddr}, #{boardNo})
+	  </insert>
+
+  </mapper>
+
+  
+  
+  

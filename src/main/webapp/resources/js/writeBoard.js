@@ -54,7 +54,7 @@ function displayUploadedFile(json){
 			output += `<img src='../resources/uploads${thumb }' id='${elem.newFilename }'/>`;
 			output += `<img src='../resources/img/remove.png' class='removeIcon' onclick='removeFile(this)'/>`;
 		} else {
-			output += `<spanid='${elem.newFilename }'><a href='../resources/uploads${name}'>${elem.originalFilename}</a></span>`;
+			output += `<a href='../resources/uploads${name}' id='${elem.newFilename }'>${elem.originalFilename}</a>`;
 			output += `<img src='../resources/img/remove.png' class='removeIcon' onclick='removeFile(this)'/>`;
 		}
 		
@@ -95,7 +95,7 @@ function removeFile(fileId) {
 	
 }
 
-function btnCancel() {
+function btnCancel(userId) {
 	// 취소 버튼 클릭 시 드래그 드랍한 모든 파일 삭제
 	
 	$.ajax ({
@@ -108,7 +108,7 @@ function btnCancel() {
 				$(".upLoadFiles").empty();
 				// let output = "Drag and Drop Files";
 				// $(".upLoadFiles").html(output);
-				location.href = "listAll";
+				location.href = `listAll?userId=${userId}&pageNo=1`;
 			}
 		},
 		error : function() {},

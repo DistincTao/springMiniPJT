@@ -24,28 +24,36 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="mycontainer">	
-<%-- 	${requestScope.board } --%>
-<%-- 	${requestScope.file } --%>
+<%-- 	${board } --%>
+<%-- 	${fileList } --%>
 <%-- 	${sessionScope.login.userId } --%>
-<%-- 	${board} --%>
 	<h1>게시판 글 조회</h1>
 	<div class="container-fluid about py-7">
             <div class="container py-5">
                 <div class="row g-5 align-items-center">
-                    	<c:if test="${requestScope.file != null}">
+                    	<c:if test="${fileList != null}">
                     	<div class="col-lg-5 userImg">
-                    		<img src="${contextPath }/${requestScope.file.newFilename }" class="img-fluid rounded" alt="">	
+                    		<c:forEach var="file" items="${fileList }">
+                    			<c:choose>
+                    			<c:when test="file.thumbFilename != null">
+                    				<a href='../resources/uploads${file.newFilename}'>${file.originalFilename}</a>
+                    			</c:when>
+                    			<c:otherwise>
+ 			                   		<img src="\resources\uploads${file.newFilename }" class="img-fluid rounded" alt="">	
+                    			</c:otherwise>
+                    			</c:choose>
+                    		</c:forEach>
                     	</div>
 						</c:if>
                     <div class="col-lg-7">
                         <div>
-                            <h1 class="display-6 mb-4">${title }</h1>
+                            <h1 class="display-6 mb-4">${board.title }</h1>
                             <p class="fs-7 text-uppercase boardNo">글번호 : <span id="boardNo">${board.boardNo }</span></p>
                             <p class="fs-7 text-uppercase text-primary">작성자 : ${board.writer }</p>
                             <p class="fs-7 text-uppercase">작성일 : ${board.postDate }</p>
                             <div class="counts">
 	                            <div class="fs-7 text-uppercase">
-	                            	<img src="../img/book.png" style="width : 24px; height : 24px;"><span class="badge bg-primary">${board.readCount }</span>
+	                            	<img src="/resources/img/book.png" style="width : 24px; height : 24px;"><span class="badge bg-primary">${board.readCount }</span>
                             	</div>
 	                            <div class="fs-7 text-uppercase likeCnt" >
 	                            	<c:choose>
@@ -68,12 +76,12 @@
                         	<c:when test="${sessionScope.login != null && (sessionScope.login.userId == board.writer || sessionScope.login.isAdmin == 'Y') }">
 		                        <button type="button" class="btn btn-primary rounded-pill px-5" onclick="updateBoard()">Update</button>
 		                        <button type="button" class="btn btn-danger rounded-pill px-5" onclick="deleteBoard()">Delete</button>                        	
- 		                        <button type="button" class="btn btn-warning rounded-pill px-5" onclick="location.href='replyBoard.jsp?ref=${board.ref }&step=${board.step }&refOrder=${board.refOrder }'">Reply</button>
+ 		                        <button type="button" class="btn btn-warning rounded-pill px-5" onclick="location.href='replyBoard?ref=${board.ref }&step=${board.step }&refOrder=${board.refOrder }'">Reply</button>
                         	</c:when>
                         	<c:when test="${sessionScope.login != null && sessionScope.login.userId != board.writer }">
 		                        <button type="button" class="btn btn-primary rounded-pill px-5" disabled>Update</button>
 		                        <button type="button" class="btn btn-danger rounded-pill px-5" disabled >Delete</button>                        	
- 		                        <button type="button" class="btn btn-warning rounded-pill px-5" onclick="location.href='replyBoard.jsp?ref=${board.ref }&step=${board.step }&refOrder=${board.refOrder }'">Reply</button>
+ 		                        <button type="button" class="btn btn-warning rounded-pill px-5" onclick="location.href='replyBoard?ref=${board.ref }&step=${board.step }&refOrder=${board.refOrder }'">Reply</button>
                         	</c:when>
                         	<c:otherwise>
 		                        <button type="button" class="btn btn-primary rounded-pill px-5" disabled>Update</button>
@@ -81,7 +89,7 @@
  		                        <button type="button" class="btn btn-warning rounded-pill px-5" disabled>Reply</button>
                         	</c:otherwise>
                         </c:choose>
-                        <a href="${contextPath }/board/listAll.bo" class="btn btn-success rounded-pill px-5">List</a>
+                        <a href="listAll" class="btn btn-success rounded-pill px-5">List</a>
                     </div> 
                 </div>
             </div>

@@ -2,6 +2,7 @@ package com.miniproject.controller.board;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -22,8 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.miniproject.domain.BoardDto;
 import com.miniproject.domain.BoardVo;
+import com.miniproject.domain.PagingInfoVo;
+import com.miniproject.domain.ReadcountprocessDto;
+import com.miniproject.domain.SearchCriteriaDto;
 import com.miniproject.domain.UploadedFileDto;
 import com.miniproject.service.board.BoardService;
+import com.miniproject.util.GetUserIPAddr;
+import com.miniproject.util.PagingProcess;
 import com.miniproject.util.UploadFileProcess;
 
 /**
@@ -42,14 +48,34 @@ public class BoardController {
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	private List<UploadedFileDto> fileList = new ArrayList<>();
+	HttpSession sess;
 	
-	@RequestMapping("listAll")
-	public void listAll(Model model) throws Exception {
+//	@RequestMapping(value="listAll", method=RequestMethod.POST)
+	@RequestMapping(value="listAll", method=RequestMethod.GET)
+	public void listAll(@RequestParam(name = "pageNo", required = false) int pageNo,
+						@RequestParam(name = "userId", required = false) String userId,
+//						@RequestParam(name = "searchWord", required = false) String searchWord,
+//						@RequestParam(name = "searchType", required = false) String searchType,
+						Model model) throws Exception {
 		logger.info("listAll이 호출됨");
-		
-		List<BoardVo> list = bService.getEntireBoard();
-		model.addAttribute("boardList", list);
+		SearchCriteriaDto dto = new SearchCriteriaDto();
+		PagingProcess paging = new PagingProcess();
+		List<BoardVo> list = null;
 
+//		if (searchWord.equals("") && searchWord != null) {
+//			dto.setSearchWord(searchWord);
+//		}
+//		if (searchType.equals("") && searchType != null) {
+//			dto.setSearchType(searchType);
+//		}
+//
+//		PagingInfoVo vo = paging.pagingProcess(pageNo, dto);
+
+		list = bService.getEntireBoard();
+//		list = bService.getEntireBoard(vo, dto);
+		
+		model.addAttribute("boardList", list);
+//		model.addAttribute("pageInfo", vo);
 	}
 	
 	@RequestMapping("writeBoard")
@@ -63,26 +89,54 @@ public class BoardController {
 	
 	@RequestMapping(value="writeBoard", method=RequestMethod.POST)
 	public String writeBoard(BoardDto dto,
-						   @RequestParam("csrfToken") String inputcsrf,
+						   @RequestParam(name = "csrfToken") String inputcsrf,
 						   HttpSession sess) {
 		
 		logger.info("게시판 글작성 : " + dto.toString());
 		logger.info("csrf : " + inputcsrf);
 		
+		String redirectPage = "";
 		if (((String)sess.getAttribute("csrfToken")).equals(inputcsrf)) {
 			//csrfToken이 같은 경우에만 게시들을 저장
 			try {
 				
 				bService.saveNewBoard(dto, fileList);
-				
+				redirectPage = "listAll";
 			} catch (Exception e) {
 				
 				e.printStackTrace();
+				redirectPage = "listAll?status=fail";
 			}
 			
 		}
-		return "redirect:/board/listAll";
+		return "redirect:" + redirectPage;
 	}
+	
+	
+//	@RequestMapping ("viewBoard")
+//	public void viewBoard(@RequestParam("boardNo") int boardNo) {
+//		logger.info(boardNo + "번 글 상세 페이지");
+//		
+//		bService.getBoardByNo(boardNo, userId);
+//
+//	}
+	
+	@RequestMapping ("viewBoard")
+	public void viewBoardByNo(@RequestParam(name = "boardNo") int boardNo,
+							  Model model,
+							  HttpServletRequest req) throws Exception {
+		logger.info("게시판 불러오기 시작");
+		String ipAddr = GetUserIPAddr.getIp(req);
+		ReadcountprocessDto dto = new ReadcountprocessDto();
+		dto.setBoardNo(boardNo);
+		dto.setIpAddr(ipAddr);
+		Map <String, Object> result = bService.getBoardByNo(dto);
+		
+		model.addAttribute("board", result.get("board"));
+		model.addAttribute("fileList", result.get("fileList"));
+		
+	}
+	
 	
 	
 	/**
@@ -180,13 +234,6 @@ public class BoardController {
 		return result;	
 	}
 	
-	@RequestMapping (value="viewBoard", method=RequestMethod.GET)
-	public void viewBoardByNo(@RequestParam(name = "boardNo") int boardNo,
-							  Model model) throws Exception {
-		logger.info("게시판 불러오기 시작");
-		BoardVo vo = bService.getBoardByNo(boardNo);
-		model.addAttribute("board", vo);
-	}
-	
+
 	
 }

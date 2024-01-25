@@ -19,7 +19,7 @@ public interface MemberDao {
 
 	List<PointlogVo> selectPointList(String userId) throws Exception;
 
-	int getTotalPostCnt(String userId) throws Exception;
+	int getTotalPostCnt() throws Exception;
 	
 	// member 테이블에서 userPoint를 update
 	int updateUserPoint(String pointType, String writer) throws Exception;

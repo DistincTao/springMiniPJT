@@ -19,17 +19,17 @@ public class BoardDaoTest {
 	@Inject
 	private BoardDao dao; // Dao 객체를 주입
 	
-	@Test
-	public void selectAllBoarList() {
-		try {
-			List<BoardVo> list = dao.selectAllBoard();
-			
-			for (BoardVo vo : list) {
-				System.out.println(vo.toString());
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	@Test
+//	public void selectAllBoarList() {
+//		try {
+//			List<BoardVo> list = dao.selectAllBoard();
+//			
+//			for (BoardVo vo : list) {
+//				System.out.println(vo.toString());
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }

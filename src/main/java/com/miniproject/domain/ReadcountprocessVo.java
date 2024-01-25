@@ -1,17 +1,21 @@
 package com.miniproject.domain;
 
+import java.sql.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class SearchCriteriaDto {
-	private String searchWord;
-	private String searchType;
+public class ReadcountprocessVo {
+	private int readNo;
+	private String ipAddr;
+	private int boardNo;
+	private Timestamp readTime;
 }
