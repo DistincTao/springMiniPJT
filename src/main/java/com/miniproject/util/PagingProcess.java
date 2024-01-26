@@ -8,11 +8,7 @@ import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.SearchCriteriaDto;
 import com.miniproject.persistence.board.BoardDao;
 
-@Service
 public class PagingProcess {
-	
-	@Inject
-	BoardDao bDao;
 	
 	public PagingInfoVo pagingProcess(int pageNo, SearchCriteriaDto dto) throws Exception {
 		PagingInfoVo vo = new PagingInfoVo();
@@ -20,10 +16,10 @@ public class PagingProcess {
 		
 		if (dto.getSearchWord().equals("")) { // 검색어가 없으면
 			// 전제 게시글
-			vo.setTotalPostCnt(bDao.getTotalPostCnt());
+//			vo.setTotalPostCnt(bDao.getTotalPostCnt());
 		} else if (!dto.getSearchWord().equals("") && !dto.getSearchType().equals("")) { // 검색어가 있으면
 			// 전제 게시글
-			vo.setTotalPostCnt(bDao.getTotalPostCnt(dto));
+//			vo.setTotalPostCnt(bDao.getTotalPostCnt(dto));
 		}
 		// 총 페이지수
 		vo.setTotalPageCnt(vo.getTotalPostCnt(), vo.getPagePostCnt());
@@ -45,8 +41,8 @@ public class PagingProcess {
 		PagingInfoVo vo = new PagingInfoVo();
 		vo.setPageNo(pageNo);
 			// 전제 게시글
-		System.out.println(bDao.getTotalPostCnt());
-		vo.setTotalPostCnt(bDao.getTotalPostCnt());
+//		System.out.println(bDao.getTotalPostCnt());
+//		vo.setTotalPostCnt(bDao.getTotalPostCnt());
 		// 총 페이지수
 		vo.setTotalPageCnt(vo.getTotalPostCnt(), vo.getPagePostCnt());
 		// 보이기 시작할 번호

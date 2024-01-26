@@ -14,7 +14,7 @@
 	  </select>
 	
 	  <update id="updateReadCount">
-		UPDATE_READTIME = "update readcountprocess set read_time = now() WHERE ip_addr = #{ipAddr} AND board_no = #{boardNo}
+		UPDATE readcountprocess SET read_time = now() WHERE ip_addr = #{ipAddr} AND board_no = #{boardNo}
 	  </update>
 
 	  <insert id="insertReadCountProcess">

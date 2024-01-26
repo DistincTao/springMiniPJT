@@ -7,7 +7,7 @@
   		select now()
   	</select>
   	
-  	<select id="viewMemberByUserId" resultType="com.miniproject.domain.MemberVo">
+  	<select id="viewMemberByUserId" resultType="MemberVo">
   		select * from member where user_id = #{userId}
   	</select>
   	
@@ -16,20 +16,20 @@
   	
 <!--   	</insert> -->
   	
-  	<select id="getAllMembers" resultType="com.miniproject.domain.MemberVo">
+  	<select id="getAllMembers" resultType="MemberVo">
   		select * from member
   	
   	</select>
   	
-  	<select id="getLoginMember" parameterType="map" resultType="com.miniproject.domain.MemberVo">
+  	<select id="getLoginMember" parameterType="map" resultType="MemberVo">
   		SELECT m.*, u.new_filename FROM member m, uploadedfile u WHERE m.user_img = u.file_id and user_id = #{userId} AND user_pwd = sha1(md5(#{userPwd}))
   	</select>
 
-  	<select id="getPagingInfo" resultType="com.miniproject.domain.PagingInfoVo">
+  	<select id="getPagingInfo" resultType="PagingInfoVo">
 		SELECT * FROM pointlog WHERE user_id = #{userId } LIMIT #{startRowIndex} , #{pagePostCnt}
   	</select>
 
-  	<select id="selectUserPointLog" resultType="com.miniproject.domain.PointlogVo">
+  	<select id="selectUserPointLog" resultType="PointlogVo">
 		SELECT * FROM pointlog WHERE user_id = #{userId } 
 <!-- 		LIMIT #{startRowIndex} , #{pagePostCnt} -->
   	</select>

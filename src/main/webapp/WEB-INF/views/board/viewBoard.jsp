@@ -17,8 +17,197 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/acb94ab00c.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/resources/css/header.css?after">
-<link rel="stylesheet" href="/resources/css/viewBoard.css?after">
+<link rel="stylesheet" href="/resources/css/viewBoard.css">
 <script type="text/javascript" src="/resources/js/viewBoard.js"></script>
+<!-- <script type="text/javascript" src="/resources/js/reply.js"></script> -->
+<script type="text/javascript">
+$(function(){
+	getAllReplies()
+	
+	$(".modalClose").click(function(){
+		$("#updateReplydModal").hide();
+
+	})
+}); // onload 종료 시점
+
+let replyData;
+let replyNo;
+function getAllReplies() {
+	let boardNo = ${board.boardNo};
+	$.ajax({
+		url : "/reply/all/" + boardNo,
+		type : "GET", // 통신방식 (GET, POST, PUT, DELETE)
+		dataType : "json", // MIME Type
+		success : function (data){
+			console.log(data);
+			displayAllReplies(data);
+			replyData = data;
+		},
+		error : function (){},
+		complete : function (){},
+	});
+}
+
+function displayAllReplies(json) {
+	let output = "<ul class='list-group'>";
+	if (json.length >0) {
+		$.each(json, function(i, elem){
+			if (elem.isDelete == "N") {
+			  output += "<li class='list-group-item'>";
+			  output += `<div class='replyText'>\${elem.replyText}</div>`;
+			  output += `<div class='replyInfo'><span class="replier">\${elem.replier}</span>`;	  
+			  let elapsedTime = procPostDate(elem.postDate)
+			  output += `<span class="postDate">\${elapsedTime}</span></div></li>`;
+	// 		  output += `<span>\${elem.postDate}</span></div>`;
+			  output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`
+			  output += `<img src="/resources/img/delete.png" onclick="deleteReply(\${elem.replyNo})"/></div></li>`
+			}
+		});
+	}
+	output += "</ul>"
+	$(".allReplies").html(output);
+}
+
+function procPostDate(date){
+	let postDate = new Date(date); // 댓글 작성 시간
+	let now = new Date();
+	let timeDiff = (now - postDate) / 1000; // 초단위 변환
+// 	let timeDiff = 3000
+	
+	let times =[
+		{name : " day", time : 24 * 60 * 60},
+		{name : " hours", time : 60 * 60},
+		{name : " mins", time : 60},
+	]
+	
+	for (let value of times) {
+		let gapTime = Math.floor(timeDiff / value.time);
+// 		console.log(value.time);
+// 		console.log(timeDiff);
+// 		console.log(gapTime);
+	
+		if (gapTime > 0) {
+			if (timeDiff > 24 * 60 * 60) {
+				return postDate.toLocalString();
+			}
+			
+			return gapTime + value.name + " ago"
+		}
+	}
+	
+	return "just before";
+}
+
+function saveReply(){
+	let boardNo = '${board.boardNo}';
+	let replyText = $("#replyText").val();
+	let replier = '${sessionScope.login.userId}';
+	
+	console.log(boardNo, replyText, replier);
+	
+	let newReply = {
+		"boardNo" : boardNo,
+		"replyText" : replyText,
+		"replier" : replier
+	}
+	console.log(JSON.stringify(newReply));
+	
+	$.ajax({
+		url : "/reply/",
+		type : "POST", // 통신방식 (GET, POST, PUT, DELETE)
+		data : JSON.stringify(newReply),
+		headers : {
+			// 송신하는 데이터dml MIME type 전달
+			"Content-Type" : "application/json",
+			
+			// PUT, DELETE, PATCH 등의 REST에서 사용되는 http-method가 동작하지 않는
+			// 과거의 웹브라우저에서 POST 방식으로 동작하도록 한다.
+			"X-HTTP-Method-Override" : "POST"
+		},
+		dataType : "text", // MIME Type
+		success : function (data){
+			console.log(data);
+			if (data == "success") {
+				getAllReplies();
+				$("#replyText").val("");				
+			}
+		},
+		error : function (){
+			alert ("Error 발생");
+		},
+		complete : function (){},
+	});
+}
+
+function updateModal(no, text) {
+	
+	$("#updateReplydModal").show();
+	$("#updateReplyText").html(text);
+	$(".updateBtn").attr("id", no);
+
+}
+
+function updateReply(no){
+	let replyText = $("#updateReplyText").val();
+	console.log($("#updateReplyText").val());
+	let replyNo = no;
+	
+	let updateReply = {
+			"replyNo" : replyNo,
+			"replyText" : replyText
+	}
+	
+// 	console.log(JSON.stringify(updateReply));
+		
+	$.ajax({
+		url : "/reply/" + replyNo,
+		type : "POST", // 통신방식 (GET, POST, PUT, DELETE)
+		data : JSON.stringify(updateReply),
+		headers : {
+			// 송신하는 데이터dml MIME type 전달
+			"Content-Type" : "application/json",
+			
+			// PUT, DELETE, PATCH 등의 REST에서 사용되는 http-method가 동작하지 않는
+			// 과거의 웹브라우저에서 POST 방식으로 동작하도록 한다.
+			"X-HTTP-Method-Override" : "POST"
+		},
+		dataType : "json", // MIME Type
+		success : function (data){
+			console.log(data);
+
+
+		},
+		error : function (){},
+		complete : function (){},
+	});
+}
+
+// function deleteReply(no){
+// 	console.log("왜 안되냐;;;");
+// 	$.ajax({
+// 		url : "/reply/" + no,
+// 		type : "POST", // 통신방식 (GET, POST, PUT, DELETE)
+// 		data : {"replyNo" : no },
+// 		headers : {
+// 			// 송신하는 데이터dml MIME type 전달
+// 			"Content-Type" : "application/json",
+			
+// 			// PUT, DELETE, PATCH 등의 REST에서 사용되는 http-method가 동작하지 않는
+// 			// 과거의 웹브라우저에서 POST 방식으로 동작하도록 한다.
+// 			"X-HTTP-Method-Override" : "POST"
+// 		},
+// 		dataType : "json", // MIME Type
+// 		success : function (data){
+// 			console.log(data);
+
+// 		},
+// 		error : function (){},
+// 		complete : function (){},
+// 	});
+// }
+
+</script>
+
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
@@ -34,12 +223,13 @@
                     	<c:if test="${fileList != null}">
                     	<div class="col-lg-5 userImg">
                     		<c:forEach var="file" items="${fileList }">
+<%--                     		${file.thumbFilename != null} --%>
                     			<c:choose>
-                    			<c:when test="file.thumbFilename != null">
-                    				<a href='../resources/uploads${file.newFilename}'>${file.originalFilename}</a>
+                    			<c:when test="${file.thumbFilename != null}">
+ 			                   		<img src="\resources\uploads${file.newFilename }" class="img-fluid rounded" alt=""/>	
                     			</c:when>
                     			<c:otherwise>
- 			                   		<img src="\resources\uploads${file.newFilename }" class="img-fluid rounded" alt="">	
+                    				<a href='\resources\uploads${file.newFilename}'>${file.originalFilename}</a>
                     			</c:otherwise>
                     			</c:choose>
                     		</c:forEach>
@@ -92,8 +282,37 @@
                         <a href="listAll" class="btn btn-success rounded-pill px-5">List</a>
                     </div> 
                 </div>
+        <!-- 댓글 -->
+        <c:choose>
+        <c:when test="${sessionScope.login != null}">
+        <div class="replyInputDiv">
+            <div class="mb-3 mt-3">
+		    	<label for="replyText">Comments:</label>
+	    		<textarea class="form-control" rows="2" style="width : 100%;" id="replyText"></textarea>
+		    </div>
+        </div>
+        <div>
+        	<button type="button" class="btn btn-primary rounded-pill px-5" onclick="saveReply();">Submit</button>
+            <button type="button" class="btn btn-danger rounded-pill px-5">Cancel</button>                        	
+     	</div>
+        </c:when>
+        <c:otherwise>
+        <div class="replyInputDiv">
+            <div class="mb-3 mt-3">
+		    	<label for="replyText">Comments:</label>
+	    		<textarea class="form-control" rows="5" style="width : 100%;" id="replyText" onclick="alert('login 해주세요')"></textarea>
+		    </div>
+        </div>
+        <div>
+        	<button type="button" class="btn btn-primary rounded-pill px-5" disabled>Submit</button>
+            <button type="button" class="btn btn-danger rounded-pill px-5" disabled>Cancel</button>                        	
+     	</div>
+        </c:otherwise>
+        </c:choose>
+        <div class="allReplies mb-3 mt-3"></div>
             </div>
         </div>
+        
 	</div>
 	
 <div class="modal" id="updateBoardModal">
@@ -169,6 +388,30 @@
   			<button type="submit" class="btn btn-primary" onclick="location.href='${contextPath }/board/deleteBoard.bo?boardNo=${board.boardNo}'">Delete</button>
   			<button type="reset" class="btn btn-danger modalClose">Cancel</button>      
   	  </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="updateReplydModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <!-- Modal body -->
+      <div class="modal-body">
+	    <div class="mb-3 mt-3">
+		   	<label for="updateReplyText">Comments:</label>
+	    	<textarea class="form-control" rows="2" style="width : 100%;" id="updateReplyText"></textarea>
+		</div>
+	  	<div>  		
+	  		<button type="submit" class="btn btn-primary updateBtn" onclick="updateReply(this.id)">Submit</button>
+	  		<button type="reset" class="btn btn-danger">Cancel</button>
+	  	</div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger modalClose" data-bs-dismiss="modal">Close</button>
+      </div>
+
     </div>
   </div>
 </div>

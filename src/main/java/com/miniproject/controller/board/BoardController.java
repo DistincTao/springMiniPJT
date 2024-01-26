@@ -52,31 +52,16 @@ public class BoardController {
 	
 //	@RequestMapping(value="listAll", method=RequestMethod.POST)
 	@RequestMapping(value="listAll", method=RequestMethod.GET)
-	public void listAll(@RequestParam(name = "pageNo", required = false) int pageNo,
+	public void listAll(@RequestParam(name = "pageNo") int pageNo,
 						@RequestParam(name = "userId", required = false) String userId,
-//						@RequestParam(name = "searchWord", required = false) String searchWord,
-//						@RequestParam(name = "searchType", required = false) String searchType,
 						Model model) throws Exception {
 		logger.info("listAll이 호출됨");
-		SearchCriteriaDto dto = new SearchCriteriaDto();
-		PagingProcess paging = new PagingProcess();
 		List<BoardVo> list = null;
-
-//		if (searchWord.equals("") && searchWord != null) {
-//			dto.setSearchWord(searchWord);
-//		}
-//		if (searchType.equals("") && searchType != null) {
-//			dto.setSearchType(searchType);
-//		}
-//
-//		PagingInfoVo vo = paging.pagingProcess(pageNo, dto);
-
-		list = bService.getEntireBoard();
-//		list = bService.getEntireBoard(vo, dto);
 		
+		list = bService.getEntireBoard();
 		model.addAttribute("boardList", list);
-//		model.addAttribute("pageInfo", vo);
 	}
+
 	
 	@RequestMapping("writeBoard")
 	public void showWriteBoard (HttpSession sess) {

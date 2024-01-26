@@ -9,7 +9,7 @@ import com.miniproject.domain.ReadcountprocessDto;
 import com.miniproject.domain.ReadcountprocessVo;
 
 @Repository
-public class readcountDaoImpl implements readcountDao {
+public class ReadcountDaoImpl implements ReadcountDao {
 	private static String ns = "com.miniproject.mappers.readcountMapper";
 
 	@Inject

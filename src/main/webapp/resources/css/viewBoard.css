@@ -8,3 +8,19 @@
 	color : red;
 }
 
+.replyBtns img{
+	width : 32px;
+	height : 32px;		
+}
+
+.replyText {
+	padding : 10px;
+	background-color:  #eee;
+	
+}
+
+.replyInfo {
+	display : flex;
+	justify-content: space-between;
+}
+

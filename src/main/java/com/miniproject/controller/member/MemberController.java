@@ -66,9 +66,7 @@ public class MemberController {
 		if (vo != null && !vo.getIsDelete().equals("Y")) {
 			sess.setAttribute("login", vo);
 			result = "redirect:/";
-		} else {
-			result = "redirect:/member/login?status=success";
-		}
+		} 
 		return result;
 		
 	}

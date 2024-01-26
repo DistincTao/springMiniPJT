@@ -21,7 +21,7 @@ import com.miniproject.domain.UploadedFileVo;
 import com.miniproject.persistence.board.BoardDao;
 import com.miniproject.persistence.member.MemberDao;
 import com.miniproject.persistence.pointlog.PointlogDao;
-import com.miniproject.persistence.readcountprocess.readcountDao;
+import com.miniproject.persistence.readcountprocess.ReadcountDao;
 
 @Service
 public class BoardServiceImple implements BoardService {
@@ -32,7 +32,7 @@ public class BoardServiceImple implements BoardService {
 	@Inject
 	PointlogDao pDao;
 	@Inject
-	readcountDao rDao;
+	ReadcountDao rDao;
 	
 	@Override
 	public List<BoardVo> getEntireBoard(PagingInfoVo vo, SearchCriteriaDto dto) throws Exception {

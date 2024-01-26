@@ -22,5 +22,7 @@
 	  <typeAlias alias="SearchCriteriaDto" type="com.miniproject.domain.SearchCriteriaDto"/>
 	  <typeAlias alias="UploadedFileDto" type="com.miniproject.domain.UploadedFileDto"/>
 	  <typeAlias alias="UploadedFileVo" type="com.miniproject.domain.UploadedFileVo"/>
+	  <typeAlias alias="ReplyVo" type="com.miniproject.domain.ReplyVo"/>
+	  <typeAlias alias="ReplyDto" type="com.miniproject.domain.ReplyDto"/>
   </typeAliases>
 </configuration>

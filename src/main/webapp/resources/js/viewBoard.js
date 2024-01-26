@@ -3,6 +3,7 @@ $(function() {
 	$(".modalClose").click(function(){
 		$("#updateBoardModal").hide();
 		$("#deleteBoardModal").hide();
+		$("#updateReplydModal").hide();
 
 	})
 	

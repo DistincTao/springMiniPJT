@@ -31,7 +31,7 @@
 	${contextPath }
 	<div class="container">	
 		<h1>게시판 전체 목록</h1>
-		<form action="listAll" class="searchArea">
+		<form action="listAll?pageNo=1" class="searchArea">
 			<div style="width : 150px;">
 				<select class="form-select" name="searchType">
 					<option value="writer">Writer</option>
