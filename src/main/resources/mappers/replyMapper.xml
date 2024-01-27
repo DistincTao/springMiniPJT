@@ -14,8 +14,7 @@
   	</select>
   	
   	<insert id="insertNewReply">
-  		INSERT INTO reply (board_no, reply_text, replier)
-  		VALUES (#{boardNo}, #{replyText}, #{replier}) 
+  		INSERT INTO reply (board_no, reply_text, replier) VALUES (#{boardNo}, #{replyText}, #{replier}) 
   	</insert>
   	
   	<update id="updateReply">

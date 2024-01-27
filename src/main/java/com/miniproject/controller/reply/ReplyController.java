@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.miniproject.domain.ReplyDto;
@@ -57,18 +58,21 @@ public class ReplyController {
 	}
 
 	@RequestMapping (value="{replyNo}", method=RequestMethod.POST)
-	public ResponseEntity<String> updateReply(@PathVariable("replyNo") int replyNo, @RequestBody ReplyDto updateReply ) throws Exception {
+	public ResponseEntity<String> updateReply(@PathVariable("replyNo") int replyNo, @RequestParam("replyText") String replyText) throws Exception {
 		System.out.println(replyNo + "번 댓글 수정 시작!");
 		ResponseEntity<String> result = null;
+		ReplyDto dto = new ReplyDto();
 
 		try {
-			if (updateReply != null) {
-				updateReply.setReplyNo(replyNo);
-				if (rService.updateByNo(updateReply)){
+			if (replyText != null && !replyText.equals("")) {
+				dto.setReplyNo(replyNo);
+				dto.setReplyText(replyText);
+				if (rService.updateByNo(dto)){
 					result = new ResponseEntity<String>("success", HttpStatus.OK);
 				}
 				
-			} else { 
+			} 
+			else { 
 				if (rService.deleteReplyByNo(replyNo)) {
 					result = new ResponseEntity<String>("success", HttpStatus.OK);
 				}				
@@ -82,12 +86,14 @@ public class ReplyController {
 	}
 	
 //	@RequestMapping (value="{replyNo}", method=RequestMethod.PUT)
-//	public ResponseEntity<String> deleteReply(@PathVariable("replyNo") int replyNo) throws Exception {
-//		System.out.println(replyNo + "번 댓글 수정 시작!");
+//	public ResponseEntity<String> updateReply(@PathVariable("replyNo") int replyNo) throws Exception {
+//		System.out.println(replyNo + "번 댓글 삭제 시작!");
 //		ResponseEntity<String> result = null;
 //
 //		try {
-//
+//			if (rService.deleteReplyByNo(replyNo)) {
+//				result = new ResponseEntity<String>("success", HttpStatus.OK);
+//			}
 //		} catch (Exception e) {
 //			result = new ResponseEntity<String>("fail", HttpStatus.FORBIDDEN);
 //			e.printStackTrace();

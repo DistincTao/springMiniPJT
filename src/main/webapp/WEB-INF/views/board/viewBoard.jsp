@@ -57,16 +57,26 @@ function displayAllReplies(json) {
 			  output += `<div class='replyText'>\${elem.replyText}</div>`;
 			  output += `<div class='replyInfo'><span class="replier">\${elem.replier}</span>`;	  
 			  let elapsedTime = procPostDate(elem.postDate)
-			  output += `<span class="postDate">\${elapsedTime}</span></div></li>`;
+			  output += `<span class="postDate">\${elapsedTime}</span></div>`;
+			  
 	// 		  output += `<span>\${elem.postDate}</span></div>`;
-			  output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`
-			  output += `<img src="/resources/img/delete.png" onclick="deleteReply(\${elem.replyNo})"/></div></li>`
+		      output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`;
+			  output += `<img src="/resources/img/delete.png" onclick="updateReply(\${elem.replyNo})"/></div></li>`;
+
+			  
+			} else if (elem.isDelete == "Y") {
+				  output += "<li class='list-group-item'>";
+				  output += `<div class='replyText'>삭제된 댓글입니다.</div></li>`;
 			}
 		});
 	}
 	output += "</ul>"
 	$(".allReplies").html(output);
 }
+
+// output += `<c:if test="\${sessionScope.login.userId == \${elem.replier} }">`;
+// output +=	`</c:if>`;
+
 
 function procPostDate(date){
 	let postDate = new Date(date); // 댓글 작성 시간
@@ -88,7 +98,7 @@ function procPostDate(date){
 	
 		if (gapTime > 0) {
 			if (timeDiff > 24 * 60 * 60) {
-				return postDate.toLocalString();
+				return postDate.toLocaleString();
 			}
 			
 			return gapTime + value.name + " ago"
@@ -151,57 +161,56 @@ function updateReply(no){
 	let replyText = $("#updateReplyText").val();
 	console.log($("#updateReplyText").val());
 	let replyNo = no;
-	
-	let updateReply = {
-			"replyNo" : replyNo,
-			"replyText" : replyText
-	}
-	
+
 // 	console.log(JSON.stringify(updateReply));
 		
 	$.ajax({
 		url : "/reply/" + replyNo,
 		type : "POST", // 통신방식 (GET, POST, PUT, DELETE)
-		data : JSON.stringify(updateReply),
-		headers : {
-			// 송신하는 데이터dml MIME type 전달
-			"Content-Type" : "application/json",
-			
-			// PUT, DELETE, PATCH 등의 REST에서 사용되는 http-method가 동작하지 않는
-			// 과거의 웹브라우저에서 POST 방식으로 동작하도록 한다.
-			"X-HTTP-Method-Override" : "POST"
-		},
-		dataType : "json", // MIME Type
-		success : function (data){
-			console.log(data);
-
-
-		},
-		error : function (){},
-		complete : function (){},
-	});
-}
-
-// function deleteReply(no){
-// 	console.log("왜 안되냐;;;");
-// 	$.ajax({
-// 		url : "/reply/" + no,
-// 		type : "POST", // 통신방식 (GET, POST, PUT, DELETE)
-// 		data : {"replyNo" : no },
+		data : {"replyText" : replyText },
 // 		headers : {
 // 			// 송신하는 데이터dml MIME type 전달
 // 			"Content-Type" : "application/json",
 			
 // 			// PUT, DELETE, PATCH 등의 REST에서 사용되는 http-method가 동작하지 않는
 // 			// 과거의 웹브라우저에서 POST 방식으로 동작하도록 한다.
-// 			"X-HTTP-Method-Override" : "POST"
+// 			"X-HTTP-Method-Override" : "POST
 // 		},
+		dataType : "json", // MIME Type
+		success : function (data){
+			console.log(data);
+
+		},
+		error : function (){},
+		complete : function (){
+			$("#updateReplydModal").hide();
+			getAllReplies();		
+		},
+	});
+}
+
+// function deleteReply(no){
+// 	console.log("왜 안되냐;;;");
+// 	let replyNo = no;
+// 	$.ajax({
+// 		url : "/reply/" + no,
+// 		type : "POST", // 통신방식 (GET, POST, PUT, DELETE)
+// // 		headers : {
+// // 			// 송신하는 데이터dml MIME type 전달
+// // 			"Content-Type" : "application/json",
+			
+// // 			// PUT, DELETE, PATCH 등의 REST에서 사용되는 http-method가 동작하지 않는
+// // 			// 과거의 웹브라우저에서 POST 방식으로 동작하도록 한다.
+// // 			"X-HTTP-Method-Override" : "POST"
+// // 		},
 // 		dataType : "json", // MIME Type
 // 		success : function (data){
 // 			console.log(data);
-
+// 			getAllReplies();
 // 		},
-// 		error : function (){},
+// 		error : function (){
+// 			alert ("Error 발생");
+// 		},
 // 		complete : function (){},
 // 	});
 // }
@@ -402,7 +411,7 @@ function updateReply(no){
 	    	<textarea class="form-control" rows="2" style="width : 100%;" id="updateReplyText"></textarea>
 		</div>
 	  	<div>  		
-	  		<button type="submit" class="btn btn-primary updateBtn" onclick="updateReply(this.id)">Submit</button>
+	  		<button type="submit" class="btn btn-primary updateBtn" onclick="updateReply(this.id);">Submit</button>
 	  		<button type="reset" class="btn btn-danger">Cancel</button>
 	  	</div>
       </div>
