@@ -59,10 +59,10 @@ function displayAllReplies(json) {
 			  let elapsedTime = procPostDate(elem.postDate)
 			  output += `<span class="postDate">\${elapsedTime}</span></div>`;
 			  
-	// 		  output += `<span>\${elem.postDate}</span></div>`;
+// 		  output += `<span>\${elem.postDate}</span></div>`;
+
 		      output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`;
 			  output += `<img src="/resources/img/delete.png" onclick="updateReply(\${elem.replyNo})"/></div></li>`;
-
 			  
 			} else if (elem.isDelete == "Y") {
 				  output += "<li class='list-group-item'>";
@@ -74,8 +74,6 @@ function displayAllReplies(json) {
 	$(".allReplies").html(output);
 }
 
-// output += `<c:if test="\${sessionScope.login.userId == \${elem.replier} }">`;
-// output +=	`</c:if>`;
 
 
 function procPostDate(date){
