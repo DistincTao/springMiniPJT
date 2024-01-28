@@ -13,7 +13,5 @@ public interface ReplyService {
 	boolean saveNewReply(ReplyDto newReply) throws Exception;
 
 	boolean updateByNo(ReplyDto updateReply) throws Exception;
-
-	boolean deleteReplyByNo(int replyNo) throws Exception;
 	
 }

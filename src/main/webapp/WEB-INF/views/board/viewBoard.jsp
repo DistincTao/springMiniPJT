@@ -159,31 +159,41 @@ function updateReply(no){
 	let replyText = $("#updateReplyText").val();
 	console.log($("#updateReplyText").val());
 	let replyNo = no;
+	
+	let updateReply = {
+			"replyText" : replyText,
+			"replyNo" : replyNo
+		}	
 
-// 	console.log(JSON.stringify(updateReply));
+	console.log(JSON.stringify(updateReply));
 		
 	$.ajax({
 		url : "/reply/" + replyNo,
-		type : "POST", // 통신방식 (GET, POST, PUT, DELETE)
-		data : {"replyText" : replyText },
-// 		headers : {
-// 			// 송신하는 데이터dml MIME type 전달
-// 			"Content-Type" : "application/json",
+		type : "PUT", // 통신방식 (GET, POST, PUT, DELETE)
+		data : JSON.stringify(updateReply),
+// 		data : {"replyText" : replyText },
+		headers : {
+			// 송신하는 데이터dml MIME type 전달
+			"Content-Type" : "application/json",
 			
-// 			// PUT, DELETE, PATCH 등의 REST에서 사용되는 http-method가 동작하지 않는
-// 			// 과거의 웹브라우저에서 POST 방식으로 동작하도록 한다.
-// 			"X-HTTP-Method-Override" : "POST
-// 		},
-		dataType : "json", // MIME Type
+// 			PUT, DELETE, PATCH 등의 REST에서 사용되는 http-method가 동작하지 않는
+// 			과거의 웹브라우저에서 POST 방식으로 동작하도록 한다.
+			"X-HTTP-Method-Override" : "PUT"
+		},
+		dataType : "text", // MIME Type => 회신 받을 타입!!
 		success : function (data){
 			console.log(data);
+			if (data == "success") {
+				getAllReplies();
+			$("#updateReplydModal").hide();
+			}
 
 		},
-		error : function (){},
-		complete : function (){
-			$("#updateReplydModal").hide();
-			getAllReplies();		
+		error : function (){
+// 			alert ("Error 발생");
+// 			getAllReplies();
 		},
+		complete : function (){},
 	});
 }
 

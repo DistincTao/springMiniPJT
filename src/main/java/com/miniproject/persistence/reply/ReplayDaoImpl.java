@@ -41,7 +41,8 @@ public class ReplayDaoImpl implements ReplyDao {
 	@Override
 	public int deleteReply(int replyNo) throws Exception {
 		String q = ns + ".deleteReply";
-		
+		System.out.println(ses.update(q, replyNo));
+
 		return ses.update(q, replyNo);
 	}
 

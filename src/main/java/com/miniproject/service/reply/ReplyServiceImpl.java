@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,24 +57,22 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	public boolean updateByNo(ReplyDto updateReply ) throws Exception {
 		boolean result = false;
-		if (rDao.updateReply(updateReply) == 1) {
-			System.out.println("내용 수정 업데이트 시작");
-			System.out.println(rDao.updateReply(updateReply));
-			
+		System.out.println("내용 수정 업데이트 시작");
+		System.out.println(updateReply.toString());
+		
+		if (updateReply.getReplyText() != null && !updateReply.getReplyText().equals("")) {
+			if (rDao.updateReply(updateReply) == 1){
 				result = true;
+			}
+			
+		} 
+		else if (updateReply.getReplyText().equals("")){ 
+			if (rDao.deleteReply(updateReply.getReplyNo()) == 1) {
+				result = true;
+			}				
 		}
 		
 		return result;
 	}
 	
-	@Override
-	public boolean deleteReplyByNo(int replyNo) throws Exception {
-		boolean result = false;
-		if (rDao.deleteReply(replyNo) == 1) {
-				result = true;
-		}
-		
-		return result;
-	}
-
 }

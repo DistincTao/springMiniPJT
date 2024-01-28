@@ -57,25 +57,17 @@ public class ReplyController {
 		return result;
 	}
 
-	@RequestMapping (value="{replyNo}", method=RequestMethod.POST)
-	public ResponseEntity<String> updateReply(@PathVariable("replyNo") int replyNo, @RequestParam("replyText") String replyText) throws Exception {
-		System.out.println(replyNo + "번 댓글 수정 시작!");
+	@RequestMapping (value="{replyNo}", method=RequestMethod.PUT)
+	public ResponseEntity<String> updateReply(@RequestBody ReplyDto updateReply ) throws Exception {
+		System.out.println(updateReply.getReplyNo() + "번 댓글 수정 시작!");
 		ResponseEntity<String> result = null;
-		ReplyDto dto = new ReplyDto();
+		System.out.println(updateReply.toString());
+		System.out.println("결과 : " + rService.updateByNo(updateReply));
 
+		
 		try {
-			if (replyText != null && !replyText.equals("")) {
-				dto.setReplyNo(replyNo);
-				dto.setReplyText(replyText);
-				if (rService.updateByNo(dto)){
-					result = new ResponseEntity<String>("success", HttpStatus.OK);
-				}
-				
-			} 
-			else { 
-				if (rService.deleteReplyByNo(replyNo)) {
-					result = new ResponseEntity<String>("success", HttpStatus.OK);
-				}				
+			if (rService.updateByNo(updateReply)){
+				result = new ResponseEntity<String>("success", HttpStatus.OK);
 			}
 			
 		} catch (Exception e) {
@@ -84,23 +76,6 @@ public class ReplyController {
 		}
 		return result;
 	}
-	
-//	@RequestMapping (value="{replyNo}", method=RequestMethod.PUT)
-//	public ResponseEntity<String> updateReply(@PathVariable("replyNo") int replyNo) throws Exception {
-//		System.out.println(replyNo + "번 댓글 삭제 시작!");
-//		ResponseEntity<String> result = null;
-//
-//		try {
-//			if (rService.deleteReplyByNo(replyNo)) {
-//				result = new ResponseEntity<String>("success", HttpStatus.OK);
-//			}
-//		} catch (Exception e) {
-//			result = new ResponseEntity<String>("fail", HttpStatus.FORBIDDEN);
-//			e.printStackTrace();
-//		}
-//		return result;
-//		
-//		
-//	}
+
 	
 }
