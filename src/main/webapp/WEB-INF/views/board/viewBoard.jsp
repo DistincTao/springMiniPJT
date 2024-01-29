@@ -26,6 +26,7 @@ $(function(){
 	
 	$(".modalClose").click(function(){
 		$("#updateReplydModal").hide();
+		$("#deleteReplydModal").hide();
 
 	})
 }); // onload 종료 시점
@@ -62,7 +63,7 @@ function displayAllReplies(json) {
 // 		  output += `<span>\${elem.postDate}</span></div>`;
 
 		      output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`;
-			  output += `<img src="/resources/img/delete.png" onclick="updateReply(\${elem.replyNo})"/></div></li>`;
+			  output += `<img src="/resources/img/delete.png" onclick="deleteModal(\${elem.replyNo})"/></div></li>`;
 			  
 			} else if (elem.isDelete == "Y") {
 				  output += "<li class='list-group-item'>";
@@ -154,6 +155,13 @@ function updateModal(no, text) {
 	$(".updateBtn").attr("id", no);
 
 }
+function deleteModal(no) {
+	
+	$("#deleteReplydModal").show();
+	$(".deleteReplyNo").html("해당 댓글을 삭제 하시겠습니까?");
+	$(".deleteBtn").attr("id", no);
+
+}
 
 function updateReply(no){
 	let replyText = $("#updateReplyText").val();
@@ -186,6 +194,7 @@ function updateReply(no){
 			if (data == "success") {
 				getAllReplies();
 			$("#updateReplydModal").hide();
+			$("#deleteReplydModal").hide();
 			}
 
 		},
@@ -421,6 +430,25 @@ function updateReply(no){
 	  	<div>  		
 	  		<button type="submit" class="btn btn-primary updateBtn" onclick="updateReply(this.id);">Submit</button>
 	  		<button type="reset" class="btn btn-danger">Cancel</button>
+	  	</div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger modalClose" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal" id="deleteReplydModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <!-- Modal body -->
+      <div class="modal-body">
+	    <div class="mb-3 mt-3 deleteReplyNo"></div>
+	  	<div>  		
+	  		<button type="submit" class="btn btn-primary deleteBtn" onclick="updateReply(this.id);">Submit</button>
 	  	</div>
       </div>
 
