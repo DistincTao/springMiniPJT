@@ -13,7 +13,7 @@ import com.miniproject.domain.UploadedFileVo;
 public interface BoardDao {
 	List<BoardVo> selectAllBoard(PagingInfoVo vo, SearchCriteriaDto dto) throws Exception;
 	
-//	List<BoardVo> selectAllBoard(PagingInfoVo vo) throws Exception;
+	List<BoardVo> selectAllBoard(PagingInfoVo vo) throws Exception;
 	
 	List<BoardVo> selectAllBoard() throws Exception;
 
@@ -32,4 +32,5 @@ public interface BoardDao {
 	int getTotalPostCnt(SearchCriteriaDto dto) throws Exception;
 // 총 게시물 수 확	
 	int getTotalPostCnt() throws Exception;
+
 }

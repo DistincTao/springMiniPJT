@@ -1,6 +1,8 @@
 package com.miniproject.persistence.board;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -24,17 +26,25 @@ public class BoardDaoImpl implements BoardDao {
 	
 	@Override
 	public List<BoardVo> selectAllBoard(PagingInfoVo vo, SearchCriteriaDto dto) throws Exception {
-		String query = ns + ".getAllBoardByPaging";
+		String query = ns + ".getAllBoardByPagingWithSearch";
 		
-		return ses.selectList(query);
+		Map <String, Object> param = new HashMap<>();
+		
+		param.put("startRowIndex", vo.getStartRowIndex());
+		param.put("pagePostCnt", vo.getPagePostCnt());
+		param.put("searchType", dto.getSearchType());
+		param.put("searchWord", "'%" + dto.getSearchWord() + "%'");
+		
+		
+		return ses.selectList(query, param);
 	}
 
-//	@Override
-//	public List<BoardVo> selectAllBoard(PagingInfoVo vo) throws Exception {
-//		String query = ns + ".getAllBoardByPaging";
-//		
-//		return ses.selectList(query);
-//	}
+	@Override
+	public List<BoardVo> selectAllBoard(PagingInfoVo vo) throws Exception {
+		String query = ns + ".getAllBoardByPaging";
+		
+		return ses.selectList(query, vo);
+	}
 	
 	@Override
 	public List<BoardVo> selectAllBoard() throws Exception {

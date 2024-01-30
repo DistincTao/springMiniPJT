@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +30,6 @@ import com.miniproject.domain.SearchCriteriaDto;
 import com.miniproject.domain.UploadedFileDto;
 import com.miniproject.service.board.BoardService;
 import com.miniproject.util.GetUserIPAddr;
-import com.miniproject.util.PagingProcess;
 import com.miniproject.util.UploadFileProcess;
 
 /**
@@ -52,14 +52,20 @@ public class BoardController {
 	
 //	@RequestMapping(value="listAll", method=RequestMethod.POST)
 	@RequestMapping(value="listAll", method=RequestMethod.GET)
-	public void listAll(@RequestParam(name = "pageNo") int pageNo,
-						@RequestParam(name = "userId", required = false) String userId,
+	public void listAll(@RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
+					    @RequestParam(name = "searchType", defaultValue = "") String searchType,
+					    @RequestParam(name = "searchWord", defaultValue = "") String searchWord,
 						Model model) throws Exception {
-		logger.info("listAll이 호출됨");
-		List<BoardVo> list = null;
-		
-		list = bService.getEntireBoard();
-		model.addAttribute("boardList", list);
+		logger.info(pageNo + "페이지의 listAll이 호출됨");
+		logger.info(searchWord + " " + searchType);
+
+		Map<String, Object> map = null;
+		SearchCriteriaDto searchDto = new SearchCriteriaDto(searchWord, searchType);			
+
+		map = bService.getEntireBoard(pageNo, searchDto);			
+
+		model.addAttribute("boardList", (List<BoardVo>)map.get("boardList"));
+		model.addAttribute("pageInfo", (PagingInfoVo)map.get("pageInfo"));
 	}
 
 	

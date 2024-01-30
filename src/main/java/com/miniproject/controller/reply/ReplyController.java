@@ -1,6 +1,8 @@
 package com.miniproject.controller.reply;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -10,11 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.ReplyDto;
-import com.miniproject.domain.ReplyVo;
 import com.miniproject.service.reply.ReplyService;
 
 @RestController
@@ -24,19 +25,33 @@ public class ReplyController {
 	@Inject
 	private ReplyService rService;
 	
-	@RequestMapping (value="all/{boardNo}", method=RequestMethod.GET)
-	public ResponseEntity<List<ReplyVo>> getAllReplies(@PathVariable("boardNo") int boardNo) throws Exception {
-		System.out.println(boardNo + "번 글의 댓글 소환!");
-		ResponseEntity<List<ReplyVo>> result = null;
+	@RequestMapping (value="all/{boardNo}/{pageNo}", method=RequestMethod.GET)
+//	public ResponseEntity<List<ReplyVo>> getAllReplies(@PathVariable("boardNo") int boardNo,
+	public ResponseEntity<Map<String, Object>> getAllReplies(@PathVariable("boardNo") int boardNo,
+													   @PathVariable("pageNo") int pageNo
+														) {
+		System.out.println(boardNo + "번 글의 댓글 소환!  " + pageNo + "번 페이지 댓글 가져오기");
+//		ResponseEntity<List<ReplyVo>> result = null;
+		ResponseEntity<Map<String, Object>> result = null;
 		
-		List<ReplyVo> list = rService.getAllReplies(boardNo);
-		result = new ResponseEntity<List<ReplyVo>>(list, HttpStatus.OK);
+		PagingInfoVo pVo = new PagingInfoVo();
 		
-		System.out.println(result.toString());
-		
+		try {
+			Map<String, Object> map = rService.getAllReplies(pageNo, boardNo);
+//			List<ReplyVo> list = rService.getAllReplies(boardNo);
+//		result = new ResponseEntity<List<ReplyVo>>(list, HttpStatus.OK);
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("replyList", list);
+//			map.put("pageInfo", pVo);
+			
+			result = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+			System.out.println(result.toString());
+		} catch (Exception e) {
+			result = new ResponseEntity<Map<String, Object>>(HttpStatus.CONFLICT);
+			e.printStackTrace();
+		}
 		
 		return result;
-		
 		
 	}
 	

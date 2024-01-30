@@ -31,9 +31,10 @@
 	${contextPath }
 	<div class="container">	
 		<h1>게시판 전체 목록</h1>
-		<form action="listAll?pageNo=1" class="searchArea">
+		<form action="listAll" class="searchArea">
 			<div style="width : 150px;">
-				<select class="form-select" name="searchType">
+				<select class="form-select" name="searchType" id="searchType">
+					<option value="">----Select----</option>
 					<option value="writer">Writer</option>
 					<option value="title">Title</option>
 					<option value="content">Content</option>
@@ -41,7 +42,7 @@
 			</div>
 			<div class="input-group mb-3" style="width : 350px">
 				<input type="text" class="form-control" id="searchWord" name="searchWord" placeholder="What do you want to search?">
-				<button class="btn btn-primary" type="submit">Search</button>
+				<button class="btn btn-primary" type="submit" onclick="return searchValid()">Search</button>
 				<button class="btn btn-danger" type="reset">Cancel</button>
 			</div>
 		</form>
@@ -131,7 +132,7 @@
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
-							href="listAll.bo?pageNo=${param.pageNo - 1}&searchType=${param.searchType }&searchWord=${param.searchWord }">Previous</a></li>
+							href="listAll?pageNo=${param.pageNo - 1}&searchType=${param.searchType }&searchWord=${param.searchWord }">Previous</a></li>
 					</c:otherwise>
 				</c:choose>
 
@@ -141,15 +142,15 @@
 					<c:choose>
 						<c:when test="${param.pageNo == paging}">
 							<li class="page-item active"><a class="page-link"
-								href="listAll.bo?pageNo=${paging }&searchType=${param.searchType }&searchWord=${param.searchWord }">${paging }</a></li>
+								href="listAll?pageNo=${paging }&searchType=${param.searchType }&searchWord=${param.searchWord }">${paging }</a></li>
 						</c:when>
 						<c:when test="${param.pageNo == null && paging == 1}">
 							<li class="page-item active"><a class="page-link"
-								href="listAll.bo?pageNo=${paging }&searchType=${param.searchType }&searchWord=${param.searchWord }">${paging }</a></li>
+								href="listAll?pageNo=${paging }&searchType=${param.searchType }&searchWord=${param.searchWord }">${paging }</a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="page-item"><a class="page-link"
-								href="listAll.bo?pageNo=${paging }&searchType=${param.searchType }&searchWord=${param.searchWord }">${paging }</a></li>
+								href="listAll?pageNo=${paging }&searchType=${param.searchType }&searchWord=${param.searchWord }">${paging }</a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -157,11 +158,11 @@
 					<c:when
 						test="${param.pageNo < pageInfo.totalPageCnt }">
 						<li class="page-item "><a class="page-link"
-							href="listAll.bo?pageNo=${param.pageNo + 1}&searchType=${param.searchType }&searchWord=${param.searchWord }">Next</a></li>
+							href="listAll?pageNo=${param.pageNo + 1}&searchType=${param.searchType }&searchWord=${param.searchWord }">Next</a></li>
 					</c:when>
-					<c:when test="${param.pageNo == null && param.pageNo < pageInfo.totalPageCnt }">
+					<c:when test="${param.pageNo == null && pageInfo.pageNo < pageInfo.totalPageCnt }">
 						<li class="page-item "><a class="page-link"
-							href="listAll.bo?pageNo=2&searchType=${param.searchType }&searchWord=${param.searchWord }">Next</a></li>
+							href="listAll?pageNo=2&searchType=${param.searchType }&searchWord=${param.searchWord }">Next</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>

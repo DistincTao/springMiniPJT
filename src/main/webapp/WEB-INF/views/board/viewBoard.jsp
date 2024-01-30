@@ -22,7 +22,8 @@
 <!-- <script type="text/javascript" src="/resources/js/reply.js"></script> -->
 <script type="text/javascript">
 $(function(){
-	getAllReplies()
+// 	getAllReplies();
+	getAllReplies(1);
 	
 	$(".modalClose").click(function(){
 		$("#updateReplydModal").hide();
@@ -33,10 +34,36 @@ $(function(){
 
 let replyData;
 let replyNo;
-function getAllReplies() {
+// function getAllReplies() {
+// 	let boardNo = ${board.boardNo};
+// 	let pageNo = 1;
+// 	if (nextPage != 1) {
+// 		pageNo = nextPage;
+// 	}
+	
+// 	$.ajax({
+// 		url : "/reply/all/" + boardNo + "/" + pageNo,
+// 		type : "GET", // 통신방식 (GET, POST, PUT, DELETE)
+// 		dataType : "json", // MIME Type
+// 		success : function (data){
+// 			console.log(data);
+// 			displayAllReplies(data);
+// 			replyData = data;
+// 		},
+// 		error : function (){},
+// 		complete : function (){},
+// 	});
+// }
+
+function getAllReplies(nextPage) {
 	let boardNo = ${board.boardNo};
+	let pageNo = 1;
+	if (nextPage != 1) {
+		pageNo = nextPage;
+	}
+	
 	$.ajax({
-		url : "/reply/all/" + boardNo,
+		url : "/reply/all/" + boardNo + "/" + pageNo,
 		type : "GET", // 통신방식 (GET, POST, PUT, DELETE)
 		dataType : "json", // MIME Type
 		success : function (data){
@@ -49,10 +76,37 @@ function getAllReplies() {
 	});
 }
 
-function displayAllReplies(json) {
+// function displayAllReplies(json) {
+// 	let output = "<ul class='list-group'>";
+// 	if (json.replyList.length > 0) {
+// 		$.each(json.replyList, function(i, elem){
+// 			if (elem.isDelete == "N") {
+// 			  output += "<li class='list-group-item'>";
+// 			  output += `<div class='replyText'>\${elem.replyText}</div>`;
+// 			  output += `<div class='replyInfo'><span class="replier">\${elem.replier}</span>`;	  
+// 			  let elapsedTime = procPostDate(elem.postDate)
+// 			  output += `<span class="postDate">\${elapsedTime}</span></div>`;
+			  
+// // 		  output += `<span>\${elem.postDate}</span></div>`;
+
+// 		      output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`;
+// 			  output += `<img src="/resources/img/delete.png" onclick="deleteModal(\${elem.replyNo})"/></div></li>`;
+			  
+// 			} else if (elem.isDelete == "Y") {
+// 				  output += "<li class='list-group-item'>";
+// 				  output += `<div class='replyText'>삭제된 댓글입니다.</div></li>`;
+// 			}
+// 		});
+// 	}
+// 	output += "</ul>"
+	
+// 	$(".allReplies").html(output);
+// }
+
+function displayAllReplies(json, pageNo) {
 	let output = "<ul class='list-group'>";
-	if (json.length >0) {
-		$.each(json, function(i, elem){
+	if (json.replyList.length > 0) {
+		$.each(json.replyList, function(i, elem){
 			if (elem.isDelete == "N") {
 			  output += "<li class='list-group-item'>";
 			  output += `<div class='replyText'>\${elem.replyText}</div>`;
@@ -72,7 +126,43 @@ function displayAllReplies(json) {
 		});
 	}
 	output += "</ul>"
+	
+	let pageInfo = json.pageInfo;
+	let pagingOutput = `<ul class="pagination">`;
+	if (pageInfo.pageNo == 1 || pageInfo.pageNo == null) {
+		pagingOutput += `<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>`;
+	} else {
+		pagingOutput += `<li class="page-item"><a class="page-link"
+			onclick="getAllReplies(\${pageInfo.pageNo} - 1);">Previous</a></li>`;
+	}
+	console.log(pageInfo);
+	for (let paging = pageInfo.startPageNum; paging <= pageInfo.endPageNum; paging++){
+		if (pageInfo.pageNo == paging) {
+			pagingOutput += `<li class="page-item active"><a class="page-link"
+				onclick="getAllReplies(\${paging});">\${paging}</a></li>`;
+		} else if (pageInfo.pageNo == null && pageInfo.pageNo == 1) {
+			pagingOutput += `<li class="page-item active"><a class="page-link"
+				onclick="getAllReplies(\${paging});">\${paging}</a></li>`;
+		} else {
+			pagingOutput += `<li class="page-item"><a class="page-link"
+				onclick="getAllReplies(\${paging});">\${paging}</a></li>`;
+		}
+	}
+	
+	if (pageNo < pageInfo.totalPageCnt) {
+		pagingOutput += `<li class="page-item "><a class="page-link"
+			onclick="getAllReplies(\${pageNo} + 1);">Next</a></li>`;
+	} else if (pageNo == null && pageInfo.pageNo < pageInfo.totalPageCnt){
+		pagingOutput += `<li class="page-item "><a class="page-link"
+			onclick="getAllReplies(2);">Next</a></li>`;
+	} else {
+		pagingOutput += `<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>`;
+	}
+	
+	pagingOutput += `</ul>`;
+	
 	$(".allReplies").html(output);
+	$(".replyPagenation").html(pagingOutput);
 }
 
 
@@ -336,6 +426,11 @@ function updateReply(no){
         </c:otherwise>
         </c:choose>
         <div class="allReplies mb-3 mt-3"></div>
+        <div class="replyPagenation mb-3 mt-3"></div>
+        
+        
+        
+        
             </div>
         </div>
         

@@ -1,12 +1,15 @@
 package com.miniproject.persistence.reply;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.ReplyDto;
 import com.miniproject.domain.ReplyVo;
 
@@ -22,6 +25,18 @@ public class ReplayDaoImpl implements ReplyDao {
 		String q = ns + ".selectAllReplies";
 		
 		return ses.selectList(q, boardNo);
+	}
+	
+	@Override
+	public List<ReplyVo> selectAllReplies(int boardNo, PagingInfoVo vo) throws Exception {
+		String q = ns + ".selectAllRepliesByPaging";
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("boardNo", boardNo);
+		param.put("startRowIndex", vo.getStartRowIndex());
+		param.put("pagePostCnt", vo.getPagePostCnt());
+		
+		return ses.selectList(q, param);
 	}
 
 	@Override

@@ -41,10 +41,10 @@
       <li class="nav-item">
 	  <c:choose>
       <c:when test="${pageContext.request.requestURI == '/WEB-INF/views/board/listAll.jsp' }">
-        <a class="nav-link active" href="/board/listAll?userId=${sessionScope.login.userId}&pageNo=1">BOARD</a>
+        <a class="nav-link active" href="/board/listAll?userId=${sessionScope.login.userId}">BOARD</a>
       </c:when>
       <c:otherwise>
-        <a class="nav-link" href="/board/listAll?userId=${sessionScope.login.userId}&pageNo=1">BOARD</a>
+        <a class="nav-link" href="/board/listAll?userId=${sessionScope.login.userId}">BOARD</a>
       </c:otherwise>
       </c:choose> 
       </li>
