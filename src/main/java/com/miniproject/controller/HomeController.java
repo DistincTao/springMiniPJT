@@ -36,4 +36,11 @@ public class HomeController {
 		return "index";
 	}
 	
+	@RequestMapping("/doInterceptorA")
+	public void doInterceptorA (Model model) {
+		logger.info("doInterceptorA () 컨트롤러 호출 완료");
+		model.addAttribute("result", "doInterceptorA-result");
+		
+	}
+	
 }

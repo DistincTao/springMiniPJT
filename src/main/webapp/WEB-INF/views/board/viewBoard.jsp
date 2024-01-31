@@ -30,6 +30,8 @@ $(function(){
 		$("#deleteReplydModal").hide();
 
 	})
+// 	alert('${sessionScope.login.userId}');
+
 }); // onload 종료 시점
 
 let replyData;
@@ -111,17 +113,18 @@ function displayAllReplies(json, pageNo) {
 			  output += "<li class='list-group-item'>";
 			  output += `<div class='replyText'>\${elem.replyText}</div>`;
 			  output += `<div class='replyInfo'><span class="replier">\${elem.replier}</span>`;	  
-			  let elapsedTime = procPostDate(elem.postDate)
+			  let elapsedTime = procPostDate(elem.postDate);
 			  output += `<span class="postDate">\${elapsedTime}</span></div>`;
 			  
 // 		  output += `<span>\${elem.postDate}</span></div>`;
-
-		      output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`;
-			  output += `<img src="/resources/img/delete.png" onclick="deleteModal(\${elem.replyNo})"/></div></li>`;
-			  
+				if ('${sessionScope.login.userId}' == elem.replier) {
+			      output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`;
+				  output += `<img src="/resources/img/delete.png" onclick="deleteModal(\${elem.replyNo})"/></div></li>`;
+				}
+				  
 			} else if (elem.isDelete == "Y") {
-				  output += "<li class='list-group-item'>";
-				  output += `<div class='replyText'>삭제된 댓글입니다.</div></li>`;
+					  output += "<li class='list-group-item'>";
+					  output += `<div class='replyText'>삭제된 댓글입니다.</div></li>`;
 			}
 		});
 	}
@@ -164,8 +167,6 @@ function displayAllReplies(json, pageNo) {
 	$(".allReplies").html(output);
 	$(".replyPagenation").html(pagingOutput);
 }
-
-
 
 function procPostDate(date){
 	let postDate = new Date(date); // 댓글 작성 시간
@@ -227,7 +228,7 @@ function saveReply(){
 		success : function (data){
 			console.log(data);
 			if (data == "success") {
-				getAllReplies();
+				getAllReplies(1);
 				$("#replyText").val("");				
 			}
 		},

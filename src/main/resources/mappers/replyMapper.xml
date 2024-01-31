@@ -6,11 +6,11 @@
   
   	<select id="selectAllReplies" resultType="ReplyVo">
   		SELECT reply_no, board_no, reply_text, replier, post_date, is_delete FROM reply
-  		WHERE board_no = #{boardNo} ORDER BY reply_no
+  		WHERE board_no = #{boardNo} ORDER BY reply_no DESC
   	</select>
   	<select id="selectAllRepliesByPaging" resultType="ReplyVo">
   		SELECT reply_no, board_no, reply_text, replier, post_date, is_delete FROM reply
-  		WHERE board_no = #{boardNo} ORDER BY reply_no LIMIT #{startRowIndex}, #{pagePostCnt}
+  		WHERE board_no = #{boardNo} ORDER BY reply_no DESC LIMIT #{startRowIndex}, #{pagePostCnt}
   	</select>
   	<select id="selectReplyText" resultType="String">
   		SELECT reply_text FROM reply

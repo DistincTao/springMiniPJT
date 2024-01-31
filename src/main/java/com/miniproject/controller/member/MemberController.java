@@ -1,8 +1,6 @@
 package com.miniproject.controller.member;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,39 +42,60 @@ public class MemberController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	private HttpSession sess;
-//	private List<UploadedFileDto> fileList = new ArrayList<>();
 	private UploadedFileDto ufDto;
 	
 	
 	@RequestMapping("login")
 	public void logIn() {
-		logger.info("login이 호출됨");
+		logger.info("login이 get 방식으로 호출됨");
 		
-	}
-
+		// member/login.jsp 가 반환
+		
+	}	
+	
 	@RequestMapping(value = "login", method=RequestMethod.POST)
-	public String loginMember(@RequestParam("userId") String userId, 
-							@RequestParam("userPwd") String userPwd,
-							HttpServletRequest req) throws Exception {
-		logger.info("로그인 절차 시작");
-		MemberVo vo = mService.getLoginUserInfo(userId, userPwd);
-		
+	public void loginMember(MemberDto mDto, Model model) throws Exception {
+		logger.info(mDto.toString() + "로 로그인 시작!");
+		MemberVo vo = mService.getLoginUserInfo(mDto);
 		String result = "";
 		
-		sess = req.getSession();
-		if (vo != null && !vo.getIsDelete().equals("Y")) {
-			sess.setAttribute("login", vo);
-			result = "redirect:/";
+		if (vo != null && vo.getIsDelete().equals("N")) {
+			System.out.println(vo.getUserId() + " 회원 Login 성공");
+			model.addAttribute("login", vo);
 		} 
-		return result;
-		
 	}
+	
+	
+	
+//	// 일반적인 로그인 처리
+//	@RequestMapping("login")
+//	public void logIn() {
+//		logger.info("login이 get 방식으로 호출됨");
+//		
+//	}
+//
+//	@RequestMapping(value = "login", method=RequestMethod.POST)
+//	public String loginMember(@RequestParam("userId") String userId, 
+//							@RequestParam("userPwd") String userPwd,
+//							HttpServletRequest req) throws Exception {
+//		logger.info("로그인 절차 시작");
+//		MemberVo vo = mService.getLoginUserInfo(userId, userPwd);
+//		
+//		String result = "";
+//		
+//		sess = req.getSession();
+//		if (vo != null && !vo.getIsDelete().equals("Y")) {
+//			sess.setAttribute("login", vo);
+//			result = "redirect:/";
+//		} 
+//		return result;
+//		
+//	}
 	
 	@RequestMapping("register")
 	public void register() {
 		logger.info("register이 호출됨");
 
-		
 	}
 
 	@RequestMapping(value="register", method=RequestMethod.POST)
@@ -102,11 +122,11 @@ public class MemberController {
 	}
 	
 	@RequestMapping("logout")
-	public String logOut() {
-		logger.info("logouy이 호출됨");
-
-		sess.removeAttribute("login");
-		sess.invalidate();
+	public String logOut(HttpServletRequest request) {
+		logger.info("logout이 호출됨");
+			sess = request.getSession();
+			sess.removeAttribute("login");
+			sess.invalidate();			
 
 		return "redirect:/";
 		

@@ -7,6 +7,14 @@ $(function() {
 
 	})
 	
+// 	getAllReplies();
+	getAllReplies(1);
+	
+	$(".modalClose").click(function(){
+		$("#updateReplydModal").hide();
+		$("#deleteReplydModal").hide();
+	})
+	
 	
 	$("#fileDelete").change(function() {
 		if ($("input[type=checkbox][name=fileDelete]:checked").val() == 'delete'){
@@ -68,10 +76,7 @@ $(function() {
 			});
 		}
 	});
-	
-
-	
-	
+		
 })
 
 

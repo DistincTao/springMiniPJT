@@ -1,8 +1,19 @@
 package com.miniproject.domain;
 
-import lombok.Data;
+import java.sql.Timestamp;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class UploadedFileDto {
 	private String originalFilename;
 	private String ext;

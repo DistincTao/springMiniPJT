@@ -17,5 +17,7 @@ public interface MemberService {
 	PagingInfoVo getPagingInfo() throws Exception;
 
 	void saveNewMember(MemberDto dto, UploadedFileDto ufDto) throws Exception;
+
+	MemberVo getLoginUserInfo(MemberDto mDto) throws Exception;
 		
 }

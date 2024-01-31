@@ -28,18 +28,49 @@ public class MemberServiceImple implements MemberService {
 	@Override
 	@Transactional(rollbackFor = Exception.class) // 예외 발생 시 rollback
 	public MemberVo getLoginUserInfo(String userId, String userPwd) throws Exception {
-		Date lastLogin = pDao.selectLastLogin(userId);
+		System.out.println("MemberService에서 Login 처리 진행 중");
+		// 1) member table에서 userId userPwd 일치 여부 확인
 		MemberVo vo = mDao.selectLoginUser(userId, userPwd);
+		// 2) 로그인이 성공하면 마지막 로그인 시간을 확인
+		Date lastLogin = pDao.selectLastLogin(userId);
+		// 하루가 지나면 포인트로그 업데이트
 		Date now = new Date(System.currentTimeMillis());
 		
 		if (vo != null && (now.getTime() - lastLogin.getTime()) / 1000 / 60 / 60 / 24 > 1) {
-			mDao.updateUserPoint("login", userId);
-			pDao.insertPointlog(new PointlogDto(-1, null, "login", 2, userId));
+			if (mDao.updateUserPoint("login", userId) == 1) {
+				// 3) 포인트 로그에 포인트 기록
+				pDao.insertPointlog(new PointlogDto(-1, null, "login", 2, userId));
+			}
 		}
 		
 		return vo;
 	}
 
+	@Override
+	@Transactional(rollbackFor = Exception.class) // 예외 발생 시 rollback
+	public MemberVo getLoginUserInfo(MemberDto mDto) throws Exception {
+		System.out.println("MemberService에서 Login 처리 진행 중");
+		// 1) member table에서 userId userPwd 일치 여부 확인
+		MemberVo vo = mDao.selectLoginUser(mDto);
+		// 2) 로그인이 성공하면 마지막 로그인 시간을 확인
+		Date lastLogin = pDao.selectLastLogin(mDto.getUserId());
+		// 하루가 지나면 포인트로그 업데이트
+		Date now = new Date(System.currentTimeMillis());
+		
+		if (vo != null && (now.getTime() - lastLogin.getTime()) / 1000 / 60 / 60 / 24 > 1) {
+		System.out.println("로그인한 맴버 : " + vo.toString());
+			
+			if (mDao.updateUserPoint("login", mDto.getUserId()) == 1) {
+				// 3) 포인트 로그에 포인트 기록
+				pDao.insertPointlog(new PointlogDto(-1, null, "login", 2, mDto.getUserId()));				
+			}
+		}
+		return vo;
+	}
+
+	
+	
+	
 	@Override
 	public List<PointlogVo> getMemberPoint(String userId) throws Exception {
 		List<PointlogVo> pointVo = mDao.selectPointList(userId);
@@ -66,10 +97,5 @@ public class MemberServiceImple implements MemberService {
 		mDao.updateUserPoint("signin", dto.getUserId());
 		pDao.insertPointlog(new PointlogDto(-1, null, "login", 2, dto.getUserId()));
 	}
-
-	
-
-
-	
 	
 }

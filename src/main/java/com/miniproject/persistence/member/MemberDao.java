@@ -16,6 +16,7 @@ public interface MemberDao {
 	List<MemberVo> selectAllMember() throws Exception;
 
 	MemberVo selectLoginUser(String userId, String userPwd) throws Exception;
+	MemberVo selectLoginUser(MemberDto mDto) throws Exception;
 
 	List<PointlogVo> selectPointList(String userId) throws Exception;
 
@@ -29,4 +30,5 @@ public interface MemberDao {
 	int insertUploadFile(UploadedFileDto ufDto) throws Exception;
 
 	int selectImgNo() throws Exception;
+
 }

@@ -52,6 +52,16 @@ public class MemberDaoImpl implements MemberDao {
 		
 		return vo;
 	}
+	
+	@Override
+	public MemberVo selectLoginUser(MemberDto mDto) throws Exception {
+		String q = ns + ".getLoginMember";
+
+		MemberVo vo = ses.selectOne(q, mDto);		
+		
+		return vo;
+	}
+	
 
 	@Override
 	public List<PointlogVo> selectPointList(String userId) throws Exception {
@@ -99,5 +109,6 @@ public class MemberDaoImpl implements MemberDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
+
 }

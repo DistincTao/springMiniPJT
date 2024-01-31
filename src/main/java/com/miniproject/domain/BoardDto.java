@@ -2,9 +2,17 @@ package com.miniproject.domain;
 
 import java.sql.Timestamp;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class BoardDto {
 	private int boardNo;
 	private String writer;

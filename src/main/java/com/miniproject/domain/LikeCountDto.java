@@ -2,9 +2,17 @@ package com.miniproject.domain;
 
 import java.sql.Date;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class LikeCountDto {
 	private int likeNo;
 	private int boardNo;

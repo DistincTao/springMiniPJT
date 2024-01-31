@@ -33,6 +33,39 @@
 	<!-- exception을 처리하는 객체 생성 -->
 	<context:component-scan base-package="com.miniproject.exception" />
 	
+	 <!-- 인터셉터 객체 생성 -->	
+	
+	<beans:bean id="testInterceptor"
+		class="com.miniproject.interceptor.TestInterceptor">
+	</beans:bean>
+
+	<beans:bean id="loginInterceptor"
+		class="com.miniproject.interceptor.LoginInterceptor">
+	</beans:bean>
+
+	<beans:bean id="authIntercepter"
+		class="com.miniproject.interceptor.AuthenticationIntercepter">
+	</beans:bean>
+	
+	<interceptors>
+		<interceptor>
+		<!-- /doInterceptor URI가 매핑이 되면  -->
+        	<mapping path="/doInterceptorA"/>
+        <!-- testInterceptor 객체가 동작하도록 -->	         
+        	<beans:ref bean="testInterceptor"/>
+    	</interceptor>
+
+		<interceptor>
+        	<mapping path="/member/login"/>
+        	<beans:ref bean="loginInterceptor"/>
+    	</interceptor>
+
+		<interceptor>
+        	<mapping path="/board/writeBoard"/>
+        	<beans:ref bean="authIntercepter"/>
+    	</interceptor>
+
+	</interceptors>
 	
 	
 </beans:beans>

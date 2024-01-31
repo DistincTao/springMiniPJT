@@ -48,81 +48,72 @@
 		</form>
 		<div class="boardList">
 			<c:choose>
-				<c:when test="${boardList != null }">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th>글번호</th>
-								<th>제목</th>
-								<th>작성자</th>
-								<th>작성일</th>
-								<th>조회수</th>
-								<th>좋아요</th>
-							</tr>
-						</thead>
-						<tbody>
+			<c:when test="${boardList != null }">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>글번호</th>
+							<th>제목</th>
+							<th>작성자</th>
+							<th>작성일</th>
+							<th>조회수</th>
+							<th>좋아요</th>
+						</tr>
+					</thead>
+					<tbody>
 
-							<c:forEach var="board" items="${boardList }">
-								<c:choose>
-									<c:when test="${board.isDelete == 'N' && board.step == 0}">
-										<tr id="board${board.boardNo }" class="board"
-											onclick="location.href='viewBoard?boardNo=${board.boardNo}'">
-											<td>${board.boardNo }</td>
-											<td>${board.title }</td>
-											<td>${board.writer }</td>
-											<td><fmt:formatDate value="${board.postDate }"
-													pattern="yyyy-MM-dd HH:mm:ss" /></td>
-											<td>${board.readCount }</td>
-											<td>${board.likeCount }</td>
-										</tr>
-									</c:when>
-									<c:when test="${board.isDelete == 'N' && board.step != 0}">
-										<tr id="board${board.boardNo }" class="board"
-											onclick="location.href='viewBoard?boardNo=${board.boardNo}'">
-											<td>${board.boardNo }</td>
-											<td><c:forEach begin="1" end="${board.step}">
-												&nbsp; 
-											</c:forEach> <img src="${contextPath }/resources/img/arrow.png"
-												style="width: 20px; height: 20px;"> ${board.title }</td>
-											<td>${board.writer }</td>
-											<td><fmt:formatDate value="${board.postDate }"
-													pattern="yyyy-MM-dd HH:mm:ss" /></td>
-											<td>${board.readCount }</td>
-											<td>${board.likeCount }</td>
-										</tr>
-									</c:when>
-									<c:otherwise>
-										<tr id="board${board.boardNo }" class="deletedBoard">
-											<td></td>
-											<td>삭제된 글입니다.</td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-						</tbody>
-					</table>
+						<c:forEach var="board" items="${boardList }">
+							<c:choose>
+								<c:when test="${board.isDelete == 'N' && board.step == 0}">
+									<tr id="board${board.boardNo }" class="board"
+										onclick="location.href='viewBoard?boardNo=${board.boardNo}'">
+										<td>${board.boardNo }</td>
+										<td>${board.title }</td>
+										<td>${board.writer }</td>
+										<td><fmt:formatDate value="${board.postDate }"
+												pattern="yyyy-MM-dd HH:mm:ss" /></td>
+										<td>${board.readCount }</td>
+										<td>${board.likeCount }</td>
+									</tr>
+								</c:when>
+								<c:when test="${board.isDelete == 'N' && board.step != 0}">
+									<tr id="board${board.boardNo }" class="board"
+										onclick="location.href='viewBoard?boardNo=${board.boardNo}'">
+										<td>${board.boardNo }</td>
+										<td><c:forEach begin="1" end="${board.step}">
+											&nbsp; 
+										</c:forEach> <img src="${contextPath }/resources/img/arrow.png"
+											style="width: 20px; height: 20px;"> ${board.title }</td>
+										<td>${board.writer }</td>
+										<td><fmt:formatDate value="${board.postDate }"
+												pattern="yyyy-MM-dd HH:mm:ss" /></td>
+										<td>${board.readCount }</td>
+										<td>${board.likeCount }</td>
+									</tr>
+								</c:when>
+								<c:otherwise>
+									<tr id="board${board.boardNo }" class="deletedBoard">
+										<td></td>
+										<td>삭제된 글입니다.</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</tbody>
+				</table>
 
-				</c:when>
-				<c:otherwise>
+			</c:when>
+			<c:otherwise>
 				<img src="/resources/img/box.png">
 			</c:otherwise>
 			</c:choose>
 			<div class="btns">
-			<c:choose>
-			<c:when test="${sessionScope.login != null}">
 				<button type="button" class="btn btn-primary"
 					onclick="location.href='writeBoard'">글쓰기</button>
-			</c:when>
-			<c:otherwise>
-				<button type="button" class="btn btn-primary"
-					disabled>글쓰기</button>
-			</c:otherwise>
-			</c:choose>
-
 			</div>
 				
 			<ul class="pagination">
