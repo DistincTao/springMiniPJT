@@ -42,7 +42,6 @@ public class MemberServiceImple implements MemberService {
 				pDao.insertPointlog(new PointlogDto(-1, null, "login", 2, userId));
 			}
 		}
-		
 		return vo;
 	}
 
@@ -68,9 +67,6 @@ public class MemberServiceImple implements MemberService {
 		return vo;
 	}
 
-	
-	
-	
 	@Override
 	public List<PointlogVo> getMemberPoint(String userId) throws Exception {
 		List<PointlogVo> pointVo = mDao.selectPointList(userId);
@@ -90,12 +86,13 @@ public class MemberServiceImple implements MemberService {
 		
 		if (mDao.insertUploadFile(ufDto) == 1) {
 			int userImg = mDao.selectImgNo();
+			dto.setUserImg(userImg);
  			mDao.insertNewMember(dto);
 		}
-		
-		
-		mDao.updateUserPoint("signin", dto.getUserId());
-		pDao.insertPointlog(new PointlogDto(-1, null, "login", 2, dto.getUserId()));
+				
+		if (mDao.updateUserPoint("signin", dto.getUserId()) == 1) {
+			pDao.insertPointlog(new PointlogDto(-1, null, "signin", 100, dto.getUserId()));
+		}
 	}
 	
 }

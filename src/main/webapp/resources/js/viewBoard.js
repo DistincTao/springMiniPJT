@@ -31,7 +31,7 @@ $(function() {
 		let boardNo = $("#boardNo").html();
 		if ($("#likeCnt").hasClass("fa-solid") == false)	{
 			 $.ajax({
-				url : 'likeCount.bo',
+				url : 'likeCount',
 				type : 'post',
 				data : {"boardNo" : boardNo},
 				dataType : 'json',
@@ -54,7 +54,7 @@ $(function() {
 			});
 		} else if ($("#likeCnt").hasClass("fa-solid") == true) {
 			 $.ajax({	
-				url : 'deleteLikeCount.bo',
+				url : 'deleteLikeCount',
 				type : 'post',
 				data : {"boardNo" : boardNo},
 				dataType : 'json',
@@ -69,7 +69,7 @@ $(function() {
 				},
 				error : function() {
 					alert("LOGIN 후 사용 가능합니다!");
-					location.href="../member/login.jsp";
+					location.href="/member/login";
 				},
 				complete : function() {
 				}
@@ -87,7 +87,7 @@ function updateBoard() {
 	
 }
 
-function deleteBoard() {
+function deleteBoardModal() {
 //	alert("test");
 	// 모달 띄우기
 	$("#deleteBoardModal").show();
@@ -98,7 +98,7 @@ function deleteBoard() {
 function deleteBoard () {
 	let boardNo = '${requestScope.board.boardNo}'; // js에서 EL 사용 시 ''로 감싸 주어야 함
 	$.ajax({
-		url : "",
+		url : "deleteBoard",
 		type : "get",
 		data : {"boardNo" : boardNo},
 		datatype : "json",

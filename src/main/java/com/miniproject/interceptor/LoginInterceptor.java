@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.miniproject.domain.MemberVo;
+import com.miniproject.util.SessionCheck;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
@@ -30,15 +31,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		if (loginMember != null) {
 			System.out.println("현재 로그인한 맴버 : " + loginMember.toString());
 			sess.setAttribute("login", loginMember);
+			// 중복 로그인 체크
+			SessionCheck.replaceSessionKey(sess, loginMember.getUserId());
 			
-			if (sess.getAttribute("prev_url") != null) {
-				response.sendRedirect((String)sess.getAttribute("prev_url"));
+			if (sess.getAttribute("prev_uri") != null) {
+				response.sendRedirect((String)sess.getAttribute("prev_uri"));
 			}
 			response.sendRedirect("/");
 		} 
-		
 	}
-
-	
-	
 }

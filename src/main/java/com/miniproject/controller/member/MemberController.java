@@ -24,6 +24,7 @@ import com.miniproject.domain.MemberVo;
 import com.miniproject.domain.PointlogVo;
 import com.miniproject.domain.UploadedFileDto;
 import com.miniproject.service.member.MemberService;
+import com.miniproject.util.SessionCheck;
 import com.miniproject.util.UploadFileProcess;
 
 /**
@@ -102,11 +103,10 @@ public class MemberController {
 	public String register(MemberDto dto) throws Exception {
 		logger.info("회원 가입 시작");
 					
-			mService.saveNewMember(dto, ufDto);
+		mService.saveNewMember(dto, ufDto);
 				
 		return "redirect:/member/login";
 	}	
-
 
 	@RequestMapping("mypage")
 	public void myPage(
@@ -115,21 +115,23 @@ public class MemberController {
 					   Model model) throws Exception {
 		logger.info("mypage이 호출됨");
 		
-		
 		List<PointlogVo> pointList = mService.getMemberPoint(userId);
 		model.addAttribute("pointlog", pointList);
-		
 	}
 	
 	@RequestMapping("logout")
 	public String logOut(HttpServletRequest request) {
 		logger.info("logout이 호출됨");
-			sess = request.getSession();
-			sess.removeAttribute("login");
-			sess.invalidate();			
-
+		sess = request.getSession();
+//		if (sess.getAttribute("login") != null) { // 일반적인 로그 아웃
+//			sess.removeAttribute("login");
+//			sess.invalidate();
+//		}
+		// 로그아웃 할 때, 세션 map에 담겨진 세션 제거
+		if((MemberVo)sess.getAttribute("login") != null) {
+			SessionCheck.removeSessionKey(((MemberVo)sess.getAttribute("login")).getUserId());
+		}
 		return "redirect:/";
-		
 	}
 	
 	/**
@@ -147,7 +149,6 @@ public class MemberController {
 		System.out.println("업로드 파일의 original 이름 : " + uploadFile.getOriginalFilename());
 		System.out.println("업도르 파일의 사이즈 : " + uploadFile.getSize());
 		System.out.println("업도르 파일의 Content 타입 : " + uploadFile.getContentType());
-		
 		
 		// 파일이 실제로 저장될 경로 realPath
 		String realPath = req.getSession().getServletContext().getRealPath("resources/uploads");
@@ -169,10 +170,7 @@ public class MemberController {
 		ResponseEntity<String> result = null;
 		String realPath = req.getSession().getServletContext().getRealPath("resources/uploads");
 
-		
 		UploadFileProcess.deleteFile(ufDto, removeFile, realPath);
-		
-		
 		
 //		for (UploadedFileDto f : fileList) {
 //			if (f.getNewFilename().equals(removeFile)) {
@@ -188,11 +186,9 @@ public class MemberController {
 		if (removeFile.equals(ufDto.getNewFilename())) {
 			ufDto = null;
 		}
-			
 		result = new ResponseEntity<String>("success", HttpStatus.OK);
 		
 		return result;
-		
 	}
 	
 	@RequestMapping("removeAllFile")
@@ -208,7 +204,6 @@ public class MemberController {
 		if (ufDto == null) {
 			result = new ResponseEntity<String>("success", HttpStatus.ACCEPTED);			
 		}
-
 		return result;	
 	}
 	

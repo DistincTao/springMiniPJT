@@ -62,6 +62,9 @@
 
 		<interceptor>
         	<mapping path="/board/writeBoard"/>
+        	<mapping path="/board/updateBoard"/>
+        	<mapping path="/board/deleteBoard"/>
+
         	<beans:ref bean="authIntercepter"/>
     	</interceptor>
 

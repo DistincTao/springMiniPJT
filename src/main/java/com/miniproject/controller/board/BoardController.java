@@ -75,7 +75,6 @@ public class BoardController {
 		
 		String uudi = UUID.randomUUID().toString();
 		sess.setAttribute("csrfToken", uudi); // Session에 바인딩
-			
 	}
 	
 	@RequestMapping(value="writeBoard", method=RequestMethod.POST)
@@ -90,15 +89,12 @@ public class BoardController {
 		if (((String)sess.getAttribute("csrfToken")).equals(inputcsrf)) {
 			//csrfToken이 같은 경우에만 게시들을 저장
 			try {
-				
 				bService.saveNewBoard(dto, fileList);
 				redirectPage = "listAll";
 			} catch (Exception e) {
-				
 				e.printStackTrace();
 				redirectPage = "listAll?status=fail";
 			}
-			
 		}
 		return "redirect:" + redirectPage;
 	}
@@ -125,10 +121,7 @@ public class BoardController {
 		
 		model.addAttribute("board", result.get("board"));
 		model.addAttribute("fileList", result.get("fileList"));
-		
 	}
-	
-	
 	
 	/**
 	 * @MethodName : uploadFile
@@ -145,7 +138,6 @@ public class BoardController {
 		System.out.println("업로드 파일의 original 이름 : " + uploadFile.getOriginalFilename());
 		System.out.println("업도르 파일의 사이즈 : " + uploadFile.getSize());
 		System.out.println("업도르 파일의 Content 타입 : " + uploadFile.getContentType());
-		
 		
 		// 파일이 실제로 저장될 경로 realPath
 		String realPath = req.getSession().getServletContext().getRealPath("resources/uploads");
@@ -196,16 +188,13 @@ public class BoardController {
 			} else {
 				break;
 			}
-			
 		}
-		
 		fileList.remove(index);
 		System.out.println("fileList 현황 : " + fileList.toString());
 		
 		result = new ResponseEntity<String>("success", HttpStatus.OK);
 		
 		return result;
-		
 	}
 	
 	@RequestMapping("removeAllFile")
@@ -221,10 +210,31 @@ public class BoardController {
 		if (fileList.isEmpty()) {
 			result = new ResponseEntity<String>("success", HttpStatus.ACCEPTED);			
 		}
-
 		return result;	
 	}
 	
+//	@RequestMapping(value="updateBoard",  method=RequestMethod.POST)
+	@RequestMapping("updateBoard")
+	public void updateBoard(@RequestParam("boardNo") int boardNo,
+							@RequestParam("writer") String writer
+//							,
+//							@RequestParam("title") String title,
+//							@RequestParam("content") String content
+							) throws Exception {
+	
+		System.out.println(boardNo + "번 글 업데이트를 시작합니다!");
+	}
 
+	@RequestMapping("deleteBoard")
+	public void deleteBoard(@RequestParam("boardNo") int boardNo,
+			@RequestParam("writer") String writer
+//							,
+//							@RequestParam("title") String title,
+//							@RequestParam("content") String content
+			) throws Exception {
+		
+		System.out.println(boardNo + "번 글 삭제를 시작합니다!");
+	}
+	
 	
 }

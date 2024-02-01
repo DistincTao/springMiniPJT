@@ -25,12 +25,22 @@ $(function(){
 // 	getAllReplies();
 	getAllReplies(1);
 	
+// 	let status = '${param.status}';
+// 	if (status == 'noPermission') {
+// 		alert("수정권한이 없습니다.");
+// 	}
+	
 	$(".modalClose").click(function(){
 		$("#updateReplydModal").hide();
 		$("#deleteReplydModal").hide();
 
 	})
 // 	alert('${sessionScope.login.userId}');
+	$("#replyTextWithoutLogin").click (function (){
+		alert("login 후 사용 해주세요");
+		location.href = "/member/login";
+	})
+	
 
 }); // onload 종료 시점
 
@@ -117,14 +127,12 @@ function displayAllReplies(json, pageNo) {
 			  output += `<span class="postDate">\${elapsedTime}</span></div>`;
 			  
 // 		  output += `<span>\${elem.postDate}</span></div>`;
-				if ('${sessionScope.login.userId}' == elem.replier) {
+			if ('${sessionScope.login.userId}' == elem.replier) {
 			      output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`;
-				  output += `<img src="/resources/img/delete.png" onclick="deleteModal(\${elem.replyNo})"/></div></li>`;
-				}
-				  
+				  output += `<img src="/resources/img/delete.png" onclick="deleteModal(\${elem.replyNo})"/></div></li>`;		  
 			} else if (elem.isDelete == "Y") {
-					  output += "<li class='list-group-item'>";
-					  output += `<div class='replyText'>삭제된 댓글입니다.</div></li>`;
+				  output += "<li class='list-group-item'>";
+				  output += `<div class='replyText'>삭제된 댓글입니다.</div></li>`;
 			}
 		});
 	}
@@ -190,8 +198,7 @@ function procPostDate(date){
 			if (timeDiff > 24 * 60 * 60) {
 				return postDate.toLocaleString();
 			}
-			
-			return gapTime + value.name + " ago"
+			return gapTime + value.name + " ago";
 		}
 	}
 	
@@ -251,7 +258,6 @@ function deleteModal(no) {
 	$("#deleteReplydModal").show();
 	$(".deleteReplyNo").html("해당 댓글을 삭제 하시겠습니까?");
 	$(".deleteBtn").attr("id", no);
-
 }
 
 function updateReply(no){
@@ -262,7 +268,7 @@ function updateReply(no){
 	let updateReply = {
 			"replyText" : replyText,
 			"replyNo" : replyNo
-		}	
+	}	
 
 	console.log(JSON.stringify(updateReply));
 		
@@ -322,7 +328,6 @@ function updateReply(no){
 // 		complete : function (){},
 // 	});
 // }
-
 </script>
 
 </head>
@@ -379,23 +384,26 @@ function updateReply(no){
                             </div>
                             <div class="mb-3 fs-6">${board.content }</div>
                         </div>
-                        <c:choose>
-                        	<c:when test="${sessionScope.login != null && (sessionScope.login.userId == board.writer || sessionScope.login.isAdmin == 'Y') }">
-		                        <button type="button" class="btn btn-primary rounded-pill px-5" onclick="updateBoard()">Update</button>
-		                        <button type="button" class="btn btn-danger rounded-pill px-5" onclick="deleteBoard()">Delete</button>                        	
+<%--                         <c:choose> --%>
+<%--                         	<c:when test="${sessionScope.login != null && (sessionScope.login.userId == board.writer || sessionScope.login.isAdmin == 'Y') }"> --%>
+		                        <button type="button" class="btn btn-primary rounded-pill px-5" onclick="updateBoard();">Update</button>
+		                        <button type="button" class="btn btn-danger rounded-pill px-5" onclick="deleteBoardModal();">Delete</button>                        	
  		                        <button type="button" class="btn btn-warning rounded-pill px-5" onclick="location.href='replyBoard?ref=${board.ref }&step=${board.step }&refOrder=${board.refOrder }'">Reply</button>
-                        	</c:when>
-                        	<c:when test="${sessionScope.login != null && sessionScope.login.userId != board.writer }">
-		                        <button type="button" class="btn btn-primary rounded-pill px-5" disabled>Update</button>
-		                        <button type="button" class="btn btn-danger rounded-pill px-5" disabled >Delete</button>                        	
- 		                        <button type="button" class="btn btn-warning rounded-pill px-5" onclick="location.href='replyBoard?ref=${board.ref }&step=${board.step }&refOrder=${board.refOrder }'">Reply</button>
-                        	</c:when>
-                        	<c:otherwise>
-		                        <button type="button" class="btn btn-primary rounded-pill px-5" disabled>Update</button>
-		                        <button type="button" class="btn btn-danger rounded-pill px-5" disabled >Delete</button>                        	
- 		                        <button type="button" class="btn btn-warning rounded-pill px-5" disabled>Reply</button>
-                        	</c:otherwise>
-                        </c:choose>
+<%-- 		                        <button type="button" class="btn btn-primary rounded-pill px-5" onclick="location.href ='updateBoard?boardNo=${board.boardNo}&writer=${board.writer }'">Update</button> --%>
+<%-- 		                        <button type="button" class="btn btn-danger rounded-pill px-5" onclick="location.href ='deleteBoard?boardNo=${board.boardNo}&writer=${board.writer }'">Delete</button>                        	 --%>
+<%--  		                        <button type="button" class="btn btn-warning rounded-pill px-5" onclick="location.href='replyBoard?ref=${board.ref }&step=${board.step }&refOrder=${board.refOrder }'">Reply</button> --%>
+<%--                         	</c:when> --%>
+<%--                         	<c:when test="${sessionScope.login != null && sessionScope.login.userId != board.writer }"> --%>
+<!-- 		                        <button type="button" class="btn btn-primary rounded-pill px-5" disabled>Update</button> -->
+<!-- 		                        <button type="button" class="btn btn-danger rounded-pill px-5" disabled >Delete</button>                        	 -->
+<%--  		                        <button type="button" class="btn btn-warning rounded-pill px-5" onclick="location.href='replyBoard?ref=${board.ref }&step=${board.step }&refOrder=${board.refOrder }'">Reply</button> --%>
+<%--                         	</c:when> --%>
+<%--                         	<c:otherwise> --%>
+<!-- 		                        <button type="button" class="btn btn-primary rounded-pill px-5" disabled>Update</button> -->
+<!-- 		                        <button type="button" class="btn btn-danger rounded-pill px-5" disabled >Delete</button>                        	 -->
+<!--  		                        <button type="button" class="btn btn-warning rounded-pill px-5" disabled>Reply</button> -->
+<%--                         	</c:otherwise> --%>
+<%--                         </c:choose> --%>
                         <a href="listAll" class="btn btn-success rounded-pill px-5">List</a>
                     </div> 
                 </div>
@@ -417,7 +425,7 @@ function updateReply(no){
         <div class="replyInputDiv">
             <div class="mb-3 mt-3">
 		    	<label for="replyText">Comments:</label>
-	    		<textarea class="form-control" rows="5" style="width : 100%;" id="replyText" onclick="alert('login 해주세요')"></textarea>
+	    		<textarea class="form-control" rows="5" style="width : 100%;" id="replyTextWithoutLogin" ></textarea>
 		    </div>
         </div>
         <div>
@@ -449,8 +457,9 @@ function updateReply(no){
 
       <!-- Modal body -->
       <div class="modal-body">
-	<form id="deleteForm" action="updateBoard.bo" method="post" enctype="multipart/form-data">
+<!-- 	<form id="deleteForm" action="/board/updateBoard" method="POST"> -->
  		<input type="hidden" name="existFile" value="${requestScope.file.newFilename }">
+ 		
  		<div class="mb-3 mt-3">
     		<label for="boardNo" class="form-label">NUMBER</label>
     		<input type="text" class="form-control" id="boardNo" name="boardNo" value="${board.boardNo }" readonly>
@@ -475,10 +484,10 @@ function updateReply(no){
    			<input type="file" class="form-control" id="upFile" name="upFile">
  		</div> 		
   		<div>  		
-  			<button type="submit" class="btn btn-primary">Submit</button>
-  			<button type="reset" class="btn btn-danger">Cancel</button>
+  			<button type="submit" class="btn btn-primary" onclick="location.href ='updateBoard?boardNo=${board.boardNo}&writer=${board.writer }'">Submit</button>
+  			<button type="reset" class="btn btn-danger" onclick="location.href ='deleteBoard?boardNo=${board.boardNo}&writer=${board.writer }'">Cancel</button>
   		</div>
-	</form>
+<!-- 	</form> -->
       </div>
 
       <!-- Modal footer -->
@@ -507,7 +516,7 @@ function updateReply(no){
 
       <!-- Modal footer -->
       <div class="modal-footer">
-  			<button type="submit" class="btn btn-primary" onclick="location.href='${contextPath }/board/deleteBoard.bo?boardNo=${board.boardNo}'">Delete</button>
+  			<button type="submit" class="btn btn-primary" onclick="location.href='/board/deleteBoard?boardNo=${board.boardNo}&writer=${board.writer }'">Delete</button>
   			<button type="reset" class="btn btn-danger modalClose">Cancel</button>      
   	  </div>
     </div>
