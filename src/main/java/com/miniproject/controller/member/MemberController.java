@@ -12,12 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miniproject.domain.MemberDto;
 import com.miniproject.domain.MemberVo;
@@ -55,15 +55,23 @@ public class MemberController {
 	}	
 	
 	@RequestMapping(value = "login", method=RequestMethod.POST)
-	public void loginMember(MemberDto mDto, Model model) throws Exception {
+	public String loginMember(MemberDto mDto, Model model,
+							  RedirectAttributes rttr
+			) throws Exception {
 		logger.info(mDto.toString() + "로 로그인 시작!");
 		MemberVo vo = mService.getLoginUserInfo(mDto);
-		String result = "";
 		
 		if (vo != null && vo.getIsDelete().equals("N")) {
 			System.out.println(vo.getUserId() + " 회원 Login 성공");
 			model.addAttribute("login", vo);
-		} 
+			return "index";
+		} else {
+			System.out.println("Login 실패");
+			rttr.addAttribute("status", "fail");
+//			rttr.addFlashAttribute("status", "fail");
+//			return "redirect:login?status=fail";
+			return "redirect:login";
+		}
 	}
 	
 	

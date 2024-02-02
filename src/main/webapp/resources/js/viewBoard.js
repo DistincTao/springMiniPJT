@@ -8,12 +8,12 @@ $(function() {
 	})
 	
 // 	getAllReplies();
-	getAllReplies(1);
+//	getAllReplies(1);
 	
-	$(".modalClose").click(function(){
-		$("#updateReplydModal").hide();
-		$("#deleteReplydModal").hide();
-	})
+//	$(".modalClose").click(function(){
+//		$("#updateReplydModal").hide();
+//		$("#deleteReplydModal").hide();
+//	})
 	
 	
 	$("#fileDelete").change(function() {

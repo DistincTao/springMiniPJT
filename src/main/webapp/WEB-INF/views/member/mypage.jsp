@@ -37,7 +37,7 @@
 
 		<div class="mb-3 mt-3">
 			<img alt="userImg"
-				src="${contextPath }/${sessionScope.login.memberImg }">
+				src="/resources/${sessionScope.login.memberImg }">
 		</div>
 
 

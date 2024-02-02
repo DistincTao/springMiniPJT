@@ -25,10 +25,12 @@ $(function(){
 // 	getAllReplies();
 	getAllReplies(1);
 	
-// 	let status = '${param.status}';
-// 	if (status == 'noPermission') {
-// 		alert("수정권한이 없습니다.");
-// 	}
+	let boardNo = '${board.boardNo}'
+	let pageNo = '${pageInfo.pageNo}'
+	let status = '${param.status}';
+	if (status == 'noPermission') {
+		alert("수정권한이 없습니다.");
+	}
 	
 	$(".modalClose").click(function(){
 		$("#updateReplydModal").hide();
@@ -38,7 +40,7 @@ $(function(){
 // 	alert('${sessionScope.login.userId}');
 	$("#replyTextWithoutLogin").click (function (){
 		alert("login 후 사용 해주세요");
-		location.href = "/member/login";
+		location.href = "/member/login?redirectUrl=viewBoard&boardNo=" + boardNo + "&pageNo=" + pageNo;
 	})
 	
 
@@ -80,7 +82,7 @@ function getAllReplies(nextPage) {
 		dataType : "json", // MIME Type
 		success : function (data){
 			console.log(data);
-			displayAllReplies(data);
+			displayAllReplies(data, pageNo);
 			replyData = data;
 		},
 		error : function (){},
@@ -127,14 +129,15 @@ function displayAllReplies(json, pageNo) {
 			  output += `<span class="postDate">\${elapsedTime}</span></div>`;
 			  
 // 		  output += `<span>\${elem.postDate}</span></div>`;
-			if ('${sessionScope.login.userId}' == elem.replier) {
+				if ('${sessionScope.login.userId}' == elem.replier) {
 			      output += `<div class="replyBtns"><img src="/resources/img/modify.png" onclick="updateModal('\${elem.replyNo}', '\${elem.replyText}')"/>`;
 				  output += `<img src="/resources/img/delete.png" onclick="deleteModal(\${elem.replyNo})"/></div></li>`;		  
+				}
 			} else if (elem.isDelete == "Y") {
-				  output += "<li class='list-group-item'>";
-				  output += `<div class='replyText'>삭제된 댓글입니다.</div></li>`;
+			  output += "<li class='list-group-item'>";
+			  output += `<div class='replyText'>삭제된 댓글입니다.</div></li>`;
 			}
-		});
+		})
 	}
 	output += "</ul>"
 	
@@ -289,7 +292,7 @@ function updateReply(no){
 		success : function (data){
 			console.log(data);
 			if (data == "success") {
-				getAllReplies();
+				getAllReplies(1);
 			$("#updateReplydModal").hide();
 			$("#deleteReplydModal").hide();
 			}

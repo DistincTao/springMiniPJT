@@ -1,6 +1,7 @@
 package com.miniproject.domain;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,8 @@ public class MemberVo {
 	private String memberImg;
 	private String isAdmin;
 	private String isDelete;
+	private Timestamp sessionLimit;
+	private String sessionKey;
 	
 		
 }

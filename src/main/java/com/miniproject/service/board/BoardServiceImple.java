@@ -200,6 +200,14 @@ public class BoardServiceImple implements BoardService {
 		return vo;
 	}
 
+	@Override
+	public String getBoardWriterByBoardNo(String boardNo) throws Exception {
+		String writer = bDao.selectWriterByBoarNo(boardNo);
+		
+			return writer;
+		
+	}
+
 
 	
 	

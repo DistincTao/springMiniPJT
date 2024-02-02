@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.domain.PointlogVo;
 import com.miniproject.domain.UploadedFileDto;
+import com.miniproject.domain.SessionDto;
 import com.miniproject.domain.MemberDto;
 import com.miniproject.domain.MemberVo;
 import com.miniproject.domain.PagingInfoVo;
@@ -93,6 +94,17 @@ public class MemberServiceImple implements MemberService {
 		if (mDao.updateUserPoint("signin", dto.getUserId()) == 1) {
 			pDao.insertPointlog(new PointlogDto(-1, null, "signin", 100, dto.getUserId()));
 		}
+	}
+
+	@Override
+	public boolean remember(SessionDto dto) throws Exception {
+		boolean result = false;
+		if (mDao.updateUserSessionInfo(dto) == 1) {
+			result = true;
+		}
+		
+		
+		return result;
 	}
 	
 }

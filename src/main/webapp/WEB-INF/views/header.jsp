@@ -77,12 +77,12 @@
 	     	    <c:choose>
 	     	    <c:when test="${pageContext.request.requestURI == '/WEB-INF/views/member/mypage.jsp' }">
 	     	    	 <a class="nav-link active" href="/member/mypage?userId=${sessionScope.login.userId}"> ${sessionScope.login.userId}
-	     	    	 	<img src="\resources\uploads${sessionScope.login.memberImg }" id="userImg">
+	     	    	 	<img src="/resources/${sessionScope.login.memberImg }" id="userImg">
 	     	    	 </a>
 	     	    </c:when>
 	     	    <c:otherwise>
 	     	    	 <a class="nav-link" href="/member/mypage?userId=${sessionScope.login.userId}&pageNo=1"> ${sessionScope.login.userId}
-	     	    	 	<img src="\resources\uploads${sessionScope.login.memberImg }" id="userImg">
+	     	    	 	<img src="/resources/${sessionScope.login.memberImg }" id="userImg">
 	     	    	 </a>
 	     	    </c:otherwise>
 	     	    </c:choose>

@@ -6,6 +6,7 @@ import com.miniproject.domain.MemberDto;
 import com.miniproject.domain.MemberVo;
 import com.miniproject.domain.PointlogVo;
 import com.miniproject.domain.UploadedFileDto;
+import com.miniproject.domain.SessionDto;
 
 public interface MemberDao {
 
@@ -30,5 +31,7 @@ public interface MemberDao {
 	int insertUploadFile(UploadedFileDto ufDto) throws Exception;
 
 	int selectImgNo() throws Exception;
+
+	int updateUserSessionInfo(SessionDto dto) throws Exception;
 
 }

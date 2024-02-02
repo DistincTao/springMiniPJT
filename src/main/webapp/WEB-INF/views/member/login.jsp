@@ -15,9 +15,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/acb94ab00c.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/resources/css/header.css?after">
-<title>Insert title here</title>
+<!-- <script type="text/javascript" src="/resources/js/login.js"></script> -->
+<style type="text/css">
+
+</style>
+<title>LOGIN</title>
 </head>
 <body>
+
+<script type="text/javascript">
+$(function(){
+
+// 	let loginStatus = '${status}';
+	let loginStatus = '${param.status }';
+	if (loginStatus == 'fail'){
+		alert("아이디 또는 비밀번호를 다시 확인 해주세요");
+	}
+
+});
+</script>
 <jsp:include page="../header.jsp"></jsp:include>
 
 <div class="container">
@@ -31,6 +47,12 @@
     		<label for="uesrPwd" class="form-label">PASSWORD:</label>
    			<input type="password" class="form-control" id="userPwd" placeholder="Enter password" name="userPwd">
  		</div>
+ 		
+  		<div class="mb-3 mt-3">
+   			<input type="checkbox" class="form-check-input" id="remember" name="remember">
+    		<label for="remember" class="form-check-label"> REMEMBER</label>
+ 		</div>
+ 		
   		<div>
   			<button type="submit" class="btn btn-primary" id="logInBtn" onclick="return validCheck();">Submit</button>
   			<button type="reset" class="btn btn-danger" id="loginResetBtn">Cancel</button>

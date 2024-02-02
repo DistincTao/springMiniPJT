@@ -22,5 +22,7 @@ public interface BoardService {
 
 	void saveNewBoard(BoardDto dto, List<UploadedFileDto> fileList) throws Exception;
 
+	String getBoardWriterByBoardNo(String boardNo) throws Exception;
+
 
 }

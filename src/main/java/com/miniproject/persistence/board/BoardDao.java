@@ -33,4 +33,6 @@ public interface BoardDao {
 // 총 게시물 수 확	
 	int getTotalPostCnt() throws Exception;
 
+	String selectWriterByBoarNo(String boardNo);
+
 }

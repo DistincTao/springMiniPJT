@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.miniproject.domain.MemberDto;
 import com.miniproject.domain.PointlogVo;
 import com.miniproject.domain.UploadedFileDto;
+import com.miniproject.domain.SessionDto;
 import com.miniproject.domain.MemberVo;
 
 @Repository
@@ -108,6 +109,13 @@ public class MemberDaoImpl implements MemberDao {
 	public int selectImgNo() throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public int updateUserSessionInfo(SessionDto dto) throws Exception {
+		String query = ns + ".updateMemberSessionInfo";
+
+		return ses.update(query, dto);
 	}
 
 

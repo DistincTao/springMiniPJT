@@ -109,6 +109,13 @@ public class BoardDaoImpl implements BoardDao {
 		return ses.selectOne(query);
 	}
 
+	@Override
+	public String selectWriterByBoarNo(String boardNo) {
+		String query = ns + ".selectWriterByBoarNo";
+
+		return ses.selectOne(query, boardNo);
+	}
+
 
 	
 	

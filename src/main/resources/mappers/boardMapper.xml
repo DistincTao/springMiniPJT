@@ -74,6 +74,9 @@
 		SELECT count(*) AS total_post FROM board
   	</select>
 
+	<select id="selectWriterByBoarNo" resultType="String">
+		SELECT writer FROM board WHERE board_no = #{boardNo}
+	</select>
   	
   </mapper>
   

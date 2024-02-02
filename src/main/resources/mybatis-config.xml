@@ -24,5 +24,6 @@
 	  <typeAlias alias="UploadedFileVo" type="com.miniproject.domain.UploadedFileVo"/>
 	  <typeAlias alias="ReplyVo" type="com.miniproject.domain.ReplyVo"/>
 	  <typeAlias alias="ReplyDto" type="com.miniproject.domain.ReplyDto"/>
+	  <typeAlias alias="SessionDto" type="com.miniproject.domain.SessionDto"/>
   </typeAliases>
 </configuration>
