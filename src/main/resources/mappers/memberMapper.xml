@@ -52,6 +52,10 @@
  	<insert id="updateMemberSessionInfo">
 		UPDATE member SET session_limit=#{sessionLimit}, session_key=#{sessionKey} WHERE user_id = #{userId} 
  	</insert>
+ 	
+  	<select id="selectMemberSessionInfo" resultType="MemberVo">
+  		SELECT m.*, u.new_filename AS member_img FROM member m, uploadedfile u WHERE m.user_img = u.file_id AND session_key = #{sessionKey}
+  	</select>
   	
     </mapper>
 

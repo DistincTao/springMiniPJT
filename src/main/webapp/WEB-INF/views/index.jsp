@@ -24,6 +24,7 @@
 </style>
 </head>
 <body>
+${sessionScope.login }
 <jsp:include page="./header.jsp"></jsp:include>
 <%-- ${sessionScope.login } --%>
 <%-- ${contextPath } --%>

@@ -47,6 +47,10 @@
 		class="com.miniproject.interceptor.AuthenticationIntercepter">
 	</beans:bean>
 	
+	<beans:bean id="autoLoginIntercepter"
+		class="com.miniproject.interceptor.AutoLoginInterceptor">
+	</beans:bean>
+	
 	<interceptors>
 		<interceptor>
 		<!-- /doInterceptor URI가 매핑이 되면  -->
@@ -69,6 +73,11 @@
         	<beans:ref bean="authIntercepter"/>
     	</interceptor>
 
+		<interceptor>
+        	<mapping path="/**/"/>
+        	<beans:ref bean="autoLoginIntercepter"/>
+    	</interceptor>
+    	
 	</interceptors>
 	
 	

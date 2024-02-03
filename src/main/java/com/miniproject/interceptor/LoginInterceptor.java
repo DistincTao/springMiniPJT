@@ -39,9 +39,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 					request.getSession().setAttribute("returnPath", uri + queryStr);
 				}
 			}
-			
 		}
-		
 		return true;
 	}
 
@@ -78,19 +76,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 					response.addCookie(loginCookie); // 쿠키 저장
 				}
 			}
-//
-			
-			
-			
-			
-			
+
 			if (sess.getAttribute("prev_uri") != null) {
 				returnPath = (String)sess.getAttribute("prev_uri");
 //				response.sendRedirect((String)sess.getAttribute("prev_uri"));
-			} else if (sess.getAttribute("returnPath") != null) {
-				returnPath = (String)sess.getAttribute("returnPath");
+			} 
 
-			}
 //			response.sendRedirect("/");
 			response.sendRedirect(!returnPath.equals("")? returnPath : "/");
 		} 

@@ -8,13 +8,13 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.miniproject.domain.PointlogVo;
-import com.miniproject.domain.UploadedFileDto;
-import com.miniproject.domain.SessionDto;
 import com.miniproject.domain.MemberDto;
 import com.miniproject.domain.MemberVo;
 import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.PointlogDto;
+import com.miniproject.domain.PointlogVo;
+import com.miniproject.domain.SessionDto;
+import com.miniproject.domain.UploadedFileDto;
 import com.miniproject.persistence.member.MemberDao;
 import com.miniproject.persistence.pointlog.PointlogDao;
 
@@ -102,9 +102,16 @@ public class MemberServiceImple implements MemberService {
 		if (mDao.updateUserSessionInfo(dto) == 1) {
 			result = true;
 		}
-		
-		
 		return result;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class) // 예외 발생 시 rollback
+	public MemberVo getUserSessionInfo(String sessionKey) throws Exception {
+		MemberVo vo = mDao.selectSessionInfo(sessionKey);
+//		System.out.println(vo.toString());
+
+		return vo;
 	}
 	
 }

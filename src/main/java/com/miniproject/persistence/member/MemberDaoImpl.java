@@ -10,10 +10,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.miniproject.domain.MemberDto;
-import com.miniproject.domain.PointlogVo;
-import com.miniproject.domain.UploadedFileDto;
-import com.miniproject.domain.SessionDto;
 import com.miniproject.domain.MemberVo;
+import com.miniproject.domain.PointlogVo;
+import com.miniproject.domain.SessionDto;
+import com.miniproject.domain.UploadedFileDto;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
@@ -116,6 +116,13 @@ public class MemberDaoImpl implements MemberDao {
 		String query = ns + ".updateMemberSessionInfo";
 
 		return ses.update(query, dto);
+	}
+
+	@Override
+	public MemberVo selectSessionInfo(String sessionKey) throws Exception {
+		String query = ns + ".selectMemberSessionInfo";
+		
+		return ses.selectOne(query, sessionKey);
 	}
 
 

@@ -8,6 +8,7 @@ import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.PointlogVo;
 import com.miniproject.domain.UploadedFileDto;
 import com.miniproject.domain.SessionDto;
+import com.miniproject.domain.SessionVo;
 
 public interface MemberService {
 	
@@ -22,5 +23,7 @@ public interface MemberService {
 	MemberVo getLoginUserInfo(MemberDto mDto) throws Exception;
 	// 
 	boolean remember(SessionDto dto) throws Exception;
+
+	MemberVo getUserSessionInfo(String sessionKey) throws Exception;
 		
 }

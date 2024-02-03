@@ -34,4 +34,6 @@ public interface MemberDao {
 
 	int updateUserSessionInfo(SessionDto dto) throws Exception;
 
+	MemberVo selectSessionInfo(String sessionKey) throws Exception;
+
 }

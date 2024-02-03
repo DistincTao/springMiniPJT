@@ -3,7 +3,9 @@ package com.miniproject.controller.member;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.miniproject.domain.MemberDto;
 import com.miniproject.domain.MemberVo;
 import com.miniproject.domain.PointlogVo;
+import com.miniproject.domain.SessionDto;
 import com.miniproject.domain.UploadedFileDto;
 import com.miniproject.service.member.MemberService;
 import com.miniproject.util.SessionCheck;
@@ -46,6 +49,12 @@ public class MemberController {
 	private UploadedFileDto ufDto;
 	
 	
+	/**
+	 * @MethodName : logIn
+	 * @author : DistincTao
+	 * @date : 2024. 2. 3.
+	 * @description : 로그인 페이지 띄우기
+	 */
 	@RequestMapping("login")
 	public void logIn() {
 		logger.info("login이 get 방식으로 호출됨");
@@ -54,6 +63,17 @@ public class MemberController {
 		
 	}	
 	
+	/**
+	 * @MethodName : loginMember
+	 * @author : DistincTao
+	 * @date : 2024. 2. 3.
+	 * @description : 로그인 창에 입력된 값을 받아 회원 정보 확인 후 회원 정보 반환
+	 * @param mDto
+	 * @param model
+	 * @param rttr
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "login", method=RequestMethod.POST)
 	public String loginMember(MemberDto mDto, Model model,
 							  RedirectAttributes rttr
@@ -73,6 +93,8 @@ public class MemberController {
 			return "redirect:login";
 		}
 	}
+	
+
 	
 	
 	
@@ -101,12 +123,27 @@ public class MemberController {
 //		
 //	}
 	
+	/**
+	 * @MethodName : register
+	 * @author : DistincTao
+	 * @date : 2024. 2. 3.
+	 * @description : 회원 가입 페이지 출력
+	 */
 	@RequestMapping("register")
 	public void register() {
 		logger.info("register이 호출됨");
 
 	}
 
+	/**
+	 * @MethodName : register
+	 * @author : DistincTao
+	 * @date : 2024. 2. 3.
+	 * @description : 신규 회원 가입을 위한 정보 전달
+	 * @param dto
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="register", method=RequestMethod.POST)
 	public String register(MemberDto dto) throws Exception {
 		logger.info("회원 가입 시작");
@@ -116,6 +153,15 @@ public class MemberController {
 		return "redirect:/member/login";
 	}	
 
+	/**
+	 * @MethodName : myPage
+	 * @author : DistincTao
+	 * @date : 2024. 2. 3.
+	 * @description : 마이 페이지 호출 및 로그인한 회원 정보 반환
+	 * @param userId
+	 * @param model
+	 * @throws Exception
+	 */
 	@RequestMapping("mypage")
 	public void myPage(
 //			@RequestParam("pageNo") String pageNo,
@@ -127,18 +173,46 @@ public class MemberController {
 		model.addAttribute("pointlog", pointList);
 	}
 	
+	/**
+	 * @MethodName : logOut
+	 * @author : DistincTao
+	 * @date : 2024. 2. 3.
+	 * @description : 일반 로그아웃 및 자동로그인 회원 로그아웃 (쿠키 정보 삭제까지)
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("logout")
-	public String logOut(HttpServletRequest request) {
+	public String logOut(HttpServletRequest request, HttpServletResponse response ) throws Exception {
 		logger.info("logout이 호출됨");
 		sess = request.getSession();
 //		if (sess.getAttribute("login") != null) { // 일반적인 로그 아웃
 //			sess.removeAttribute("login");
 //			sess.invalidate();
 //		}
+		MemberVo vo = (MemberVo) sess.getAttribute("login");
+		String userId = vo.getUserId();
+
 		// 로그아웃 할 때, 세션 map에 담겨진 세션 제거
-		if((MemberVo)sess.getAttribute("login") != null) {
-			SessionCheck.removeSessionKey(((MemberVo)sess.getAttribute("login")).getUserId());
+		if(vo != null) {
+			SessionCheck.removeSessionKey(userId);
+//			sess.removeAttribute("login");
+//			sess.invalidate();
+//			SessionCheck.removeSessionMap(userId);
+		} 
+		
+		if (request.getCookies() != null) {	
+			for (Cookie cookie : request.getCookies()) {
+				if(cookie.getName().equals("sessionId")) {
+					cookie.setPath("/");
+					cookie.setMaxAge(0);
+					response.addCookie(cookie);
+					mService.remember(new SessionDto(userId, null, null));
+				}
+			}
 		}
+			
 		return "redirect:/";
 	}
 	

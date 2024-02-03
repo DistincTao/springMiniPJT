@@ -5,17 +5,19 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap; // 동기화 된 HashMap
 
 import javax.servlet.annotation.WebListener;
+
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 @WebListener
 public class SessionCheck implements HttpSessionListener {
-
+	
 	private static Map<String, HttpSession> sessions = new ConcurrentHashMap<>(); // 동기화
-
+	private static HttpSession sess;
+	
 	// 동기화 하여 동작되도록 설정
-	public static synchronized void replaceSessionKey (HttpSession se, String loginUserId) {
+	public static synchronized void replaceSessionKey (HttpSession se, String loginUserId) throws Exception {
 		// 세션 리스트에 로그인 유저 아이디가 없고, ses 값만 있으면 => 최초 로그인
 		if (!sessions.containsKey(loginUserId) && sessions.containsValue(se)) {
 			System.out.println(loginUserId + "님의 최초 로그인!");
@@ -31,15 +33,24 @@ public class SessionCheck implements HttpSessionListener {
 
 	}
 	
-	public static void removeSessionKey(String userId) {
+	public static void removeSessionKey(String userId) throws Exception {
 		
 		if (sessions.containsKey(userId)) {
 			sessions.get(userId).removeAttribute("login");
 			
 			sessions.get(userId).invalidate();
 			sessions.remove(userId);
+		} 
+		
+		printSessionsMap();
+	}
 
-		}
+	public static void removeSessionMap(String userId) throws Exception {
+		
+		if (sessions.containsKey(userId)) {
+			sessions.remove(userId);
+		} 
+		
 		printSessionsMap();
 	}
 
