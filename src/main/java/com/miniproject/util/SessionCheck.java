@@ -37,22 +37,15 @@ public class SessionCheck implements HttpSessionListener {
 		
 		if (sessions.containsKey(userId)) {
 			sessions.get(userId).removeAttribute("login");
-			
+
 			sessions.get(userId).invalidate();
 			sessions.remove(userId);
+			
 		} 
 		
 		printSessionsMap();
 	}
 
-	public static void removeSessionMap(String userId) throws Exception {
-		
-		if (sessions.containsKey(userId)) {
-			sessions.remove(userId);
-		} 
-		
-		printSessionsMap();
-	}
 
 	@Override
 	public synchronized void sessionCreated(HttpSessionEvent se) {

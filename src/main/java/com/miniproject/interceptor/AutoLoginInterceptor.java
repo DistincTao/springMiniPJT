@@ -1,7 +1,5 @@
 package com.miniproject.interceptor;
 
-
-
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 
@@ -9,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.miniproject.domain.MemberVo;
 import com.miniproject.service.member.MemberService;
@@ -35,12 +34,21 @@ public class AutoLoginInterceptor extends HandlerInterceptorAdapter {
 						System.out.println("자동로그인 선택 시간 : " + vo.getSessionLimit().getTime());
 						System.out.println("현재 시간 : " + System.currentTimeMillis());
 						System.out.println(vo.getSessionLimit().getTime() > System.currentTimeMillis());
+						System.out.println("로그인 내용을 저장할 세션 ID : " + request.getSession().getId());
 						sess.setAttribute("login", vo);
 					}
-				}
+
+				} 
+				
 			} 
 		}
 		return true;
+	}
+
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+			ModelAndView modelAndView) throws Exception {
+
 	}
 
 }

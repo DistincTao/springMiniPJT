@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,7 +77,9 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "login", method=RequestMethod.POST)
 	public String loginMember(MemberDto mDto, Model model,
-							  RedirectAttributes rttr
+							  RedirectAttributes rttr,
+							  HttpServletRequest request,
+							  HttpServletResponse response
 			) throws Exception {
 		logger.info(mDto.toString() + "로 로그인 시작!");
 		MemberVo vo = mService.getLoginUserInfo(mDto);
@@ -84,6 +87,7 @@ public class MemberController {
 		if (vo != null && vo.getIsDelete().equals("N")) {
 			System.out.println(vo.getUserId() + " 회원 Login 성공");
 			model.addAttribute("login", vo);
+			
 			return "index";
 		} else {
 			System.out.println("Login 실패");
@@ -199,8 +203,8 @@ public class MemberController {
 			SessionCheck.removeSessionKey(userId);
 //			sess.removeAttribute("login");
 //			sess.invalidate();
-//			SessionCheck.removeSessionMap(userId);
-		} 
+//			sess.setMaxInactiveInterval(0);
+		}
 		
 		if (request.getCookies() != null) {	
 			for (Cookie cookie : request.getCookies()) {
@@ -208,9 +212,13 @@ public class MemberController {
 					cookie.setPath("/");
 					cookie.setMaxAge(0);
 					response.addCookie(cookie);
-					mService.remember(new SessionDto(userId, null, null));
-				}
+				} else if(cookie.getName().equals("JSESSIONID")) {
+					cookie.setPath("/");
+					cookie.setMaxAge(0);
+					response.addCookie(cookie);
+				} 
 			}
+			mService.remember(new SessionDto(userId, null, null));
 		}
 			
 		return "redirect:/";

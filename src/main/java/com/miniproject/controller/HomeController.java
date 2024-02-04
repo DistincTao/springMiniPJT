@@ -7,6 +7,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +32,10 @@ public class HomeController {
 	private MemberService mService;
 	/**
 	 * Simply selects the home view to render by returning its name.
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(Locale locale, Model model, HttpServletRequest request) throws Exception {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
@@ -42,6 +44,25 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
+		HttpSession sess = request.getSession();
+
+		if (request.getCookies() != null) {	
+			for (Cookie cookie : request.getCookies()) {
+				if (cookie.getName().equals("sessionId")) {
+					System.out.println("자동로그인 체크 유저 확인");
+					MemberVo vo = mService.getUserSessionInfo(cookie.getValue());
+					if (vo != null && vo.getSessionLimit().getTime() > System.currentTimeMillis()) {
+						System.out.println("자동로그인 선택 시간 : " + vo.getSessionLimit().getTime());
+						System.out.println("현재 시간 : " + System.currentTimeMillis());
+						System.out.println(vo.getSessionLimit().getTime() > System.currentTimeMillis());
+						System.out.println("로그인 내용을 저장할 세션 ID : " + request.getSession().getId());
+						sess.setAttribute("login", vo);
+					}
+				} 
+				
+				} 
+			}
+		
 		
 		return "index";
 	}
