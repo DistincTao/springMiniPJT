@@ -63,7 +63,7 @@ public class AuthenticationIntercepter extends HandlerInterceptorAdapter {
 			result = true;
 		} else { // 로그인 안했음
 			System.out.println("로그인 하고 오시오!! 로그인 페이지로 가시오~~!");
-//			sess.setAttribute("prev_url", request.getRequestURI());
+//			sess.setAttribute("returnUri", request.getRequestURI());
 			response.sendRedirect("/member/login");
 		}
 		

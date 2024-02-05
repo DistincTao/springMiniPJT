@@ -37,11 +37,15 @@ public class SessionCheck implements HttpSessionListener {
 		
 		if (sessions.containsKey(userId)) {
 			sessions.get(userId).removeAttribute("login");
-
+			if (sessions.get(userId).getAttribute("returnUri") != null) {
+				sessions.get(userId).removeAttribute("returnUri");
+			}	
+			
 			sessions.get(userId).invalidate();
 			sessions.remove(userId);
 			
 		} 
+
 		
 		printSessionsMap();
 	}

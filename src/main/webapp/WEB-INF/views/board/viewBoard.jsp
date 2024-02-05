@@ -40,7 +40,7 @@ $(function(){
 // 	alert('${sessionScope.login.userId}');
 	$("#replyTextWithoutLogin").click (function (){
 		alert("login 후 사용 해주세요");
-		location.href = "/member/login?redirectUrl=viewBoard&boardNo=" + boardNo + "&pageNo=" + pageNo;
+		location.href = "/member/login?redirectUrl=viewBoard&boardNo=" + boardNo;
 	})
 	
 
@@ -487,8 +487,8 @@ function updateReply(no){
    			<input type="file" class="form-control" id="upFile" name="upFile">
  		</div> 		
   		<div>  		
-  			<button type="submit" class="btn btn-primary" onclick="location.href ='updateBoard?boardNo=${board.boardNo}&writer=${board.writer }'">Submit</button>
-  			<button type="reset" class="btn btn-danger" onclick="location.href ='deleteBoard?boardNo=${board.boardNo}&writer=${board.writer }'">Cancel</button>
+  			<button type="submit" class="btn btn-primary" onclick="location.href ='/board/updateBoard?boardNo=${board.boardNo}&writer=${board.writer }'">Submit</button>
+  			<button type="reset" class="btn btn-danger" onclick="location.href ='/board/deleteBoard?boardNo=${board.boardNo}&writer=${board.writer }'">Cancel</button>
   		</div>
 <!-- 	</form> -->
       </div>

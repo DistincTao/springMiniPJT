@@ -11,10 +11,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.util.WebUtils;
 
 import com.miniproject.domain.MemberVo;
 import com.miniproject.domain.SessionDto;
 import com.miniproject.service.member.MemberService;
+import com.miniproject.util.DestinationPath;
 import com.miniproject.util.SessionCheck;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
@@ -28,19 +30,29 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		System.out.println("redirectUrl : " + request.getParameter("redirectUrl"));
 		System.out.println("boardNo : " + request.getParameter("boardNo"));
 		
+		boolean showLoginPage = false;
+//		DestinationPath.savePrevPath(request);
 		// 댓글 작성 로그인 (이전 경로저장) 처리
 		if (request.getMethod().equals("GET") && request.getParameter("redirectUrl") != null) {
 			if (!request.getParameter("redirectUrl").equals("")) {
 				if (request.getParameter("redirectUrl").contains("viewBoard")) {
 					//  댓글 달다가 로그인으로 넘어온 경우
 					String uri = "/board/viewBoard";
-					String queryStr = "?boardNo=" + request.getParameter("boardNo") + "&pageNo=" + request.getParameter("pageNo");
+					String queryStr = "?boardNo=" + request.getParameter("boardNo");
 					
-					request.getSession().setAttribute("returnPath", uri + queryStr);
-				}
+					
+					WebUtils.setSessionAttribute(request, "redirectUrl", uri + queryStr);
+//					request.getSession().setAttribute("returnPath", uri + queryStr);
+				} 
 			}
+			showLoginPage = true;
+		} 
+		else {
+//			response.sendRedirect("/member/login");
+			showLoginPage = true;			
 		}
-		return true;
+//		return true;
+		return showLoginPage;
 	}
 
 	@Override
@@ -57,7 +69,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
 			// 중복 로그인 체크
 			SessionCheck.replaceSessionKey(sess, loginMember.getUserId());
-			
+			System.out.println("자동로그인 체크 여부 : " + request.getParameter("remember"));
 			// 자동 로그인 처리
 //			자동 로그인을 체크한 유저이면 ("on"이 전달이 되고, null 이 아닌 경우)
 			if (request.getParameter("remember") != null) {
@@ -77,13 +89,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				}
 			}
 
-			if (sess.getAttribute("prev_uri") != null) {
-				returnPath = (String)sess.getAttribute("prev_uri");
-//				response.sendRedirect((String)sess.getAttribute("prev_uri"));
+			if (sess.getAttribute("redirectUrl") != null) {
+				returnPath = (String)sess.getAttribute("redirectUrl");
+//				response.sendRedirect((String)sess.getAttribute("returnPath"));
 			} 
 
 //			response.sendRedirect("/");
-			response.sendRedirect(!returnPath.equals("")? returnPath : "/");
+			System.out.println(returnPath);
+			response.sendRedirect(returnPath != null ? returnPath : "/");
 		} 
 	}
 }

@@ -54,7 +54,7 @@
  	</insert>
  	
   	<select id="selectMemberSessionInfo" resultType="MemberVo">
-  		SELECT m.*, u.new_filename AS member_img FROM member m, uploadedfile u WHERE m.user_img = u.file_id AND session_key = #{sessionKey}
+  		SELECT m.*, u.new_filename AS member_img FROM member m, uploadedfile u WHERE m.user_img = u.file_id AND session_key = #{sessionKey} AND session_limit > now()
   	</select>
   	
     </mapper>

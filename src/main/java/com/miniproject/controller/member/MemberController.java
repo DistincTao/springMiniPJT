@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
 import com.miniproject.domain.MemberDto;
 import com.miniproject.domain.MemberVo;
@@ -200,6 +201,7 @@ public class MemberController {
 
 		// 로그아웃 할 때, 세션 map에 담겨진 세션 제거
 		if(vo != null) {
+	
 			SessionCheck.removeSessionKey(userId);
 //			sess.removeAttribute("login");
 //			sess.invalidate();
@@ -220,7 +222,19 @@ public class MemberController {
 			}
 			mService.remember(new SessionDto(userId, null, null));
 		}
-			
+		
+//		Cookie autoLogin = WebUtils.getCookie(request, "sessionId");
+//		Cookie sessionCookie = WebUtils.getCookie(request, "JSESSIONID");
+//		
+//		autoLogin.setPath("/");
+//		autoLogin.setMaxAge(0);
+//		sessionCookie.setPath("/");
+//		sessionCookie.setMaxAge(0);
+//		
+//		response.addCookie(autoLogin);
+//		response.addCookie(sessionCookie);
+		
+		
 		return "redirect:/";
 	}
 	

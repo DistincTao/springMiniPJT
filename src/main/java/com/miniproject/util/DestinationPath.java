@@ -27,7 +27,7 @@ public class DestinationPath {
 		if (request.getMethod().equals("GET")) {
 			System.out.println("destination : " + uri + queryStr);
 			
-			request.getSession().setAttribute("prev_uri", uri + queryStr);
+			request.getSession().setAttribute("redirectUrl", uri + queryStr);
 		}
 	}
 }
