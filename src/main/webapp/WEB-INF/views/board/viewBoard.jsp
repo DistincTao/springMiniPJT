@@ -42,9 +42,69 @@ $(function(){
 		alert("login 후 사용 해주세요");
 		location.href = "/member/login?redirectUrl=viewBoard&boardNo=" + boardNo;
 	})
-	
+	// 좋아요
+	$(".fa-heart").click (function(){
+		if ($(this).attr("id") == "dislike") {
+			$(this).removeClass("fa-regular").addClass("fa-solid");
+			$(this).attr("id", "like");
+		} else if ($(this).attr("id") == "like") {
+			$(this).removeClass("fa-solid").addClass("fa-regular");
+			$(this).attr("id", "dislike");
+		}	
+// 		console.log($(this).attr("id"));
+		sendBehavior($(this).attr("id"));
+	})
 
 }); // onload 종료 시점
+
+function sendBehavior(behavior){
+	
+	let boardNo = '${board.boardNo}';
+	let userId = '${sessionScope.login.userId}';
+	console.log(boardNo,   userId);
+	if (userId == ""){
+		location.href="/member/login?redirectUrl=viewBoard&boardNo=" + boardNo;
+	} else {
+		
+		$.ajax({
+			url : "/board/likedislike",
+			type : "POST", // 통신방식 (GET, POST, PUT, DELETE)
+			data : {
+				"boardNo" : boardNo,
+				"userId" : userId,
+				"behavior" : behavior
+			},
+			dataType : "text", // MIME Type
+			success : function (data){
+				console.log(data);
+				if (data == "success") {
+					console.log("성공");
+				}
+			},
+			error : function (){
+				alert("Error")
+			},
+			complete : function (){},
+		});
+	}
+}
+
+// function getLikeCnt(boardNo) {
+// 	$.ajax({
+// 		url : "/board/likeCount",
+// 		type : "POST", // 통신방식 (GET, POST, PUT, DELETE)
+// 		data : boardNo,
+// 		dataType : "text", // MIME Type
+// 		success : function (data){
+// 				console.log(data);
+
+// 		},
+// 		error : function (){
+// 			alert("Error")
+// 		},
+// 		complete : function (){},
+// 	});
+// }
 
 let replyData;
 let replyNo;
@@ -371,18 +431,36 @@ function updateReply(no){
 	                            	<img src="/resources/img/book.png" style="width : 24px; height : 24px;"><span class="badge bg-primary">${board.readCount }</span>
                             	</div>
 	                            <div class="fs-7 text-uppercase likeCnt" >
-	                            	<c:choose>
-	                            	<c:when test="${sessionScope.login == null}">
-	                            		<i class="fa-regular fa-heart" style="width : 24px; height : 24px; color : red;" id="likeCnt"></i>
-	                            	</c:when>
-	                            	<c:when test="${sessionScope.login != null && requestScope.likeLog.userId != sessionScope.login.userId }">
-	                            		<i class="fa-regular fa-heart" style="width : 24px; height : 24px; color : red;" id="likeCnt"></i>
-	                            	</c:when>
-	                            	<c:when test="${sessionScope.login != null && requestScope.likeLog.userId == sessionScope.login.userId }">	                            	
-	                            		<i class="fa-regular fa-solid fa-heart" style="width : 24px; height : 24px; color : red;" id="likeCnt"></i>
-	                            	</c:when>
-	                            	</c:choose>
+									<c:set var="hasHeart" value="false"></c:set>
+									<c:forEach var="user" items="${likeUsers }">
+									<c:choose>
+										<c:when test="${sessionScope.login.userId == user }">
+									  		<c:set var="hasHeart" value="true"></c:set>
+											<i class="fa-solid fa-heart" style="width : 24px; height : 24px; color : red;" id="like"></i>											
+										
+										</c:when>
+									</c:choose>
+									</c:forEach>
+										<c:if test="${hasHeart == false }">
+											<i class="fa-regular fa-heart" style="width : 24px; height : 24px; color : red;" id="dislike"></i>																				
+										</c:if>
+
 	                            	<span class="badge bg-primary currLike">${board.likeCount }</span>
+	             					
+	             					<c:if test="${likeUsers.size() le 3 }">
+										<div>이 글을<span>
+	                            	<c:forEach var="user" items="${likeUsers }">
+	                            		${user }님
+	                            	</c:forEach>
+										</span>이 좋아합니다.</div>
+	             					</c:if>
+	             					<c:if test="${likeUsers.size() ge 4 }">
+	             						<div>이 글을<span>
+             						<c:forEach var="user" items="${likeUsers }" begin="1" end="3">
+             							${user }님
+             						</c:forEach>
+             							</span>외 ${likeUsers.size() - 3 } 명이 좋아합니다.</div>
+	             					</c:if>
                             	</div>
                             </div>
                             <div class="mb-3 fs-6">${board.content }</div>

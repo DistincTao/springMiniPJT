@@ -73,7 +73,7 @@ public class UploadFileProcess {
 	 * @param realPath
 	 * @return : \년\월\일\(세부 폴더) + 새파일 이름
 	 */
-	private static String makeCalculatePath(String realPath) {
+	public static String makeCalculatePath(String realPath) {
 		// 현재 날짜 얻어오기
 		Calendar now = Calendar.getInstance();
 		// 2024 / 01 / 22

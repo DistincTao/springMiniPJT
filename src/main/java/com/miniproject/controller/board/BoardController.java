@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.miniproject.domain.BoardDto;
 import com.miniproject.domain.BoardVo;
+import com.miniproject.domain.LikeCountDto;
+import com.miniproject.domain.LikeCountVo;
 import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.ReadcountprocessDto;
 import com.miniproject.domain.SearchCriteriaDto;
@@ -118,9 +119,11 @@ public class BoardController {
 		dto.setBoardNo(boardNo);
 		dto.setIpAddr(ipAddr);
 		Map <String, Object> result = bService.getBoardByNo(dto);
+		System.out.println("라이크 유저 목록" + result.get("likeUsers"));
 		
 		model.addAttribute("board", result.get("board"));
 		model.addAttribute("fileList", result.get("fileList"));
+		model.addAttribute("likeUsers", result.get("likeUsers"));
 	}
 	
 	/**
@@ -236,5 +239,45 @@ public class BoardController {
 		System.out.println(boardNo + "번 글 삭제를 시작합니다!");
 	}
 	
-	
+	@RequestMapping(value="likedislike", method=RequestMethod.POST)
+//	public void likedislikeCount(@RequestParam("boardNo") int boardNo,
+	public ResponseEntity<Object> likedislikeCount(@RequestParam("boardNo") int boardNo,
+												   @RequestParam("userId") String userId,
+												   @RequestParam("behavior") String behavior,
+												   Model model
+												   ) {
+		
+		logger.info("좋아요 카운트 추가를 위해 왔어요");
+		LikeCountDto dto = new LikeCountDto();
+		dto.setUserId(userId);
+		dto.setBoardNo(boardNo);
+		dto.setBehavior(behavior);
+		dto.setN(dto.getBehavior());
+		
+		System.out.println("likecountDto 내용 확인 : " + dto.toString());
+		ResponseEntity<Object> result= null;
+		boolean dbResult = false;
+		int likeCnt = 0;
+		try {
+			if (behavior.equals("like")) {
+				dbResult = bService.likeBoard(dto);
+			} else if (behavior.equals("dislike")) {
+				dbResult = bService.dislikeBoard(dto);
+			}
+			System.out.println("dbResult : " + dbResult );
+			if (dbResult) {
+				likeCnt = bService.getLikeCntByBoardNo(boardNo);
+				model.addAttribute("likeCnt", likeCnt);
+				result = new ResponseEntity<Object>("success", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			result = new ResponseEntity<Object>("fail", HttpStatus.CONFLICT);
+			e.printStackTrace();
+		}
+
+		return result;
+		
+	}
+		
 }
+

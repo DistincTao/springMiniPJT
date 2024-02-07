@@ -78,6 +78,32 @@
 		SELECT writer FROM board WHERE board_no = #{boardNo}
 	</select>
   	
+  	<insert id="insertLikeCount">
+  		INSERT INTO likecount (board_no, user_id) 
+  		VALUES (#{boardNo}, #{userId})
+  	</insert>
+  	
+  	<delete id="deleteLikeCount">
+  		DELETE FROM likecount WHERE board_no = #{boardNo} AND user_id = #{userId}
+  	</delete>
+
+	<update id="updateLikeCountByBoardNo">
+		UPDATE board SET like_count = like_count + #{n}
+		WHERE board_no = #{boardNo}
+	</update>
+  	
+  	<select id="selectLikeCountByBoardNo" resultType="int">
+  		SELECT like_count FROM board WHERE board_no = #{boardNo}
+  	</select>
+
+  	<select id="selectUserIdListBylsikeWithBoardNo" resultType="String">
+  		SELECT user_id FROM likecount WHERE board_no = #{boardNo}
+  	</select>
+  	
+<!--   	<select id="selectlikeLogByUserIdWithBoardNo" resultType="LikeCountVo"> -->
+<!--   		SELECT like_no, user_id, board_no FROM likecount WHERE board_no = #{boardNo} AND user_id = #{userId} -->
+<!--   	</select> -->
+  	
   </mapper>
   
   

@@ -13,14 +13,14 @@ import com.miniproject.domain.SessionVo;
 public interface MemberService {
 	
 	MemberVo getLoginUserInfo(String userId, String userPwd) throws Exception;
+	// 로그인 유저 정보 가져오기
+	MemberVo getLoginUserInfo(MemberDto mDto) throws Exception;
 
 	List<PointlogVo> getMemberPoint(String userId) throws Exception;
 
 	PagingInfoVo getPagingInfo() throws Exception;
 
 	void saveNewMember(MemberDto dto, UploadedFileDto ufDto) throws Exception;
-	// 로그인 유저 정보 가져오기
-	MemberVo getLoginUserInfo(MemberDto mDto) throws Exception;
 	// 
 	boolean remember(SessionDto dto) throws Exception;
 

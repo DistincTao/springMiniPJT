@@ -91,12 +91,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
 			if (sess.getAttribute("redirectUrl") != null) {
 				returnPath = (String)sess.getAttribute("redirectUrl");
-//				response.sendRedirect((String)sess.getAttribute("returnPath"));
+				response.sendRedirect((String)sess.getAttribute("returnPath"));
 			} 
 
-//			response.sendRedirect("/");
-			System.out.println(returnPath);
-			response.sendRedirect(returnPath != null ? returnPath : "/");
+			response.sendRedirect("/");
+//			System.out.println(returnPath);
+//			response.sendRedirect(returnPath != null ? returnPath : "/");
 		} 
 	}
 }

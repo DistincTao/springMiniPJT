@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.miniproject.domain.BoardDto;
 import com.miniproject.domain.BoardVo;
+import com.miniproject.domain.LikeCountDto;
+import com.miniproject.domain.LikeCountVo;
 import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.ReadcountprocessDto;
 import com.miniproject.domain.SearchCriteriaDto;
@@ -33,6 +35,18 @@ public interface BoardDao {
 // 총 게시물 수 확	
 	int getTotalPostCnt() throws Exception;
 
-	String selectWriterByBoarNo(String boardNo);
+	String selectWriterByBoarNo(String boardNo) throws Exception;
+
+	int likeBoard(LikeCountDto dto) throws Exception;
+
+	int dislikeBoard(LikeCountDto dto) throws Exception;
+
+	int updateLikeCount(LikeCountDto dto) throws Exception;
+
+	int selectLikeCnt(int boardNo) throws Exception;
+
+	List<String> getUserListByLikeCntWithBoardNo(ReadcountprocessDto dto) throws Exception;
+
+//	LikeCountVo selectLikeLogByBoard(LikeCountDto dto) throws Exception;
 
 }

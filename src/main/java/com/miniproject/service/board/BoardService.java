@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.miniproject.domain.BoardDto;
 import com.miniproject.domain.BoardVo;
+import com.miniproject.domain.LikeCountDto;
+import com.miniproject.domain.LikeCountVo;
 import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.ReadcountprocessDto;
 import com.miniproject.domain.SearchCriteriaDto;
@@ -23,6 +25,16 @@ public interface BoardService {
 	void saveNewBoard(BoardDto dto, List<UploadedFileDto> fileList) throws Exception;
 
 	String getBoardWriterByBoardNo(String boardNo) throws Exception;
+
+	boolean likeBoard(LikeCountDto dto) throws Exception;
+
+	boolean dislikeBoard(LikeCountDto dto) throws Exception;
+
+	int getLikeCntByBoardNo(int boardNo) throws Exception;
+
+//	LikeCountVo getLikeCntLog(LikeCountDto dto) throws Exception;
+
+	List<String> getUserListByLikeCntWithBoardNo(ReadcountprocessDto dto) throws Exception;
 
 
 }

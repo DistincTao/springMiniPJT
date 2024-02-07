@@ -12,6 +12,7 @@
 	  <typeAlias alias="BoardDto" type="com.miniproject.domain.BoardDto"/>
 	  <typeAlias alias="BoardVo" type="com.miniproject.domain.BoardVo"/>
 	  <typeAlias alias="LikeCountDto" type="com.miniproject.domain.LikeCountDto"/>
+	  <typeAlias alias="LikeCountVo" type="com.miniproject.domain.LikeCountVo"/>
 	  <typeAlias alias="MemberDto" type="com.miniproject.domain.MemberDto"/>
 	  <typeAlias alias="MemberVo" type="com.miniproject.domain.MemberVo"/>
 	  <typeAlias alias="PagingInfoVo" type="com.miniproject.domain.PagingInfoVo"/>

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.miniproject.domain.BoardDto;
 import com.miniproject.domain.BoardVo;
+import com.miniproject.domain.LikeCountDto;
+import com.miniproject.domain.LikeCountVo;
 import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.ReadcountprocessDto;
 import com.miniproject.domain.SearchCriteriaDto;
@@ -116,7 +118,47 @@ public class BoardDaoImpl implements BoardDao {
 		return ses.selectOne(query, boardNo);
 	}
 
+	@Override
+	public int likeBoard(LikeCountDto dto) throws Exception {
+		String query = ns + ".insertLikeCount";
+		return ses.insert(query, dto);
+	}
 
+	@Override
+	public int dislikeBoard(LikeCountDto dto) throws Exception {
+		String query = ns + ".deleteLikeCount";
+
+		return ses.delete(query, dto);
+	}
+
+	@Override
+	public int updateLikeCount(LikeCountDto dto) throws Exception {
+		String query = ns + ".updateLikeCountByBoardNo";
+		
+		return ses.update(query, dto);
+		
+	}
+
+	@Override
+	public int selectLikeCnt(int boardNo) throws Exception {
+		String query = ns + ".selectLikeCountByBoardNo";
+		
+		return ses.selectOne(query, boardNo);
+	}
+
+	@Override
+	public List<String> getUserListByLikeCntWithBoardNo(ReadcountprocessDto dto) {
+		String query = ns + ".selectUserIdListBylsikeWithBoardNo";
+
+		return ses.selectList(query, dto);
+	}
+
+//	@Override
+//	public LikeCountVo selectLikeLogByBoard(LikeCountDto dto) throws Exception {
+//		String query = ns + ".selectlikeLogByUserIdWithBoardNo";
+//		
+//		return ses.selectOne(query, dto);
+//	}
 	
 	
 

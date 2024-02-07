@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.domain.BoardDto;
 import com.miniproject.domain.BoardVo;
+import com.miniproject.domain.LikeCountDto;
 import com.miniproject.domain.PagingInfoVo;
 import com.miniproject.domain.PointlogDto;
 import com.miniproject.domain.ReadcountprocessDto;
@@ -116,9 +117,12 @@ public class BoardServiceImple implements BoardService {
 			BoardVo vo = bDao.selectBoardByNo(dto);
 			
 		    upFileList = bDao.selectUploadedFile(dto);
+			List<String> likeUserList = bDao.getUserListByLikeCntWithBoardNo(dto);
+			System.out.println(likeUserList.toString());
 		    
 		    result.put("board", vo);
 		    result.put("fileList", upFileList);
+		    result.put("likeUsers", likeUserList);
 		    
 		}
 			
@@ -131,7 +135,7 @@ public class BoardServiceImple implements BoardService {
 		// board 테이블에 글내용 저장 (insert)
 		if (bDao.insertNewBoard(dto) == 1) {
 			int boardNo = bDao.selectBoardNo();
-			System.out.println(boardNo);
+			System.out.println("저장된 게시글 번호 : " +boardNo);
 			if (fileList.size() > 0) { // 업로드한 파일이 있음	
 				for (UploadedFileDto ufDto : fileList) {
 					ufDto.setBoardNo(boardNo);
@@ -208,6 +212,60 @@ public class BoardServiceImple implements BoardService {
 		
 	}
 
+	@Override
+	@Transactional (rollbackFor = Exception.class)
+	public boolean likeBoard(LikeCountDto dto) throws Exception {
+		boolean result = false;
+		System.out.println("좋아요 늘리러 왔어요");
+
+		if (bDao.likeBoard(dto) == 1){
+			if (bDao.updateLikeCount(dto) == 1);
+			result = true;
+		};
+		return result;
+		
+	}
+
+	@Override
+	@Transactional (rollbackFor = Exception.class)
+	public boolean dislikeBoard(LikeCountDto dto) throws Exception {
+		boolean result = false;
+		System.out.println("좋아요 줄이러 왔어요");
+		if (bDao.dislikeBoard(dto) == 1){
+			
+			if (bDao.updateLikeCount(dto) == 1);
+			result = true;
+		};
+		return result;
+		
+	}
+
+	@Override
+	public int getLikeCntByBoardNo(int boardNo) throws Exception {
+		int result = -1;
+		
+		if (bDao.selectLikeCnt(boardNo) != 0) {
+			result = bDao.selectLikeCnt(boardNo);
+		}
+		
+		return result;
+	}
+
+//	@Override
+//	public LikeCountVo getLikeCntLog(LikeCountDto dto) throws Exception {
+//		LikeCountVo vo = null;
+//		if (bDao.selectLikeLogByBoard(dto) != null) {
+//			vo = bDao.selectLikeLogByBoard(dto);
+//		}
+//		return vo;
+//	}
+
+	@Override
+	public List<String> getUserListByLikeCntWithBoardNo(ReadcountprocessDto dto) throws Exception {
+
+		return bDao.getUserListByLikeCntWithBoardNo(dto);
+
+	}
 
 	
 	
