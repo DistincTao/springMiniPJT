@@ -32,6 +32,8 @@
 	<context:component-scan base-package="com.miniproject.controller" />
 	<!-- exception을 처리하는 객체 생성 -->
 	<context:component-scan base-package="com.miniproject.exception" />
+	<!--  scheduleer 객체 -->
+	<context:component-scan base-package="com.miniproject.util" />
 	
 	 <!-- 인터셉터 객체 생성 -->	
 	

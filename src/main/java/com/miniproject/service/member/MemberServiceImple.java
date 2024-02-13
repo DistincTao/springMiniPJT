@@ -49,6 +49,7 @@ public class MemberServiceImple implements MemberService {
 	@Override
 	@Transactional(rollbackFor = Exception.class) // 예외 발생 시 rollback
 	public MemberVo getLoginUserInfo(MemberDto mDto) throws Exception {
+		// > AOP 끼어드는 시점
 		System.out.println("MemberService에서 Login 처리 진행 중");
 		// 1) member table에서 userId userPwd 일치 여부 확인
 		MemberVo vo = mDao.selectLoginUser(mDto);
@@ -66,6 +67,7 @@ public class MemberServiceImple implements MemberService {
 			}
 		}
 		return vo;
+		// < AOP 마무리되는 시점
 	}
 
 	@Override
